@@ -22,6 +22,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/translations.js') }}"></script>
 </head>
 
 <body>
@@ -39,9 +40,9 @@
 
             <!-- Desktop Navigation -->
             <nav class="nav-links" role="navigation" aria-label="Main navigation">
-                <a href="#home" class="nav-link active" aria-current="page">Home</a>
-                <a href="#doctors" class="nav-link">Find Doctors</a>
-                <a href="#appointments" class="nav-link">My Appointments</a>
+                <a href="#home" class="nav-link active" aria-current="page" data-i18n="nav.home">Home</a>
+                <a href="#doctors" class="nav-link" data-i18n="nav.doctors">Find Doctors</a>
+                <a href="#appointments" class="nav-link" data-i18n="nav.appointments">My Appointments</a>
             </nav>
 
             <!-- Theme Toggle & Mobile Menu -->
@@ -51,6 +52,10 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                     </svg>
+                </button>
+                <button id="lang-toggle" class="theme-toggle" onclick="toggleLanguage()" aria-label="Switch Language"
+                    style="font-weight: 600; font-size: 0.9rem;">
+                    RO
                 </button>
                 <button class="mobile-menu-toggle" onclick="openMobileMenu()" aria-label="Open mobile menu"
                     aria-expanded="false">
@@ -131,12 +136,14 @@
                             <path
                                 d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                         </svg>
-                        Trusted by 10,000+ patients
+                        <span data-i18n="hero.badge">Trusted by 10,000+ patients</span>
                     </div>
 
                     <!-- Headline -->
-                    <h1 id="hero-heading">Book Your Doctor Appointment <span class="highlight">With Ease</span></h1>
-                    <p class="hero-description">Find the best doctors, schedule appointments, and manage your healthcare
+                    <h1 id="hero-heading"><span data-i18n="hero.title">Book Your Doctor Appointment</span> <span
+                            class="highlight" data-i18n="hero.title.highlight">With Ease</span></h1>
+                    <p class="hero-description" data-i18n="hero.description">Find the best doctors, schedule
+                        appointments, and manage your healthcare
                         journey all in one place. Experience seamless healthcare booking with verified professionals.
                     </p>
 
@@ -144,28 +151,29 @@
                     <div class="hero-stats" role="list" aria-label="Key statistics">
                         <div class="stat" role="listitem">
                             <span class="stat-number">50+</span>
-                            <span class="stat-label">Specialists</span>
+                            <span class="stat-label" data-i18n="hero.stats.specialists">Specialists</span>
                         </div>
                         <div class="stat" role="listitem">
                             <span class="stat-number">10k+</span>
-                            <span class="stat-label">Patients</span>
+                            <span class="stat-label" data-i18n="hero.stats.patients">Patients</span>
                         </div>
                         <div class="stat" role="listitem">
                             <span class="stat-number">4.9</span>
-                            <span class="stat-label">Rating</span>
+                            <span class="stat-label" data-i18n="hero.stats.rating">Rating</span>
                         </div>
                     </div>
 
                     <!-- CTA Buttons -->
                     <div class="hero-actions">
                         <button class="btn btn-primary btn-lg" onclick="scrollToSection('doctors')">
-                            Book Appointment
+                            <span data-i18n="hero.cta.book">Book Appointment</span>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 aria-hidden="true">
                                 <path d="M5 12h14M12 5l7 7-7 7" />
                             </svg>
                         </button>
-                        <button class="btn btn-secondary btn-lg" onclick="scrollToSection('doctors')">
+                        <button class="btn btn-secondary btn-lg" onclick="scrollToSection('doctors')"
+                            data-i18n="hero.cta.learn">
                             Learn More
                         </button>
                     </div>
@@ -177,7 +185,7 @@
                                 aria-hidden="true">
                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                             </svg>
-                            HIPAA Compliant
+                            <span data-i18n="hero.trust.hipaa">HIPAA Compliant</span>
                         </div>
                         <div class="trust-badge" role="listitem">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -185,7 +193,7 @@
                                 <path d="M9 12l2 2 4-4" />
                                 <circle cx="12" cy="12" r="10" />
                             </svg>
-                            Verified Doctors
+                            <span data-i18n="hero.trust.verified">Verified Doctors</span>
                         </div>
                         <div class="trust-badge" role="listitem">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -193,7 +201,7 @@
                                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                             </svg>
-                            Secure Platform
+                            <span data-i18n="hero.trust.secure">Secure Platform</span>
                         </div>
                     </div>
                 </div>
@@ -210,7 +218,7 @@
                                     <line x1="8" y1="2" x2="8" y2="6" />
                                     <line x1="3" y1="10" x2="21" y2="10" />
                                 </svg>
-                                <span>Available Today</span>
+                                <span data-i18n="hero.preview.available">Available Today</span>
                             </div>
                             <div class="preview-doctor">
                                 <div class="preview-avatar" id="hero-doctor-avatar">DR</div>
@@ -227,7 +235,7 @@
                                 <span class="slot-badge more">+5 more</span>
                             </div>
                             <button class="btn btn-primary btn-sm" onclick="scrollToSection('doctors')">
-                                Book Now
+                                <span data-i18n="hero.preview.book">Book Now</span>
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
                                     height="16">
                                     <path d="M5 12h14M12 5l7 7-7 7" />
@@ -249,10 +257,11 @@
                             <path
                                 d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
                         </svg>
-                        Testimonials
+                        <span data-i18n="testimonials.tag">Testimonials</span>
                     </span>
-                    <h2 id="testimonials-heading">What Our Patients Say</h2>
-                    <p>Real experiences from patients who have trusted us with their healthcare needs</p>
+                    <h2 id="testimonials-heading" data-i18n="testimonials.title">What Our Patients Say</h2>
+                    <p data-i18n="testimonials.subtitle">Real experiences from patients who have trusted us with their
+                        healthcare needs</p>
                 </div>
 
                 <div class="testimonials-grid">
@@ -312,23 +321,24 @@
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                             <circle cx="12" cy="7" r="4" />
                         </svg>
-                        Our Doctors
+                        <span data-i18n="doctors.tag">Our Doctors</span>
                     </span>
-                    <h2 id="doctors-heading">Find Your Specialist</h2>
-                    <p>Browse through our network of experienced healthcare professionals and book your appointment
+                    <h2 id="doctors-heading" data-i18n="doctors.title">Find Your Specialist</h2>
+                    <p data-i18n="doctors.subtitle">Browse through our network of experienced healthcare professionals
+                        and book your appointment
                         today</p>
                 </div>
 
                 <!-- Filters -->
                 <div class="filters" role="search" aria-label="Doctor filters">
                     <div class="filter-group">
-                        <label for="specialty-filter">Specialty</label>
+                        <label for="specialty-filter" data-i18n="doctors.filter.specialty">Specialty</label>
                         <select id="specialty-filter" class="form-select" aria-label="Filter by specialty">
-                            <option value="">All Specialties</option>
+                            <option value="" data-i18n="doctors.filter.all">All Specialties</option>
                         </select>
                     </div>
                     <div class="filter-group search-filter-group autocomplete-container">
-                        <label for="doctor-search">Search</label>
+                        <label for="doctor-search" data-i18n="doctors.search.label">Search</label>
                         <div class="search-box">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 aria-hidden="true">
@@ -336,7 +346,8 @@
                                 <path d="m21 21-4.35-4.35" />
                             </svg>
                             <input type="text" id="doctor-search" placeholder="Search doctors..."
-                                aria-label="Search doctors by name or specialty" autocomplete="off">
+                                aria-label="Search doctors by name or specialty" autocomplete="off"
+                                data-i18n-placeholder="doctors.search.placeholder">
                             <div id="search-autocomplete" class="autocomplete-dropdown" role="listbox"
                                 aria-label="Search suggestions"></div>
                         </div>
@@ -418,10 +429,10 @@
                             <line x1="8" y1="2" x2="8" y2="6" />
                             <line x1="3" y1="10" x2="21" y2="10" />
                         </svg>
-                        Your Health
+                        <span data-i18n="appointments.tag">Your Health</span>
                     </span>
-                    <h2 id="appointments-heading">My Appointments</h2>
-                    <p>View and manage your upcoming and past appointments</p>
+                    <h2 id="appointments-heading" data-i18n="appointments.title">My Appointments</h2>
+                    <p data-i18n="appointments.subtitle">View and manage your upcoming and past appointments</p>
                 </div>
 
                 <!-- Patient Login (shown when not logged in) -->
@@ -434,14 +445,18 @@
                                 <circle cx="12" cy="7" r="4" />
                             </svg>
                         </div>
-                        <h3>Access Your Appointments</h3>
-                        <p>Enter your email to view your appointment history and manage bookings</p>
+                        <h3 data-i18n="login.title">Access Your Appointments</h3>
+                        <p data-i18n="login.subtitle">Enter your email to view your appointment history and manage
+                            bookings</p>
                         <div class="form-group">
-                            <label for="patient-email" class="sr-only">Email Address</label>
+                            <label for="patient-email" class="sr-only" data-i18n="login.email.label">Email
+                                Address</label>
                             <input type="email" id="patient-email" class="form-input" placeholder="your@email.com"
-                                aria-label="Your email address" required>
+                                aria-label="Your email address" required
+                                data-i18n-placeholder="login.email.placeholder">
                         </div>
-                        <button class="btn btn-primary btn-block" onclick="loadPatientAppointments()">
+                        <button class="btn btn-primary btn-block" onclick="loadPatientAppointments()"
+                            data-i18n="login.btn">
                             View Appointments
                         </button>
                     </div>
@@ -495,7 +510,8 @@
                         </svg>
                         MedSchedule
                     </div>
-                    <p>Your trusted partner for seamless healthcare appointments. Connecting patients with verified
+                    <p data-i18n="footer.tagline">Your trusted partner for seamless healthcare appointments. Connecting
+                        patients with verified
                         healthcare professionals since 2023.</p>
                     <div class="footer-social">
                         <a href="#" aria-label="Facebook">
@@ -547,11 +563,11 @@
 
                 <!-- Quick Links -->
                 <div class="footer-links-column">
-                    <h4 class="footer-title">Quick Links</h4>
+                    <h4 class="footer-title" data-i18n="footer.quicklinks">Quick Links</h4>
                     <div class="footer-links">
-                        <a href="#home">Home</a>
-                        <a href="#doctors">Find Doctors</a>
-                        <a href="#appointments">My Appointments</a>
+                        <a href="#home" data-i18n="nav.home">Home</a>
+                        <a href="#doctors" data-i18n="nav.doctors">Find Doctors</a>
+                        <a href="#appointments" data-i18n="nav.appointments">My Appointments</a>
                         <a href="#">About Us</a>
                         <a href="#">How It Works</a>
                         <a href="#">FAQs</a>
@@ -560,7 +576,7 @@
 
                 <!-- Contact Info -->
                 <div class="footer-contact">
-                    <h4 class="footer-title">Contact Us</h4>
+                    <h4 class="footer-title" data-i18n="footer.contact">Contact Us</h4>
                     <p>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
@@ -586,27 +602,28 @@
 
                 <!-- Newsletter -->
                 <div class="footer-newsletter">
-                    <h4 class="footer-title">Stay Updated</h4>
-                    <p style="font-size: 0.9375rem; margin-bottom: 1rem;">Subscribe to our newsletter for health tips
+                    <h4 class="footer-title" data-i18n="footer.newsletter">Stay Updated</h4>
+                    <p style="font-size: 0.9375rem; margin-bottom: 1rem;" data-i18n="footer.newsletter.desc">
+                        Subscribe to our newsletter for health tips
                         and updates.</p>
                     <form class="newsletter-form"
                         onsubmit="event.preventDefault(); showToast('Subscribed successfully!', 'success');">
-                        <input type="email" placeholder="Enter your email" aria-label="Email for newsletter" required>
-                        <button type="submit">Subscribe</button>
+                        <input type="email" placeholder="Enter your email" aria-label="Email for newsletter" required
+                            data-i18n-placeholder="footer.newsletter.placeholder">
+                        <button type="submit" data-i18n="footer.subscribe">Subscribe</button>
                     </form>
                 </div>
-            </div>
 
-            <!-- Footer Bottom -->
-            <div class="footer-bottom">
-                <p>&copy; 2024 MedSchedule. All rights reserved.</p>
-                <div class="footer-bottom-links">
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of Service</a>
-                    <a href="#">Cookie Policy</a>
+                <!-- Footer Bottom -->
+                <div class="footer-bottom">
+                    <p>&copy; 2024 MedSchedule. All rights reserved.</p>
+                    <div class="footer-bottom-links">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Cookie Policy</a>
+                    </div>
                 </div>
             </div>
-        </div>
     </footer>
 
     <!-- ==================== MODALS ==================== -->
@@ -616,7 +633,7 @@
         <div class="modal-overlay" onclick="closeModal('booking-modal')"></div>
         <div class="modal-content" style="max-width: 600px;">
             <div class="modal-header">
-                <h3 id="booking-modal-title">Book Appointment</h3>
+                <h3 id="booking-modal-title" data-i18n="modal.booking.title">Book Appointment</h3>
                 <button class="modal-close" onclick="closeModal('booking-modal')" aria-label="Close booking modal">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                         <line x1="18" y1="6" x2="6" y2="18" />
@@ -644,8 +661,8 @@
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                             <circle cx="12" cy="7" r="4" />
                         </svg>
-                        <span>In-Person</span>
-                        <small>Clinic visit</small>
+                        <span data-i18n="modal.type.inperson">In-Person</span>
+                        <small data-i18n="modal.type.inperson.desc">Clinic visit</small>
                     </div>
                     <div class="appointment-type-option" data-type="video" onclick="selectAppointmentType('video')"
                         role="radio" aria-checked="false" tabindex="0">
@@ -653,8 +670,8 @@
                             <polygon points="23 7 16 12 23 17 23 7" />
                             <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
                         </svg>
-                        <span>Video Call</span>
-                        <small>Online consultation</small>
+                        <span data-i18n="modal.type.video">Video Call</span>
+                        <small data-i18n="modal.type.video.desc">Online consultation</small>
                     </div>
                     <div class="appointment-type-option" data-type="phone" onclick="selectAppointmentType('phone')"
                         role="radio" aria-checked="false" tabindex="0">
@@ -662,8 +679,8 @@
                             <path
                                 d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                         </svg>
-                        <span>Phone</span>
-                        <small>Voice call</small>
+                        <span data-i18n="modal.type.phone">Phone</span>
+                        <small data-i18n="modal.type.phone.desc">Voice call</small>
                     </div>
                 </div>
 
@@ -671,46 +688,47 @@
                 <form id="booking-form" class="booking-form">
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="patient-firstname">First Name <span class="required"
-                                    aria-label="required">*</span></label>
+                            <label for="patient-firstname"><span data-i18n="modal.form.fname">First Name</span> <span
+                                    class="required" aria-label="required">*</span></label>
                             <input type="text" id="patient-firstname" class="form-input" required aria-required="true">
                         </div>
                         <div class="form-group">
-                            <label for="patient-lastname">Last Name <span class="required"
-                                    aria-label="required">*</span></label>
+                            <label for="patient-lastname"><span data-i18n="modal.form.lname">Last Name</span> <span
+                                    class="required" aria-label="required">*</span></label>
                             <input type="text" id="patient-lastname" class="form-input" required aria-required="true">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="patient-email-booking">Email <span class="required"
-                                aria-label="required">*</span></label>
+                        <label for="patient-email-booking"><span data-i18n="modal.form.email">Email</span> <span
+                                class="required" aria-label="required">*</span></label>
                         <input type="email" id="patient-email-booking" class="form-input" required aria-required="true">
                     </div>
                     <div class="form-group">
-                        <label for="patient-phone">Phone Number</label>
+                        <label for="patient-phone" data-i18n="modal.form.phone">Phone Number</label>
                         <input type="tel" id="patient-phone" class="form-input" placeholder="+1 (555) 123-4567">
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="appointment-date">Date <span class="required"
-                                    aria-label="required">*</span></label>
+                            <label for="appointment-date"><span data-i18n="modal.form.date">Date</span> <span
+                                    class="required" aria-label="required">*</span></label>
                             <input type="date" id="appointment-date" class="form-input" required aria-required="true">
                         </div>
                         <div class="form-group">
-                            <label for="appointment-time">Time <span class="required"
-                                    aria-label="required">*</span></label>
+                            <label for="appointment-time"><span data-i18n="modal.form.time">Time</span> <span
+                                    class="required" aria-label="required">*</span></label>
                             <select id="appointment-time" class="form-select" required aria-required="true">
                                 <option value="">Select time</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="appointment-reason">Reason for Visit</label>
+                        <label for="appointment-reason" data-i18n="modal.form.reason">Reason for Visit</label>
                         <textarea id="appointment-reason" class="form-textarea" rows="3"
-                            placeholder="Briefly describe your symptoms or reason for visit..."></textarea>
+                            placeholder="Briefly describe your symptoms or reason for visit..."
+                            data-i18n-placeholder="modal.form.reason.placeholder"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">
-                        Confirm Booking
+                        <span data-i18n="modal.btn.confirm">Confirm Booking</span>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                             <polyline points="20 6 9 17 4 12" />
                         </svg>
@@ -873,11 +891,13 @@
                             style="display: block; margin-top: 0.5rem; color: var(--text-muted);">Select a rating</span>
                     </div>
                     <div class="form-group">
-                        <label for="review-comment">Your Review (Optional)</label>
+                        <label for="review-comment" data-i18n="modal.review.comment">Your Review (Optional)</label>
                         <textarea id="review-comment" class="form-textarea" rows="4"
-                            placeholder="Share your experience with this doctor..."></textarea>
+                            placeholder="Share your experience with this doctor..."
+                            data-i18n-placeholder="modal.review.comment.placeholder"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">Submit Review</button>
+                    <button type="submit" class="btn btn-primary btn-block" data-i18n="modal.review.submit">Submit
+                        Review</button>
                 </form>
             </div>
         </div>

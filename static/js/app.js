@@ -65,7 +65,22 @@ function toggleTheme() {
   document.documentElement.setAttribute('data-theme', newTheme);
   localStorage.setItem('theme', newTheme);
   updateThemeIcon();
-  showToast(`Switched to ${newTheme} mode`, 'info');
+  showToast(window.t('toast.theme.switched', { theme: newTheme }), 'info');
+}
+
+/**
+ * Toggle between languages (English/Romanian)
+ */
+function toggleLanguage() {
+  const currentLang = window.langManager.currentLang;
+  const newLang = currentLang === 'en' ? 'ro' : 'en';
+  window.langManager.setLanguage(newLang);
+
+  // Update button text
+  const btn = document.getElementById('lang-toggle');
+  if (btn) btn.textContent = newLang === 'en' ? 'RO' : 'EN';
+
+  showToast(`Language switched to ${newLang.toUpperCase()}`, 'info');
 }
 
 /**
@@ -381,12 +396,12 @@ async function loadDoctors(specialtyId = null) {
             <circle cx="12" cy="12" r="10"/>
             <path d="M8 12h8M12 8v8"/>
           </svg>
-          <h3>Failed to load doctors</h3>
-          <p>Please refresh the page to try again</p>
+          <h3>${window.t('doctors.error.title')}</h3>
+          <p>${window.t('doctors.error.desc')}</p>
         </div>
       `;
     }
-    showToast('Failed to load doctors', 'error');
+    showToast(window.t('toast.load.error', { item: 'doctors' }), 'error');
   }
 }
 
@@ -412,8 +427,8 @@ function renderDoctors(doctors) {
           <circle cx="11" cy="11" r="8"/>
           <path d="m21 21-4.35-4.35"/>
         </svg>
-        <h3>No doctors found</h3>
-        <p>Try adjusting your filters or search terms</p>
+        <h3>${window.t('doctors.empty.title')}</h3>
+        <p>${window.t('doctors.empty.desc')}</p>
       </div>
     `;
     return;
@@ -459,13 +474,13 @@ function renderDoctorCard(doctor) {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/>
           </svg>
-          ${doctor.estimated_wait_time || 15} min wait
+          ${doctor.estimated_wait_time || 15} ${window.t('doctor.wait')}
         </span>
         <span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
           </svg>
-          ${doctor.years_experience || 5}+ years
+          ${doctor.years_experience || 5}+ ${window.t('doctor.experience')}
         </span>
       </div>
       
@@ -473,10 +488,10 @@ function renderDoctorCard(doctor) {
       
       <div class="doctor-actions">
         <button class="btn btn-primary" onclick="openBookingModal(${doctor.id})">
-          Book Now
+          ${window.t('doctor.book')}
         </button>
         <button class="btn btn-secondary" onclick="loadDoctorDetail(${doctor.id})">
-          View Profile
+          ${window.t('doctor.profile')}
         </button>
       </div>
     </div>
@@ -578,45 +593,45 @@ async function loadDoctorDetail(doctorId) {
           <span class="specialty-badge">${escapeHtml(doctor.specialty)}</span>
           <div class="doctor-rating" style="margin-top: 0.75rem;">
             <span class="stars">${stars}</span>
-            <span class="rating-text">${doctor.rating ? doctor.rating.toFixed(1) : 'No rating'} (${doctor.review_count || 0} reviews)</span>
+            <span class="rating-text">${doctor.rating ? doctor.rating.toFixed(1) : 'No rating'} (${doctor.review_count || 0} ${window.t('doctor.reviews')})</span>
           </div>
         </div>
       </div>
       
       <div class="doctor-profile-details" style="margin-top: 2rem;">
-        <h4>About</h4>
-        <p style="color: var(--text-secondary); line-height: 1.7;">${escapeHtml(doctor.bio || 'No bio available')}</p>
+        <h4>${window.t('detail.about')}</h4>
+        <p style="color: var(--text-secondary); line-height: 1.7;">${escapeHtml(doctor.bio || window.t('doctor.no_bio'))}</p>
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
           <div style="padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-lg);">
-            <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Experience</span>
-            <p style="font-weight: 600; margin-top: 0.25rem;">${doctor.years_experience || 5}+ years</p>
+            <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">${window.t('detail.experience')}</span>
+            <p style="font-weight: 600; margin-top: 0.25rem;">${doctor.years_experience || 5}+ ${window.t('doctor.experience')}</p>
           </div>
           <div style="padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-lg);">
-            <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Wait Time</span>
-            <p style="font-weight: 600; margin-top: 0.25rem;">${doctor.estimated_wait_time || 15} minutes</p>
+            <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">${window.t('detail.wait')}</span>
+            <p style="font-weight: 600; margin-top: 0.25rem;">${doctor.estimated_wait_time || 15} ${window.t('doctor.wait')}</p>
           </div>
           <div style="padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-lg);">
-            <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Phone</span>
+            <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">${window.t('detail.phone')}</span>
             <p style="font-weight: 600; margin-top: 0.25rem;">${escapeHtml(doctor.phone || 'N/A')}</p>
           </div>
         </div>
         
-        <h4 style="margin-top: 1.5rem;">Availability</h4>
+        <h4 style="margin-top: 1.5rem;">${window.t('detail.availability')}</h4>
         <div class="availability-calendar" style="margin-top: 1rem;">
           ${Object.entries(availability.availability || {}).map(([day, slots]) => `
             <div class="availability-day ${slots.length === 0 ? 'unavailable' : ''}">
-              <div class="availability-day-name">${day}</div>
+              <div class="availability-day-name">${window.t('day.' + day.toLowerCase())}</div>
               <div class="availability-day-hours">
                 ${slots.length > 0
         ? slots.map(s => `${s.start} - ${s.end}`).join('<br>')
-        : 'Not Available'}
+        : window.t('detail.unavailable')}
               </div>
             </div>
           `).join('')}
         </div>
         
-        <h4 style="margin-top: 1.5rem;">Patient Reviews</h4>
+        <h4 style="margin-top: 1.5rem;">${window.t('detail.reviews')}</h4>
         <div class="reviews-list" style="margin-top: 1rem;">
           ${reviews.length > 0
         ? reviews.map(review => `
@@ -629,14 +644,14 @@ async function loadDoctorDetail(doctorId) {
                   <p style="color: var(--text-secondary);">${escapeHtml(review.comment || 'No comment')}</p>
                 </div>
               `).join('')
-        : '<p style="color: var(--text-muted);">No reviews yet.</p>'
+        : `<p style="color: var(--text-muted);">${window.t('detail.reviews.empty')}</p>`
       }
         </div>
       </div>
       
       <div style="margin-top: 2rem; display: flex; gap: 1rem;">
         <button class="btn btn-primary btn-block" onclick="closeModal('doctor-modal'); openBookingModal(${doctor.id})">
-          Book Appointment
+          ${window.t('doctor.book')}
         </button>
       </div>
     `;
@@ -781,8 +796,8 @@ function renderAppointments(appointments) {
           <line x1="8" y1="2" x2="8" y2="6"/>
           <line x1="3" y1="10" x2="21" y2="10"/>
         </svg>
-        <h3>No appointments yet</h3>
-        <p>Book your first appointment to get started</p>
+        <h3>${window.t('appointments.empty.title')}</h3>
+        <p>${window.t('appointments.empty.desc')}</p>
       </div>
     `;
     return;
@@ -807,9 +822,9 @@ function renderAppointments(appointments) {
           ${apt.reason ? `<p class="reason">${escapeHtml(apt.reason)}</p>` : ''}
           <div class="badge-group" style="display: flex; gap: var(--space-2); align-items: center; margin-top: var(--space-3);">
             <span class="appointment-type-badge ${typeClass}">
-              ${apt.appointment_type === 'video' ? 'VIDEO' : apt.appointment_type === 'phone' ? 'PHONE' : 'CLINIC'}
+              ${window.t('modal.type.' + typeClass.replace('-', ''))}
             </span>
-            <span class="status-badge status-${apt.status}">${apt.status}</span>
+            <span class="status-badge status-${apt.status}">${window.t('appointments.status.' + apt.status)}</span>
             ${apt.reschedule_count > 0 ? `<span style="font-size: 0.75rem; color: var(--text-muted);">Rescheduled ${apt.reschedule_count}x</span>` : ''}
           </div>
         </div>
@@ -817,17 +832,17 @@ function renderAppointments(appointments) {
         <div class="appointment-actions">
           ${apt.can_reschedule ? `
             <button class="btn btn-secondary" onclick="openRescheduleModal(${apt.id})">
-              Reschedule
+              ${window.t('appointments.action.reschedule')}
             </button>
           ` : ''}
           ${apt.can_cancel ? `
             <button class="btn btn-outline" onclick="cancelAppointment(${apt.id})">
-              Cancel
+              ${window.t('appointments.action.cancel')}
             </button>
           ` : ''}
           ${apt.can_review ? `
             <button class="btn btn-primary" onclick="openReviewModal(${apt.id}, ${apt.doctor_id})">
-              Review
+              ${window.t('appointments.action.review')}
             </button>
           ` : ''}
         </div>
@@ -841,13 +856,13 @@ function renderAppointments(appointments) {
  * @param {number} appointmentId - Appointment ID
  */
 async function cancelAppointment(appointmentId) {
-  if (!confirm('Are you sure you want to cancel this appointment?')) {
+  if (!confirm(window.t('modal.cancel.confirm', 'Are you sure you want to cancel this appointment?'))) {
     return;
   }
 
   try {
     await fetchAPI(`appointments/${appointmentId}/cancel`, { method: 'POST' });
-    showToast('Appointment cancelled successfully', 'success');
+    showToast(window.t('toast.cancel.success', 'Appointment cancelled successfully'), 'success');
     loadPatientAppointments();
   } catch (error) {
     console.error('Failed to cancel appointment:', error);
@@ -889,8 +904,8 @@ async function checkUpcomingAppointments() {
       const hours = apt.hours_until;
 
       showNotificationBanner(
-        'Upcoming Appointment',
-        `You have an appointment with ${apt.doctor_name} in ${hours < 1 ? Math.round(hours * 60) + ' minutes' : Math.round(hours) + ' hours'}`
+        window.t('appointments.upcoming'),
+        `${window.t('appointments.upcoming_desc_doctor', { doctor: apt.doctor_name })} ${hours < 1 ? Math.round(hours * 60) + ' ' + window.t('minutes', 'minutes') : Math.round(hours) + ' ' + window.t('hours', 'hours')}`
       );
     }
   } catch (error) {
@@ -1030,7 +1045,7 @@ function renderRescheduleCalendar() {
   const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
-  title.textContent = `${monthNames[month]} ${year}`;
+  title.textContent = `${window.t('month.' + monthNames[month].toLowerCase())} ${year}`;
 
   // Calculate days
   const firstDay = new Date(year, month, 1).getDay(); // 0 is Sunday
@@ -1042,7 +1057,7 @@ function renderRescheduleCalendar() {
   // Day headers
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   dayNames.forEach(day => {
-    html += `<div class="calendar-day-header">${day}</div>`;
+    html += `<div class="calendar-day-header">${window.t('day.short.' + day.toLowerCase())}</div>`;
   });
 
   // Previous month padding
@@ -1177,7 +1192,9 @@ async function submitReschedule() {
     });
 
     closeModal('reschedule-modal');
-    showToast('Appointment rescheduled successfully!', 'success');
+    closeModal('reschedule-modal');
+    showToast(window.t('toast.reschedule.success', 'Appointment rescheduled successfully!'), 'success');
+    loadPatientAppointments();
     loadPatientAppointments();
   } catch (error) {
     console.error('Failed to reschedule appointment:', error);
@@ -1256,7 +1273,9 @@ async function handleBookingSubmit(e) {
     });
 
     closeModal('booking-modal');
-    showToast('Appointment booked successfully!', 'success');
+    closeModal('booking-modal');
+    showToast(window.t('toast.booking.success'), 'success');
+    showConfetti();
     showConfetti();
 
     // Show email preview
@@ -1320,7 +1339,9 @@ async function handleReviewSubmit(e) {
     });
 
     closeModal('review-modal');
-    showToast('Review submitted successfully!', 'success');
+    closeModal('review-modal');
+    showToast(window.t('toast.review.success', 'Review submitted successfully!'), 'success');
+    loadPatientAppointments();
     loadPatientAppointments();
 
     // Refresh doctors to update ratings
