@@ -6,21 +6,6 @@ A modern, full-featured doctor appointment scheduling system with a premium user
 
 ---
 
-## Table of Contents
-
-- [Overview](#overview)
-- [Features](#features)
-- [Screenshots](#screenshots)
-- [Tech Stack](#tech-stack)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Project Structure](#project-structure)
-- [API Reference](#api-reference)
-- [Admin Dashboard](#admin-dashboard)
-- [License](#license)
-
----
-
 ## Overview
 
 MedSchedule is a comprehensive healthcare appointment management solution that connects patients with healthcare providers. The platform offers an intuitive booking experience with features like doctor search, appointment scheduling, rescheduling, reviews, and an admin dashboard for clinic management.
