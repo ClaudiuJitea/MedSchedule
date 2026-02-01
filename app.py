@@ -679,9 +679,9 @@ def generate_email_preview():
     patient_name = data.get('patient_name', 'Patient')
     
     type_icons = {
-        'in-person': '🏥',
-        'video': '💻',
-        'phone': '📞'
+        'in-person': 'CLI',
+        'video': 'VID',
+        'phone': 'PH'
     }
     type_labels = {
         'in-person': 'In-Person Visit',
@@ -705,7 +705,7 @@ def generate_email_preview():
             <h3 style="color: #111827; margin: 0 0 16px; font-size: 18px;">Appointment Details</h3>
             
             <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                <span style="width: 24px; margin-right: 12px;">👨‍⚕️</span>
+                <span style="width: 24px; margin-right: 12px; font-weight: bold; color: #6b7280;">DR</span>
                 <div>
                     <p style="margin: 0; font-weight: 600; color: #374151;">{doctor_name}</p>
                     <p style="margin: 0; font-size: 12px; color: #6b7280;">Your Healthcare Provider</p>
@@ -713,7 +713,7 @@ def generate_email_preview():
             </div>
             
             <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                <span style="width: 24px; margin-right: 12px;">📅</span>
+                <span style="width: 24px; margin-right: 12px; font-weight: bold; color: #6b7280;">CAL</span>
                 <div>
                     <p style="margin: 0; font-weight: 600; color: #374151;">{appointment_date}</p>
                     <p style="margin: 0; font-size: 12px; color: #6b7280;">Date</p>
@@ -721,7 +721,7 @@ def generate_email_preview():
             </div>
             
             <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                <span style="width: 24px; margin-right: 12px;">🕐</span>
+                <span style="width: 24px; margin-right: 12px; font-weight: bold; color: #6b7280;">TI</span>
                 <div>
                     <p style="margin: 0; font-weight: 600; color: #374151;">{appointment_time}</p>
                     <p style="margin: 0; font-size: 12px; color: #6b7280;">Time</p>
@@ -729,7 +729,7 @@ def generate_email_preview():
             </div>
             
             <div style="display: flex; align-items: center;">
-                <span style="width: 24px; margin-right: 12px;">{type_icons.get(appointment_type, '🏥')}</span>
+                <span style="width: 24px; margin-right: 12px; font-weight: bold; color: #6b7280;">TYP</span>
                 <div>
                     <p style="margin: 0; font-weight: 600; color: #374151;">{type_labels.get(appointment_type, 'In-Person')}</p>
                     <p style="margin: 0; font-size: 12px; color: #6b7280;">Consultation Type</p>

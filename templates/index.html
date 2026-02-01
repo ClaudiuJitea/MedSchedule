@@ -1,82 +1,92 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedSchedule - Premium Doctor Appointment Scheduler</title>
-    
+
     <!-- Theme initialization - prevents flash of wrong theme -->
     <script>
-        (function() {
+        (function () {
             const savedTheme = localStorage.getItem('theme') || 'light';
             document.documentElement.setAttribute('data-theme', savedTheme);
         })();
     </script>
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
     <!-- Styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+
 <body>
     <!-- ==================== NAVIGATION ==================== -->
     <header class="navbar" role="banner">
         <div class="container">
             <!-- Logo -->
             <a href="#home" class="nav-brand" aria-label="MedSchedule Home">
-                <svg class="logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                <svg class="logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    aria-hidden="true">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
                 </svg>
                 <span>MedSchedule</span>
             </a>
-            
+
             <!-- Desktop Navigation -->
             <nav class="nav-links" role="navigation" aria-label="Main navigation">
                 <a href="#home" class="nav-link active" aria-current="page">Home</a>
                 <a href="#doctors" class="nav-link">Find Doctors</a>
                 <a href="#appointments" class="nav-link">My Appointments</a>
             </nav>
-            
+
             <!-- Theme Toggle & Mobile Menu -->
             <div class="nav-actions" style="display: flex; align-items: center; gap: 0.75rem;">
-                <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark/light theme">
+                <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()"
+                    aria-label="Toggle dark/light theme">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                     </svg>
                 </button>
-                <button class="mobile-menu-toggle" onclick="openMobileMenu()" aria-label="Open mobile menu" aria-expanded="false">
+                <button class="mobile-menu-toggle" onclick="openMobileMenu()" aria-label="Open mobile menu"
+                    aria-expanded="false">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <path d="M3 12h18M3 6h18M3 18h18"/>
+                        <path d="M3 12h18M3 6h18M3 18h18" />
                     </svg>
                 </button>
             </div>
         </div>
     </header>
-    
+
     <!-- Mobile Navigation Drawer -->
     <div class="mobile-nav-overlay" onclick="closeMobileMenu()" aria-hidden="true"></div>
     <nav class="mobile-nav-drawer" role="navigation" aria-label="Mobile navigation">
         <div class="mobile-nav-header">
             <span class="nav-brand">
-                <svg class="logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                <svg class="logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    aria-hidden="true">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
                 </svg>
                 <span>MedSchedule</span>
             </span>
             <button class="mobile-nav-close" onclick="closeMobileMenu()" aria-label="Close mobile menu">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                    <line x1="18" y1="6" x2="6" y2="18"/>
-                    <line x1="6" y1="6" x2="18" y2="18"/>
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
             </button>
         </div>
         <div class="mobile-nav-links">
-            <a href="#home" class="mobile-nav-link active" onclick="closeMobileMenu(); scrollToSection('home');">Home</a>
-            <a href="#doctors" class="mobile-nav-link" onclick="closeMobileMenu(); scrollToSection('doctors');">Find Doctors</a>
-            <a href="#appointments" class="mobile-nav-link" onclick="closeMobileMenu(); scrollToSection('appointments');">My Appointments</a>
+            <a href="#home" class="mobile-nav-link active"
+                onclick="closeMobileMenu(); scrollToSection('home');">Home</a>
+            <a href="#doctors" class="mobile-nav-link" onclick="closeMobileMenu(); scrollToSection('doctors');">Find
+                Doctors</a>
+            <a href="#appointments" class="mobile-nav-link"
+                onclick="closeMobileMenu(); scrollToSection('appointments');">My Appointments</a>
         </div>
     </nav>
 
@@ -86,46 +96,50 @@
         <section id="home" class="hero" aria-labelledby="hero-heading">
             <!-- Animated Background Gradient -->
             <div class="hero-gradient" aria-hidden="true"></div>
-            
+
             <!-- Floating 3D Medical Icons -->
             <div class="floating-icons" aria-hidden="true">
                 <div class="floating-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
                     </svg>
                 </div>
                 <div class="floating-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                        <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                     </svg>
                 </div>
                 <div class="floating-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M12 6v6l4 2"/>
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M12 6v6l4 2" />
                     </svg>
                 </div>
                 <div class="floating-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                        <path
+                            d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
                     </svg>
                 </div>
             </div>
-            
+
             <div class="container">
                 <div class="hero-content">
                     <!-- Hero Badge -->
                     <div class="hero-badge">
                         <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true">
-                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                         </svg>
                         Trusted by 10,000+ patients
                     </div>
-                    
+
                     <!-- Headline -->
                     <h1 id="hero-heading">Book Your Doctor Appointment <span class="highlight">With Ease</span></h1>
-                    <p class="hero-description">Find the best doctors, schedule appointments, and manage your healthcare journey all in one place. Experience seamless healthcare booking with verified professionals.</p>
-                    
+                    <p class="hero-description">Find the best doctors, schedule appointments, and manage your healthcare
+                        journey all in one place. Experience seamless healthcare booking with verified professionals.
+                    </p>
+
                     <!-- Stats -->
                     <div class="hero-stats" role="list" aria-label="Key statistics">
                         <div class="stat" role="listitem">
@@ -141,55 +155,60 @@
                             <span class="stat-label">Rating</span>
                         </div>
                     </div>
-                    
+
                     <!-- CTA Buttons -->
                     <div class="hero-actions">
                         <button class="btn btn-primary btn-lg" onclick="scrollToSection('doctors')">
                             Book Appointment
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                aria-hidden="true">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
                             </svg>
                         </button>
                         <button class="btn btn-secondary btn-lg" onclick="scrollToSection('doctors')">
                             Learn More
                         </button>
                     </div>
-                    
+
                     <!-- Trust Badges -->
                     <div class="trust-badges" role="list" aria-label="Trust indicators">
                         <div class="trust-badge" role="listitem">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                aria-hidden="true">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                             </svg>
                             HIPAA Compliant
                         </div>
                         <div class="trust-badge" role="listitem">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                <path d="M9 12l2 2 4-4"/>
-                                <circle cx="12" cy="12" r="10"/>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                aria-hidden="true">
+                                <path d="M9 12l2 2 4-4" />
+                                <circle cx="12" cy="12" r="10" />
                             </svg>
                             Verified Doctors
                         </div>
                         <div class="trust-badge" role="listitem">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                aria-hidden="true">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                             </svg>
                             Secure Platform
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Hero Visual Card -->
                 <div class="hero-visual">
                     <div class="hero-image-card">
                         <div class="next-appointment-preview" id="hero-doctor-preview">
                             <div class="preview-header">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                                    <line x1="16" y1="2" x2="16" y2="6"/>
-                                    <line x1="8" y1="2" x2="8" y2="6"/>
-                                    <line x1="3" y1="10" x2="21" y2="10"/>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    aria-hidden="true">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                    <line x1="16" y1="2" x2="16" y2="6" />
+                                    <line x1="8" y1="2" x2="8" y2="6" />
+                                    <line x1="3" y1="10" x2="21" y2="10" />
                                 </svg>
                                 <span>Available Today</span>
                             </div>
@@ -209,8 +228,9 @@
                             </div>
                             <button class="btn btn-primary btn-sm" onclick="scrollToSection('doctors')">
                                 Book Now
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
-                                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                                    height="16">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
                                 </svg>
                             </button>
                         </div>
@@ -224,53 +244,58 @@
             <div class="container">
                 <div class="testimonials-header">
                     <span class="section-tag">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" aria-hidden="true">
-                            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                            height="16" aria-hidden="true">
+                            <path
+                                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
                         </svg>
                         Testimonials
                     </span>
                     <h2 id="testimonials-heading">What Our Patients Say</h2>
                     <p>Real experiences from patients who have trusted us with their healthcare needs</p>
                 </div>
-                
+
                 <div class="testimonials-grid">
                     <!-- Testimonial 1 -->
                     <div class="testimonial-card">
-                        <div class="testimonial-stars">★★★★★</div>
-                        <p class="testimonial-text">"MedSchedule made booking my appointment so easy! The interface is intuitive and I found the perfect specialist within minutes."</p>
-                        <div class="testimonial-author">
+                        <div class="testimonial-author" style="margin-bottom: var(--space-4);">
                             <div class="testimonial-avatar">SM</div>
                             <div class="testimonial-info">
                                 <div class="testimonial-name">Sarah Mitchell</div>
                                 <div class="testimonial-role">Patient since 2023</div>
                             </div>
                         </div>
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"MedSchedule made booking my appointment so easy! The interface is
+                            intuitive and I found the perfect specialist within minutes."</p>
                     </div>
-                    
+
                     <!-- Testimonial 2 -->
                     <div class="testimonial-card">
-                        <div class="testimonial-stars">★★★★★</div>
-                        <p class="testimonial-text">"As a busy professional, I appreciate the 24/7 booking feature. The reminder system is a lifesaver!"</p>
-                        <div class="testimonial-author">
+                        <div class="testimonial-author" style="margin-bottom: var(--space-4);">
                             <div class="testimonial-avatar">JC</div>
                             <div class="testimonial-info">
                                 <div class="testimonial-name">James Cooper</div>
                                 <div class="testimonial-role">Patient since 2024</div>
                             </div>
                         </div>
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"As a busy professional, I appreciate the 24/7 booking feature. The
+                            reminder system is a lifesaver!"</p>
                     </div>
-                    
+
                     <!-- Testimonial 3 -->
                     <div class="testimonial-card">
-                        <div class="testimonial-stars">★★★★★</div>
-                        <p class="testimonial-text">"The video consultation option is fantastic. I could speak with my doctor from the comfort of my home."</p>
-                        <div class="testimonial-author">
+                        <div class="testimonial-author" style="margin-bottom: var(--space-4);">
                             <div class="testimonial-avatar">EP</div>
                             <div class="testimonial-info">
                                 <div class="testimonial-name">Emily Parker</div>
                                 <div class="testimonial-role">Patient since 2023</div>
                             </div>
                         </div>
+                        <div class="testimonial-stars">★★★★★</div>
+                        <p class="testimonial-text">"The video consultation option is fantastic. I could speak with my
+                            doctor from the comfort of my home."</p>
                     </div>
                 </div>
             </div>
@@ -282,16 +307,18 @@
                 <!-- Section Header -->
                 <div class="section-header">
                     <span class="section-tag">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" aria-hidden="true">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                            <circle cx="12" cy="7" r="4"/>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                            height="16" aria-hidden="true">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
                         </svg>
                         Our Doctors
                     </span>
                     <h2 id="doctors-heading">Find Your Specialist</h2>
-                    <p>Browse through our network of experienced healthcare professionals and book your appointment today</p>
+                    <p>Browse through our network of experienced healthcare professionals and book your appointment
+                        today</p>
                 </div>
-                
+
                 <!-- Filters -->
                 <div class="filters" role="search" aria-label="Doctor filters">
                     <div class="filter-group">
@@ -303,16 +330,19 @@
                     <div class="filter-group search-filter-group autocomplete-container">
                         <label for="doctor-search">Search</label>
                         <div class="search-box">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                <circle cx="11" cy="11" r="8"/>
-                                <path d="m21 21-4.35-4.35"/>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                aria-hidden="true">
+                                <circle cx="11" cy="11" r="8" />
+                                <path d="m21 21-4.35-4.35" />
                             </svg>
-                            <input type="text" id="doctor-search" placeholder="Search doctors..." aria-label="Search doctors by name or specialty" autocomplete="off">
-                            <div id="search-autocomplete" class="autocomplete-dropdown" role="listbox" aria-label="Search suggestions"></div>
+                            <input type="text" id="doctor-search" placeholder="Search doctors..."
+                                aria-label="Search doctors by name or specialty" autocomplete="off">
+                            <div id="search-autocomplete" class="autocomplete-dropdown" role="listbox"
+                                aria-label="Search suggestions"></div>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Loading Skeletons -->
                 <div id="doctors-skeletons" class="doctors-grid" aria-hidden="true">
                     <div class="glass-card skeleton-card">
@@ -368,9 +398,10 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Doctors Grid -->
-                <div id="doctors-grid" class="doctors-grid" role="list" aria-label="List of doctors" style="display: none;"></div>
+                <div id="doctors-grid" class="doctors-grid" role="list" aria-label="List of doctors"
+                    style="display: none;"></div>
             </div>
         </section>
 
@@ -380,66 +411,73 @@
                 <!-- Section Header -->
                 <div class="section-header">
                     <span class="section-tag">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" aria-hidden="true">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                            <line x1="16" y1="2" x2="16" y2="6"/>
-                            <line x1="8" y1="2" x2="8" y2="6"/>
-                            <line x1="3" y1="10" x2="21" y2="10"/>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                            height="16" aria-hidden="true">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                            <line x1="16" y1="2" x2="16" y2="6" />
+                            <line x1="8" y1="2" x2="8" y2="6" />
+                            <line x1="3" y1="10" x2="21" y2="10" />
                         </svg>
                         Your Health
                     </span>
                     <h2 id="appointments-heading">My Appointments</h2>
                     <p>View and manage your upcoming and past appointments</p>
                 </div>
-                
+
                 <!-- Patient Login (shown when not logged in) -->
                 <div id="patient-login" class="patient-login">
                     <div class="login-card glass-card">
                         <div class="login-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                                <circle cx="12" cy="7" r="4"/>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                aria-hidden="true">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                <circle cx="12" cy="7" r="4" />
                             </svg>
                         </div>
                         <h3>Access Your Appointments</h3>
                         <p>Enter your email to view your appointment history and manage bookings</p>
                         <div class="form-group">
                             <label for="patient-email" class="sr-only">Email Address</label>
-                            <input type="email" id="patient-email" class="form-input" placeholder="your@email.com" aria-label="Your email address" required>
+                            <input type="email" id="patient-email" class="form-input" placeholder="your@email.com"
+                                aria-label="Your email address" required>
                         </div>
                         <button class="btn btn-primary btn-block" onclick="loadPatientAppointments()">
                             View Appointments
                         </button>
                     </div>
                 </div>
-                
+
                 <!-- Appointments List (shown when logged in) -->
                 <div id="appointments-container" class="appointments-container hidden">
                     <div class="appointments-header">
                         <h3>Welcome back, <span id="patient-name">Patient</span></h3>
                         <button class="btn btn-outline" onclick="logoutPatient()">Sign Out</button>
                     </div>
-                    
+
                     <!-- Notification Banner (shown for upcoming appointments) -->
                     <div id="appointment-notification" class="notification-banner hidden" role="alert">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                            <line x1="12" y1="9" x2="12" y2="13"/>
-                            <line x1="12" y1="17" x2="12.01" y2="17"/>
+                            <path
+                                d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                            <line x1="12" y1="9" x2="12" y2="13" />
+                            <line x1="12" y1="17" x2="12.01" y2="17" />
                         </svg>
                         <div class="notification-content">
                             <h4>Upcoming Appointment</h4>
                             <p>You have an appointment in less than 24 hours</p>
                         </div>
-                        <button class="notification-close" onclick="closeNotification()" aria-label="Dismiss notification">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                <line x1="18" y1="6" x2="6" y2="18"/>
-                                <line x1="6" y1="6" x2="18" y2="18"/>
+                        <button class="notification-close" onclick="closeNotification()"
+                            aria-label="Dismiss notification">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                aria-hidden="true">
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
                             </svg>
                         </button>
                     </div>
-                    
-                    <div id="appointments-list" class="appointments-list" role="list" aria-label="Your appointments"></div>
+
+                    <div id="appointments-list" class="appointments-list" role="list" aria-label="Your appointments">
+                    </div>
                 </div>
             </div>
         </section>
@@ -453,34 +491,38 @@
                 <div class="footer-brand">
                     <div class="logo">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
                         </svg>
                         MedSchedule
                     </div>
-                    <p>Your trusted partner for seamless healthcare appointments. Connecting patients with verified healthcare professionals since 2023.</p>
+                    <p>Your trusted partner for seamless healthcare appointments. Connecting patients with verified
+                        healthcare professionals since 2023.</p>
                     <div class="footer-social">
                         <a href="#" aria-label="Facebook">
                             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
                             </svg>
                         </a>
                         <a href="#" aria-label="Twitter">
                             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+                                <path
+                                    d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
                             </svg>
                         </a>
                         <a href="#" aria-label="Instagram">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                aria-hidden="true">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
                             </svg>
                         </a>
                         <a href="#" aria-label="LinkedIn">
                             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-                                <rect x="2" y="9" width="4" height="12"/>
-                                <circle cx="4" cy="4" r="2"/>
+                                <path
+                                    d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                                <rect x="2" y="9" width="4" height="12" />
+                                <circle cx="4" cy="4" r="2" />
                             </svg>
                         </a>
                     </div>
@@ -488,19 +530,21 @@
                     <div class="app-badges">
                         <a href="#" class="app-badge" aria-label="Download on App Store">
                             <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true">
-                                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                                <path
+                                    d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
                             </svg>
                             App Store
                         </a>
                         <a href="#" class="app-badge" aria-label="Get it on Google Play">
                             <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true">
-                                <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/>
+                                <path
+                                    d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z" />
                             </svg>
                             Google Play
                         </a>
                     </div>
                 </div>
-                
+
                 <!-- Quick Links -->
                 <div class="footer-links-column">
                     <h4 class="footer-title">Quick Links</h4>
@@ -513,43 +557,46 @@
                         <a href="#">FAQs</a>
                     </div>
                 </div>
-                
+
                 <!-- Contact Info -->
                 <div class="footer-contact">
                     <h4 class="footer-title">Contact Us</h4>
                     <p>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                            <circle cx="12" cy="10" r="3"/>
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                            <circle cx="12" cy="10" r="3" />
                         </svg>
                         123 Healthcare Ave, Medical City
                     </p>
                     <p>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                         </svg>
                         +1 (555) 123-4567
                     </p>
                     <p>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                            <polyline points="22,6 12,13 2,6"/>
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                            <polyline points="22,6 12,13 2,6" />
                         </svg>
                         support@medschedule.com
                     </p>
                 </div>
-                
+
                 <!-- Newsletter -->
                 <div class="footer-newsletter">
                     <h4 class="footer-title">Stay Updated</h4>
-                    <p style="font-size: 0.9375rem; margin-bottom: 1rem;">Subscribe to our newsletter for health tips and updates.</p>
-                    <form class="newsletter-form" onsubmit="event.preventDefault(); showToast('Subscribed successfully!', 'success');">
+                    <p style="font-size: 0.9375rem; margin-bottom: 1rem;">Subscribe to our newsletter for health tips
+                        and updates.</p>
+                    <form class="newsletter-form"
+                        onsubmit="event.preventDefault(); showToast('Subscribed successfully!', 'success');">
                         <input type="email" placeholder="Enter your email" aria-label="Email for newsletter" required>
                         <button type="submit">Subscribe</button>
                     </form>
                 </div>
             </div>
-            
+
             <!-- Footer Bottom -->
             <div class="footer-bottom">
                 <p>&copy; 2024 MedSchedule. All rights reserved.</p>
@@ -563,7 +610,7 @@
     </footer>
 
     <!-- ==================== MODALS ==================== -->
-    
+
     <!-- Booking Modal -->
     <div id="booking-modal" class="modal" role="dialog" aria-labelledby="booking-modal-title" aria-modal="true">
         <div class="modal-overlay" onclick="closeModal('booking-modal')"></div>
@@ -572,62 +619,71 @@
                 <h3 id="booking-modal-title">Book Appointment</h3>
                 <button class="modal-close" onclick="closeModal('booking-modal')" aria-label="Close booking modal">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <line x1="18" y1="6" x2="6" y2="18"/>
-                        <line x1="6" y1="6" x2="18" y2="18"/>
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
                     </svg>
                 </button>
             </div>
             <div class="modal-body">
                 <!-- Selected Doctor Info -->
-                <div class="selected-doctor" style="display: flex; gap: 1rem; margin-bottom: 1.5rem; padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-lg);">
-                    <div class="doctor-avatar" id="modal-doctor-avatar" style="width: 56px; height: 56px; font-size: 1.25rem;">DR</div>
+                <div class="selected-doctor"
+                    style="display: flex; gap: 1rem; margin-bottom: 1.5rem; padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-lg);">
+                    <div class="doctor-avatar" id="modal-doctor-avatar"
+                        style="width: 56px; height: 56px; font-size: 1.25rem;">DR</div>
                     <div class="doctor-info">
                         <h4 id="modal-doctor-name" style="font-size: 1.125rem; margin-bottom: 0.25rem;">Doctor Name</h4>
                         <span class="specialty-badge" id="modal-doctor-specialty">Specialty</span>
                     </div>
                 </div>
-                
+
                 <!-- Appointment Type Selector -->
                 <div class="appointment-type-selector" role="radiogroup" aria-label="Appointment type">
-                    <div class="appointment-type-option selected" data-type="in-person" onclick="selectAppointmentType('in-person')" role="radio" aria-checked="true" tabindex="0">
+                    <div class="appointment-type-option selected" data-type="in-person"
+                        onclick="selectAppointmentType('in-person')" role="radio" aria-checked="true" tabindex="0">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                            <circle cx="12" cy="7" r="4"/>
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
                         </svg>
                         <span>In-Person</span>
                         <small>Clinic visit</small>
                     </div>
-                    <div class="appointment-type-option" data-type="video" onclick="selectAppointmentType('video')" role="radio" aria-checked="false" tabindex="0">
+                    <div class="appointment-type-option" data-type="video" onclick="selectAppointmentType('video')"
+                        role="radio" aria-checked="false" tabindex="0">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                            <polygon points="23 7 16 12 23 17 23 7"/>
-                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                            <polygon points="23 7 16 12 23 17 23 7" />
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
                         </svg>
                         <span>Video Call</span>
                         <small>Online consultation</small>
                     </div>
-                    <div class="appointment-type-option" data-type="phone" onclick="selectAppointmentType('phone')" role="radio" aria-checked="false" tabindex="0">
+                    <div class="appointment-type-option" data-type="phone" onclick="selectAppointmentType('phone')"
+                        role="radio" aria-checked="false" tabindex="0">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                         </svg>
                         <span>Phone</span>
                         <small>Voice call</small>
                     </div>
                 </div>
-                
+
                 <!-- Booking Form -->
                 <form id="booking-form" class="booking-form">
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="patient-firstname">First Name <span class="required" aria-label="required">*</span></label>
+                            <label for="patient-firstname">First Name <span class="required"
+                                    aria-label="required">*</span></label>
                             <input type="text" id="patient-firstname" class="form-input" required aria-required="true">
                         </div>
                         <div class="form-group">
-                            <label for="patient-lastname">Last Name <span class="required" aria-label="required">*</span></label>
+                            <label for="patient-lastname">Last Name <span class="required"
+                                    aria-label="required">*</span></label>
                             <input type="text" id="patient-lastname" class="form-input" required aria-required="true">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="patient-email-booking">Email <span class="required" aria-label="required">*</span></label>
+                        <label for="patient-email-booking">Email <span class="required"
+                                aria-label="required">*</span></label>
                         <input type="email" id="patient-email-booking" class="form-input" required aria-required="true">
                     </div>
                     <div class="form-group">
@@ -636,11 +692,13 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="appointment-date">Date <span class="required" aria-label="required">*</span></label>
+                            <label for="appointment-date">Date <span class="required"
+                                    aria-label="required">*</span></label>
                             <input type="date" id="appointment-date" class="form-input" required aria-required="true">
                         </div>
                         <div class="form-group">
-                            <label for="appointment-time">Time <span class="required" aria-label="required">*</span></label>
+                            <label for="appointment-time">Time <span class="required"
+                                    aria-label="required">*</span></label>
                             <select id="appointment-time" class="form-select" required aria-required="true">
                                 <option value="">Select time</option>
                             </select>
@@ -648,43 +706,45 @@
                     </div>
                     <div class="form-group">
                         <label for="appointment-reason">Reason for Visit</label>
-                        <textarea id="appointment-reason" class="form-textarea" rows="3" placeholder="Briefly describe your symptoms or reason for visit..."></textarea>
+                        <textarea id="appointment-reason" class="form-textarea" rows="3"
+                            placeholder="Briefly describe your symptoms or reason for visit..."></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">
                         Confirm Booking
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                            <polyline points="20 6 9 17 4 12"/>
+                            <polyline points="20 6 9 17 4 12" />
                         </svg>
                     </button>
                 </form>
-                
+
                 <!-- Email Preview Area -->
                 <div id="email-preview" class="email-preview hidden" style="margin-top: 1.5rem;">
                     <div class="email-preview-header">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="32" height="32" style="color: var(--accent-600);">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                            <polyline points="22,6 12,13 2,6"/>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="32"
+                            height="32" style="color: var(--accent-600);">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                            <polyline points="22,6 12,13 2,6" />
                         </svg>
                         <h4>Booking Confirmation Preview</h4>
                         <p>A confirmation email will be sent to your inbox</p>
                     </div>
                     <div class="email-preview-body">
                         <div class="email-preview-detail">
-                            <div class="email-preview-icon">👨‍⚕️</div>
+                            <div class="email-preview-icon" style="font-weight: bold; font-size: 0.875rem;">DR</div>
                             <div>
                                 <div class="email-preview-label">Doctor</div>
                                 <div class="email-preview-value" id="email-doctor-name">-</div>
                             </div>
                         </div>
                         <div class="email-preview-detail">
-                            <div class="email-preview-icon">📅</div>
+                            <div class="email-preview-icon" style="font-weight: bold; font-size: 0.875rem;">CAL</div>
                             <div>
                                 <div class="email-preview-label">Date & Time</div>
                                 <div class="email-preview-value" id="email-datetime">-</div>
                             </div>
                         </div>
                         <div class="email-preview-detail">
-                            <div class="email-preview-icon">📍</div>
+                            <div class="email-preview-icon" style="font-weight: bold; font-size: 0.875rem;">TI</div>
                             <div>
                                 <div class="email-preview-label">Type</div>
                                 <div class="email-preview-value" id="email-type">In-Person</div>
@@ -702,10 +762,11 @@
         <div class="modal-content" style="max-width: 500px;">
             <div class="modal-header">
                 <h3 id="reschedule-modal-title">Reschedule Appointment</h3>
-                <button class="modal-close" onclick="closeModal('reschedule-modal')" aria-label="Close reschedule modal">
+                <button class="modal-close" onclick="closeModal('reschedule-modal')"
+                    aria-label="Close reschedule modal">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <line x1="18" y1="6" x2="6" y2="18"/>
-                        <line x1="6" y1="6" x2="18" y2="18"/>
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
                     </svg>
                 </button>
             </div>
@@ -715,16 +776,18 @@
                     <div class="calendar-header">
                         <div class="calendar-nav">
                             <button onclick="changeRescheduleMonth(-1)" aria-label="Previous month">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                    <polyline points="15 18 9 12 15 6"/>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    aria-hidden="true">
+                                    <polyline points="15 18 9 12 15 6" />
                                 </svg>
                             </button>
                         </div>
                         <span class="calendar-title" id="reschedule-calendar-title">January 2024</span>
                         <div class="calendar-nav">
                             <button onclick="changeRescheduleMonth(1)" aria-label="Next month">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                    <polyline points="9 18 15 12 9 6"/>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    aria-hidden="true">
+                                    <polyline points="9 18 15 12 9 6" />
                                 </svg>
                             </button>
                         </div>
@@ -733,15 +796,17 @@
                         <!-- Calendar days will be rendered here -->
                     </div>
                 </div>
-                
+
                 <!-- Time Slots -->
-                <div class="form-group">
+                <div class="form-group" style="margin-bottom: 0;">
                     <label>Select Time</label>
-                    <div id="reschedule-time-slots" class="time-slots-grid" role="radiogroup" aria-label="Available time slots">
-                        <p style="color: var(--text-muted); text-align: center; padding: 1rem;">Select a date to view available times</p>
+                    <div id="reschedule-time-slots" class="time-slots-grid" role="radiogroup"
+                        aria-label="Available time slots">
+                        <p>Select a date to view available times</p>
                     </div>
                 </div>
-                
+            </div>
+            <div class="modal-footer">
                 <button class="btn btn-primary btn-block" onclick="submitReschedule()">
                     Confirm Reschedule
                 </button>
@@ -757,8 +822,8 @@
                 <h3 id="review-modal-title">Rate Your Experience</h3>
                 <button class="modal-close" onclick="closeModal('review-modal')" aria-label="Close review modal">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <line x1="18" y1="6" x2="6" y2="18"/>
-                        <line x1="6" y1="6" x2="18" y2="18"/>
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
                     </svg>
                 </button>
             </div>
@@ -767,38 +832,50 @@
                     <div class="rating-group" style="text-align: center; margin-bottom: 1.5rem;">
                         <label style="display: block; margin-bottom: 1rem;">How was your experience?</label>
                         <div class="star-rating" id="star-rating" role="radiogroup" aria-label="Star rating">
-                            <button type="button" class="star" data-rating="1" onclick="setRating(1)" aria-label="1 star">
+                            <button type="button" class="star" data-rating="1" onclick="setRating(1)"
+                                aria-label="1 star">
                                 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                    <path
+                                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                                 </svg>
                             </button>
-                            <button type="button" class="star" data-rating="2" onclick="setRating(2)" aria-label="2 stars">
+                            <button type="button" class="star" data-rating="2" onclick="setRating(2)"
+                                aria-label="2 stars">
                                 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                    <path
+                                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                                 </svg>
                             </button>
-                            <button type="button" class="star" data-rating="3" onclick="setRating(3)" aria-label="3 stars">
+                            <button type="button" class="star" data-rating="3" onclick="setRating(3)"
+                                aria-label="3 stars">
                                 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                    <path
+                                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                                 </svg>
                             </button>
-                            <button type="button" class="star" data-rating="4" onclick="setRating(4)" aria-label="4 stars">
+                            <button type="button" class="star" data-rating="4" onclick="setRating(4)"
+                                aria-label="4 stars">
                                 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                    <path
+                                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                                 </svg>
                             </button>
-                            <button type="button" class="star" data-rating="5" onclick="setRating(5)" aria-label="5 stars">
+                            <button type="button" class="star" data-rating="5" onclick="setRating(5)"
+                                aria-label="5 stars">
                                 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                    <path
+                                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                                 </svg>
                             </button>
                         </div>
                         <input type="hidden" id="review-rating" value="0">
-                        <span class="rating-text" id="rating-text" style="display: block; margin-top: 0.5rem; color: var(--text-muted);">Select a rating</span>
+                        <span class="rating-text" id="rating-text"
+                            style="display: block; margin-top: 0.5rem; color: var(--text-muted);">Select a rating</span>
                     </div>
                     <div class="form-group">
                         <label for="review-comment">Your Review (Optional)</label>
-                        <textarea id="review-comment" class="form-textarea" rows="4" placeholder="Share your experience with this doctor..."></textarea>
+                        <textarea id="review-comment" class="form-textarea" rows="4"
+                            placeholder="Share your experience with this doctor..."></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">Submit Review</button>
                 </form>
@@ -812,10 +889,11 @@
         <div class="modal-content modal-lg" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
             <div class="modal-header">
                 <h3 id="doctor-modal-title">Doctor Profile</h3>
-                <button class="modal-close" onclick="closeModal('doctor-modal')" aria-label="Close doctor profile modal">
+                <button class="modal-close" onclick="closeModal('doctor-modal')"
+                    aria-label="Close doctor profile modal">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <line x1="18" y1="6" x2="6" y2="18"/>
-                        <line x1="6" y1="6" x2="18" y2="18"/>
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
                     </svg>
                 </button>
             </div>
@@ -833,39 +911,49 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="doctor-profile-details">
                         <h4 style="margin-bottom: 0.75rem;">About</h4>
-                        <p id="detail-doctor-bio" style="color: var(--text-secondary); line-height: 1.7;">No bio available</p>
-                        
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
-                            <div style="padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-lg);">
-                                <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Experience</span>
+                        <p id="detail-doctor-bio" style="color: var(--text-secondary); line-height: 1.7;">No bio
+                            available</p>
+
+                        <div
+                            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 1.5rem 0;">
+                            <div
+                                style="padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-lg);">
+                                <span
+                                    style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Experience</span>
                                 <p id="detail-experience" style="font-weight: 600; margin-top: 0.25rem;">5+ years</p>
                             </div>
-                            <div style="padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-lg);">
-                                <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Wait Time</span>
+                            <div
+                                style="padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-lg);">
+                                <span
+                                    style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Wait
+                                    Time</span>
                                 <p id="detail-wait-time" style="font-weight: 600; margin-top: 0.25rem;">15 minutes</p>
                             </div>
-                            <div style="padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-lg);">
-                                <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Phone</span>
+                            <div
+                                style="padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-lg);">
+                                <span
+                                    style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Phone</span>
                                 <p id="detail-phone" style="font-weight: 600; margin-top: 0.25rem;">N/A</p>
                             </div>
                         </div>
-                        
+
                         <h4 style="margin-top: 1.5rem; margin-bottom: 0.75rem;">Availability</h4>
                         <div id="detail-availability" class="availability-calendar" style="margin-top: 1rem;">
                             <!-- Availability will be loaded here -->
                         </div>
-                        
+
                         <h4 style="margin-top: 1.5rem; margin-bottom: 0.75rem;">Patient Reviews</h4>
                         <div id="detail-reviews" class="reviews-list" style="margin-top: 1rem;">
                             <!-- Reviews will be loaded here -->
                         </div>
                     </div>
-                    
+
                     <div style="margin-top: 2rem; display: flex; gap: 1rem;">
-                        <button class="btn btn-primary btn-block" id="detail-book-btn" onclick="openBookingModalFromDetail()">
+                        <button class="btn btn-primary btn-block" id="detail-book-btn"
+                            onclick="openBookingModalFromDetail()">
                             Book Appointment
                         </button>
                     </div>
@@ -883,4 +971,5 @@
     <!-- ==================== SCRIPTS ==================== -->
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
+
 </html>

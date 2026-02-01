@@ -33,7 +33,10 @@ const AppState = {
   isLoading: false,
   selectedDate: null,
   selectedTime: null,
-  selectedAppointmentType: 'in-person'
+  selectedAppointmentType: 'in-person',
+  rescheduleCalendarDate: new Date(),
+  selectedRescheduleDate: null,
+  selectedRescheduleTime: null
 };
 
 // Make AppState accessible globally for debugging
@@ -72,7 +75,7 @@ function updateThemeIcon() {
   const themeToggle = document.getElementById('theme-toggle');
   if (themeToggle) {
     const isDark = AppState.theme === 'dark';
-    themeToggle.innerHTML = isDark 
+    themeToggle.innerHTML = isDark
       ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
            <circle cx="12" cy="12" r="5"/>
            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
@@ -92,13 +95,13 @@ function updateThemeIcon() {
  */
 function initNavigation() {
   // Smooth scroll behavior is handled by CSS scroll-behavior: smooth
-  
+
   // Handle scroll for navbar styling
   window.addEventListener('scroll', debounce(handleScroll, 50));
-  
+
   // Initialize mobile menu
   initMobileMenu();
-  
+
   // Initialize nav links
   const navLinks = document.querySelectorAll('.nav-link');
   navLinks.forEach(link => {
@@ -106,13 +109,13 @@ function initNavigation() {
       e.preventDefault();
       const targetId = link.getAttribute('href').substring(1);
       scrollToSection(targetId);
-      
+
       // Update active state
       navLinks.forEach(l => l.classList.remove('active'));
       link.classList.add('active');
     });
   });
-  
+
 }
 
 /**
@@ -137,18 +140,18 @@ function scrollToSection(sectionId) {
 function handleScroll() {
   const navbar = document.querySelector('.navbar');
   const scrollY = window.scrollY;
-  
+
   // Add shadow to navbar when scrolled
   if (scrollY > 10) {
     navbar.style.boxShadow = '0 4px 20px -4px rgba(0, 0, 0, 0.1)';
   } else {
     navbar.style.boxShadow = 'none';
   }
-  
+
   // Update active nav link based on scroll position
   const sections = ['home', 'doctors', 'appointments'];
   const navHeight = navbar.offsetHeight;
-  
+
   sections.forEach(sectionId => {
     const section = document.getElementById(sectionId);
     if (section) {
@@ -179,7 +182,7 @@ function initMobileMenu() {
                               </svg>`;
     document.querySelector('.navbar .container').appendChild(mobileToggle);
   }
-  
+
   mobileToggle.addEventListener('click', openMobileMenu);
 }
 
@@ -190,14 +193,14 @@ function openMobileMenu() {
   // Create mobile nav overlay if not exists
   let overlay = document.querySelector('.mobile-nav-overlay');
   let drawer = document.querySelector('.mobile-nav-drawer');
-  
+
   if (!overlay) {
     overlay = document.createElement('div');
     overlay.className = 'mobile-nav-overlay';
     overlay.onclick = closeMobileMenu;
     document.body.appendChild(overlay);
   }
-  
+
   if (!drawer) {
     drawer = document.createElement('div');
     drawer.className = 'mobile-nav-drawer';
@@ -224,7 +227,7 @@ function openMobileMenu() {
     `;
     document.body.appendChild(drawer);
   }
-  
+
   overlay.classList.add('active');
   drawer.classList.add('active');
   document.body.style.overflow = 'hidden';
@@ -236,7 +239,7 @@ function openMobileMenu() {
 function closeMobileMenu() {
   const overlay = document.querySelector('.mobile-nav-overlay');
   const drawer = document.querySelector('.mobile-nav-drawer');
-  
+
   if (overlay) overlay.classList.remove('active');
   if (drawer) drawer.classList.remove('active');
   document.body.style.overflow = '';
@@ -254,29 +257,29 @@ function closeMobileMenu() {
  */
 async function fetchAPI(endpoint, options = {}) {
   const url = `/api/${endpoint}`;
-  
+
   const defaultOptions = {
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     }
   };
-  
+
   const mergedOptions = { ...defaultOptions, ...options };
   if (options.headers) {
     mergedOptions.headers = { ...defaultOptions.headers, ...options.headers };
   }
-  
+
   showLoading();
-  
+
   try {
     const response = await fetch(url, mergedOptions);
-    
+
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
       throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
     }
-    
+
     const data = await response.json();
     return data;
   } catch (error) {
@@ -326,7 +329,7 @@ async function loadSpecialties() {
 function renderSpecialtyFilter() {
   const select = document.getElementById('specialty-filter');
   if (!select) return;
-  
+
   select.innerHTML = '<option value="">All Specialties</option>';
   AppState.specialties.forEach(specialty => {
     const option = document.createElement('option');
@@ -334,7 +337,7 @@ function renderSpecialtyFilter() {
     option.textContent = specialty.name;
     select.appendChild(option);
   });
-  
+
   // Add event listener for filtering
   select.addEventListener('change', () => {
     const searchTerm = document.getElementById('doctor-search')?.value || '';
@@ -353,7 +356,7 @@ async function loadDoctors(specialtyId = null) {
     const grid = document.getElementById('doctors-grid');
     if (skeletons) skeletons.style.display = 'grid';
     if (grid) grid.style.display = 'none';
-    
+
     let endpoint = 'doctors';
     if (specialtyId) {
       endpoint += `?specialty_id=${specialtyId}`;
@@ -361,7 +364,7 @@ async function loadDoctors(specialtyId = null) {
     if (AppState.currentPatientEmail) {
       endpoint += `${specialtyId ? '&' : '?'}patient_email=${encodeURIComponent(AppState.currentPatientEmail)}`;
     }
-    
+
     AppState.doctors = await fetchAPI(endpoint);
     renderDoctors(AppState.doctors);
   } catch (error) {
@@ -395,13 +398,13 @@ function renderDoctors(doctors) {
   const grid = document.getElementById('doctors-grid');
   const skeletons = document.getElementById('doctors-skeletons');
   if (!grid) return;
-  
+
   // Hide skeletons and show grid when rendering
   if (skeletons) {
     skeletons.style.display = 'none';
   }
   grid.style.display = 'grid';
-  
+
   if (doctors.length === 0) {
     grid.innerHTML = `
       <div class="empty-state" style="grid-column: 1/-1;">
@@ -415,7 +418,7 @@ function renderDoctors(doctors) {
     `;
     return;
   }
-  
+
   grid.innerHTML = doctors.map(doctor => renderDoctorCard(doctor)).join('');
 }
 
@@ -428,7 +431,7 @@ function renderDoctorCard(doctor) {
   const initials = getInitials(doctor.full_name);
   const stars = renderStars(doctor.rating || 0);
   const isFavorite = doctor.is_favorite || AppState.favorites.has(doctor.id);
-  
+
   return `
     <div class="doctor-card" data-doctor-id="${doctor.id}">
       <button class="favorite-btn ${isFavorite ? 'active' : ''}" 
@@ -489,16 +492,16 @@ function renderStars(rating) {
   const fullStars = Math.floor(rating);
   const hasHalfStar = rating % 1 >= 0.5;
   const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-  
+
   let stars = '';
-  
+
   // Full stars
   for (let i = 0; i < fullStars; i++) {
     stars += `<svg class="star-filled" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
               </svg>`;
   }
-  
+
   // Half star
   if (hasHalfStar) {
     stars += `<svg class="star-filled" viewBox="0 0 24 24" fill="currentColor">
@@ -511,14 +514,14 @@ function renderStars(rating) {
                 <path fill="url(#half-${rating})" stroke="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
               </svg>`;
   }
-  
+
   // Empty stars
   for (let i = 0; i < emptyStars; i++) {
     stars += `<svg class="star-empty" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
               </svg>`;
   }
-  
+
   return stars;
 }
 
@@ -529,21 +532,21 @@ function renderStars(rating) {
  */
 function filterDoctors(specialtyId = '', searchTerm = '') {
   let filtered = [...AppState.doctors];
-  
+
   // Filter by specialty
   if (specialtyId) {
     filtered = filtered.filter(d => d.specialty_id === parseInt(specialtyId));
   }
-  
+
   // Filter by search term
   if (searchTerm.trim()) {
     const term = searchTerm.toLowerCase();
-    filtered = filtered.filter(d => 
+    filtered = filtered.filter(d =>
       d.full_name.toLowerCase().includes(term) ||
       d.specialty.toLowerCase().includes(term)
     );
   }
-  
+
   renderDoctors(filtered);
 }
 
@@ -558,13 +561,13 @@ async function loadDoctorDetail(doctorId) {
       fetchAPI(`doctors/${doctorId}/reviews`),
       fetchAPI(`doctors/${doctorId}/availability`)
     ]);
-    
+
     const content = document.getElementById('doctor-detail-content');
     if (!content) return;
-    
+
     const initials = getInitials(doctor.full_name);
     const stars = renderStars(doctor.rating || 0);
-    
+
     content.innerHTML = `
       <div class="doctor-profile-header">
         <div class="doctor-avatar" style="width: 100px; height: 100px; font-size: 2.5rem;">
@@ -605,9 +608,9 @@ async function loadDoctorDetail(doctorId) {
             <div class="availability-day ${slots.length === 0 ? 'unavailable' : ''}">
               <div class="availability-day-name">${day}</div>
               <div class="availability-day-hours">
-                ${slots.length > 0 
-                  ? slots.map(s => `${s.start} - ${s.end}`).join('<br>') 
-                  : 'Not Available'}
+                ${slots.length > 0
+        ? slots.map(s => `${s.start} - ${s.end}`).join('<br>')
+        : 'Not Available'}
               </div>
             </div>
           `).join('')}
@@ -615,8 +618,8 @@ async function loadDoctorDetail(doctorId) {
         
         <h4 style="margin-top: 1.5rem;">Patient Reviews</h4>
         <div class="reviews-list" style="margin-top: 1rem;">
-          ${reviews.length > 0 
-            ? reviews.map(review => `
+          ${reviews.length > 0
+        ? reviews.map(review => `
                 <div style="padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-lg); margin-bottom: 1rem;">
                   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
                     <span style="font-weight: 600;">${escapeHtml(review.patient_name)}</span>
@@ -626,8 +629,8 @@ async function loadDoctorDetail(doctorId) {
                   <p style="color: var(--text-secondary);">${escapeHtml(review.comment || 'No comment')}</p>
                 </div>
               `).join('')
-            : '<p style="color: var(--text-muted);">No reviews yet.</p>'
-          }
+        : '<p style="color: var(--text-muted);">No reviews yet.</p>'
+      }
         </div>
       </div>
       
@@ -637,7 +640,7 @@ async function loadDoctorDetail(doctorId) {
         </button>
       </div>
     `;
-    
+
     openModal('doctor-modal');
   } catch (error) {
     console.error('Failed to load doctor details:', error);
@@ -654,11 +657,11 @@ async function loadDoctorDetail(doctorId) {
  */
 async function loadFavorites() {
   if (!AppState.currentPatientEmail) return;
-  
+
   try {
     const favorites = await fetchAPI(`favorites?email=${encodeURIComponent(AppState.currentPatientEmail)}`);
     AppState.favorites = new Set(favorites.map(f => f.id));
-    
+
     // Update UI for favorite buttons
     updateFavoriteButtons();
   } catch (error) {
@@ -676,7 +679,7 @@ async function toggleFavorite(doctorId) {
     scrollToSection('appointments');
     return;
   }
-  
+
   try {
     const result = await fetchAPI('favorites', {
       method: 'POST',
@@ -685,7 +688,7 @@ async function toggleFavorite(doctorId) {
         doctor_id: doctorId
       })
     });
-    
+
     if (result.favorited) {
       AppState.favorites.add(doctorId);
       showToast('Added to favorites', 'success');
@@ -693,7 +696,7 @@ async function toggleFavorite(doctorId) {
       AppState.favorites.delete(doctorId);
       showToast('Removed from favorites', 'info');
     }
-    
+
     updateFavoriteButtons();
   } catch (error) {
     console.error('Failed to toggle favorite:', error);
@@ -709,7 +712,7 @@ function updateFavoriteButtons() {
     if (card) {
       const doctorId = parseInt(card.dataset.doctorId);
       const isFavorite = AppState.favorites.has(doctorId);
-      
+
       btn.classList.toggle('active', isFavorite);
       btn.setAttribute('aria-label', isFavorite ? 'Remove from favorites' : 'Add to favorites');
       btn.querySelector('svg').setAttribute('fill', isFavorite ? 'currentColor' : 'none');
@@ -727,32 +730,32 @@ function updateFavoriteButtons() {
 async function loadPatientAppointments() {
   const emailInput = document.getElementById('patient-email');
   const email = emailInput?.value?.trim();
-  
+
   if (!email) {
     showToast('Please enter your email address', 'error');
     emailInput?.focus();
     return;
   }
-  
+
   AppState.currentPatientEmail = email;
   localStorage.setItem('patientEmail', email);
-  
+
   try {
     const appointments = await fetchAPI(`appointments?email=${encodeURIComponent(email)}`);
-    
+
     // Show appointments container
     const loginSection = document.getElementById('patient-login');
     const appointmentsContainer = document.getElementById('appointments-container');
-    
+
     if (loginSection) loginSection.classList.add('hidden');
     if (appointmentsContainer) appointmentsContainer.classList.remove('hidden');
-    
+
     // Update patient name
     if (appointments.length > 0) {
       const firstAppointment = appointments[0];
       document.getElementById('patient-name').textContent = firstAppointment.patient_name || 'Patient';
     }
-    
+
     renderAppointments(appointments);
     loadFavorites(); // Load favorites after successful login
     checkUpcomingAppointments();
@@ -768,7 +771,7 @@ async function loadPatientAppointments() {
 function renderAppointments(appointments) {
   const list = document.getElementById('appointments-list');
   if (!list) return;
-  
+
   if (appointments.length === 0) {
     list.innerHTML = `
       <div class="empty-state">
@@ -784,12 +787,12 @@ function renderAppointments(appointments) {
     `;
     return;
   }
-  
+
   list.innerHTML = appointments.map(apt => {
     const date = new Date(apt.date);
     const isUpcoming = apt.is_upcoming;
     const typeClass = apt.appointment_type || 'in-person';
-    
+
     return `
       <div class="appointment-card ${isUpcoming ? 'upcoming' : ''}">
         <div class="appointment-date">
@@ -802,12 +805,13 @@ function renderAppointments(appointments) {
           <h4>${escapeHtml(apt.doctor_name)}</h4>
           <p class="specialty">${escapeHtml(apt.specialty)}</p>
           ${apt.reason ? `<p class="reason">${escapeHtml(apt.reason)}</p>` : ''}
-          <span class="appointment-type-badge ${typeClass}">
-            ${apt.appointment_type === 'video' ? '💻' : apt.appointment_type === 'phone' ? '📞' : '🏥'}
-            ${apt.appointment_type || 'in-person'}
-          </span>
-          <span class="status-badge status-${apt.status}">${apt.status}</span>
-          ${apt.reschedule_count > 0 ? `<span style="font-size: 0.75rem; color: var(--text-muted); margin-left: 0.5rem;">Rescheduled ${apt.reschedule_count}x</span>` : ''}
+          <div class="badge-group" style="display: flex; gap: var(--space-2); align-items: center; margin-top: var(--space-3);">
+            <span class="appointment-type-badge ${typeClass}">
+              ${apt.appointment_type === 'video' ? 'VIDEO' : apt.appointment_type === 'phone' ? 'PHONE' : 'CLINIC'}
+            </span>
+            <span class="status-badge status-${apt.status}">${apt.status}</span>
+            ${apt.reschedule_count > 0 ? `<span style="font-size: 0.75rem; color: var(--text-muted);">Rescheduled ${apt.reschedule_count}x</span>` : ''}
+          </div>
         </div>
         
         <div class="appointment-actions">
@@ -840,7 +844,7 @@ async function cancelAppointment(appointmentId) {
   if (!confirm('Are you sure you want to cancel this appointment?')) {
     return;
   }
-  
+
   try {
     await fetchAPI(`appointments/${appointmentId}/cancel`, { method: 'POST' });
     showToast('Appointment cancelled successfully', 'success');
@@ -857,16 +861,16 @@ function logoutPatient() {
   AppState.currentPatientEmail = null;
   localStorage.removeItem('patientEmail');
   AppState.favorites.clear();
-  
+
   const loginSection = document.getElementById('patient-login');
   const appointmentsContainer = document.getElementById('appointments-container');
-  
+
   if (loginSection) loginSection.classList.remove('hidden');
   if (appointmentsContainer) appointmentsContainer.classList.add('hidden');
-  
+
   const emailInput = document.getElementById('patient-email');
   if (emailInput) emailInput.value = '';
-  
+
   showToast('Signed out successfully', 'info');
   updateFavoriteButtons();
 }
@@ -876,14 +880,14 @@ function logoutPatient() {
  */
 async function checkUpcomingAppointments() {
   if (!AppState.currentPatientEmail) return;
-  
+
   try {
     const upcoming = await fetchAPI(`appointments/upcoming?email=${encodeURIComponent(AppState.currentPatientEmail)}`);
-    
+
     if (upcoming.length > 0) {
       const apt = upcoming[0];
       const hours = apt.hours_until;
-      
+
       showNotificationBanner(
         'Upcoming Appointment',
         `You have an appointment with ${apt.doctor_name} in ${hours < 1 ? Math.round(hours * 60) + ' minutes' : Math.round(hours) + ' hours'}`
@@ -903,7 +907,7 @@ function showNotificationBanner(title, message) {
   // Remove existing banner
   const existing = document.querySelector('.notification-banner');
   if (existing) existing.remove();
-  
+
   const banner = document.createElement('div');
   banner.className = 'notification-banner';
   banner.innerHTML = `
@@ -923,9 +927,9 @@ function showNotificationBanner(title, message) {
       </svg>
     </button>
   `;
-  
+
   document.body.appendChild(banner);
-  
+
   // Auto remove after 10 seconds
   setTimeout(() => {
     banner.classList.add('hiding');
@@ -945,32 +949,36 @@ async function openBookingModal(doctorId) {
   AppState.currentDoctorId = doctorId;
   AppState.selectedDate = null;
   AppState.selectedTime = null;
-  
+
   try {
     const doctor = await fetchAPI(`doctors/${doctorId}`);
-    
+
     // Update modal with doctor info
     document.getElementById('modal-doctor-name').textContent = doctor.full_name;
     document.getElementById('modal-doctor-specialty').textContent = doctor.specialty;
     document.getElementById('modal-doctor-avatar').textContent = getInitials(doctor.full_name);
-    
+
     // Pre-fill email if available
     if (AppState.currentPatientEmail) {
       document.getElementById('patient-email-booking').value = AppState.currentPatientEmail;
     }
-    
+
     // Initialize date picker
     initDatePicker();
-    
+
     // Reset form
     document.getElementById('booking-form').reset();
-    
+
     // Clear time slots
     const timeSelect = document.getElementById('appointment-time');
     if (timeSelect) {
       timeSelect.innerHTML = '<option value="">Select time</option>';
     }
-    
+
+    // Reset appointment type
+    AppState.selectedAppointmentType = 'in-person';
+    selectAppointmentType('in-person');
+
     openModal('booking-modal');
   } catch (error) {
     console.error('Failed to load doctor for booking:', error);
@@ -983,68 +991,200 @@ async function openBookingModal(doctorId) {
  */
 async function openRescheduleModal(appointmentId) {
   AppState.currentAppointmentId = appointmentId;
-  
+  AppState.selectedRescheduleDate = null;
+  AppState.selectedRescheduleTime = null;
+  AppState.rescheduleCalendarDate = new Date(); // Start with current month
+
   try {
     const appointment = await fetchAPI(`appointments/${appointmentId}`);
     AppState.currentDoctorId = appointment.doctor_id;
-    
-    // Create reschedule modal content
-    const content = document.createElement('div');
-    content.innerHTML = `
-      <div id="reschedule-modal" class="modal">
-        <div class="modal-overlay" onclick="closeModal('reschedule-modal')"></div>
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3>Reschedule Appointment</h3>
-            <button class="modal-close" onclick="closeModal('reschedule-modal')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="18" y1="6" x2="6" y2="18"/>
-                <line x1="6" y1="6" x2="18" y2="18"/>
-              </svg>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p style="margin-bottom: 1rem; color: var(--text-secondary);">
-              Rescheduling appointment with <strong>${escapeHtml(appointment.doctor_name)}</strong>
-            </p>
-            <form id="reschedule-form" class="booking-form">
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="reschedule-date">New Date</label>
-                  <input type="date" id="reschedule-date" class="form-input" required min="${new Date().toISOString().split('T')[0]}">
-                </div>
-                <div class="form-group">
-                  <label for="reschedule-time">New Time</label>
-                  <select id="reschedule-time" class="form-select" required>
-                    <option value="">Select time</option>
-                  </select>
-                </div>
-              </div>
-              <button type="submit" class="btn btn-primary btn-block">Confirm Reschedule</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    `;
-    
-    document.body.appendChild(content);
-    
-    // Initialize date change listener
-    document.getElementById('reschedule-date').addEventListener('change', (e) => {
-      const date = e.target.value;
-      if (date) {
-        loadAvailableSlots(appointment.doctor_id, date, 'reschedule-time');
-      }
-    });
-    
-    // Initialize form submit
-    document.getElementById('reschedule-form').addEventListener('submit', handleRescheduleSubmit);
-    
+
+    // Clear time slots
+    const timeSlotsGrid = document.getElementById('reschedule-time-slots');
+    if (timeSlotsGrid) {
+      timeSlotsGrid.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1rem;">Select a date to view available times</p>';
+    }
+
+    // Render calendar
+    renderRescheduleCalendar();
+
     openModal('reschedule-modal');
   } catch (error) {
     console.error('Failed to load appointment for rescheduling:', error);
   }
 }
+
+/**
+ * Render the reschedule calendar grid
+ */
+function renderRescheduleCalendar() {
+  const container = document.getElementById('reschedule-calendar-grid');
+  const title = document.getElementById('reschedule-calendar-title');
+  if (!container || !title) return;
+
+  const date = AppState.rescheduleCalendarDate;
+  const year = date.getFullYear();
+  const month = date.getMonth();
+
+  // Update title
+  const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  title.textContent = `${monthNames[month]} ${year}`;
+
+  // Calculate days
+  const firstDay = new Date(year, month, 1).getDay(); // 0 is Sunday
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const prevMonthDays = new Date(year, month, 0).getDate();
+
+  let html = '';
+
+  // Day headers
+  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  dayNames.forEach(day => {
+    html += `<div class="calendar-day-header">${day}</div>`;
+  });
+
+  // Previous month padding
+  for (let i = firstDay - 1; i >= 0; i--) {
+    html += `<div class="calendar-day other-month">${prevMonthDays - i}</div>`;
+  }
+
+  // Current month days
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  for (let i = 1; i <= daysInMonth; i++) {
+    const currentDayDate = new Date(year, month, i);
+    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+    const isPast = currentDayDate < today;
+    const isSelected = AppState.selectedRescheduleDate === dateStr;
+    const isToday = currentDayDate.getTime() === today.getTime();
+
+    html += `
+      <div class="calendar-day ${isPast ? 'other-month' : ''} ${isSelected ? 'selected' : ''} ${isToday ? 'today' : ''}" 
+           onclick="${isPast ? '' : `selectRescheduleDate('${dateStr}')`}"
+           style="${isPast ? 'cursor: not-allowed; opacity: 0.5;' : ''}">
+        ${i}
+      </div>
+    `;
+  }
+
+  // Next month padding
+  const totalCells = html.split('calendar-day').length - 1;
+  const remaining = 42 - totalCells + 7; // +7 because of headers
+  // Actually headers are not in totalCells if I counted correctly... wait.
+  // Let's just calculate based on 42 cells total (6 weeks).
+  const cellsSoFar = (firstDay + daysInMonth);
+  const nextMonthPadding = 42 - cellsSoFar;
+
+  for (let i = 1; i <= nextMonthPadding; i++) {
+    html += `<div class="calendar-day other-month">${i}</div>`;
+  }
+
+  container.innerHTML = html;
+}
+
+/**
+ * Change the month viewed in the reschedule calendar
+ * @param {number} delta - Months to add or subtract
+ */
+function changeRescheduleMonth(delta) {
+  const date = AppState.rescheduleCalendarDate;
+  date.setMonth(date.getMonth() + delta);
+  renderRescheduleCalendar();
+}
+
+/**
+ * Select a date in the reschedule calendar
+ * @param {string} dateStr - Date string (YYYY-MM-DD)
+ */
+async function selectRescheduleDate(dateStr) {
+  AppState.selectedRescheduleDate = dateStr;
+  AppState.selectedRescheduleTime = null;
+
+  // Re-render calendar to show selection
+  renderRescheduleCalendar();
+
+  const timeSlotsGrid = document.getElementById('reschedule-time-slots');
+  if (!timeSlotsGrid) return;
+
+  timeSlotsGrid.innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
+
+  try {
+    const slots = await fetchAPI(`available-slots?doctor_id=${AppState.currentDoctorId}&date=${dateStr}`);
+    renderRescheduleTimeSlots(slots);
+  } catch (error) {
+    console.error('Failed to load slots:', error);
+    timeSlotsGrid.innerHTML = '<p style="color: var(--error); text-align: center; padding: 1rem;">Failed to load time slots</p>';
+  }
+}
+
+/**
+ * Render time slots in the reschedule modal
+ * @param {Array} slots - Array of slot objects
+ */
+function renderRescheduleTimeSlots(slots) {
+  const container = document.getElementById('reschedule-time-slots');
+  if (!container) return;
+
+  if (slots.length === 0) {
+    container.innerHTML = '<p>No available slots for this date</p>';
+    return;
+  }
+
+  container.innerHTML = slots.map(slot => `
+    <button type="button" class="time-slot ${AppState.selectedRescheduleTime === slot.datetime ? 'selected' : ''}" 
+            onclick="selectRescheduleTime('${slot.datetime}')">
+      ${slot.time}
+    </button>
+  `).join('');
+}
+
+/**
+ * Select a time slot in the reschedule modal
+ * @param {string} dateTime - ISO date time string
+ */
+function selectRescheduleTime(dateTime) {
+  AppState.selectedRescheduleTime = dateTime;
+
+  // Highlight selected slot
+  document.querySelectorAll('#reschedule-time-slots .time-slot').forEach(btn => {
+    btn.classList.remove('selected');
+  });
+
+  const selectedBtn = Array.from(document.querySelectorAll('#reschedule-time-slots .time-slot'))
+    .find(btn => btn.getAttribute('onclick')?.includes(dateTime));
+
+  if (selectedBtn) {
+    selectedBtn.classList.add('selected');
+  }
+}
+
+/**
+ * Submit the reschedule request
+ */
+async function submitReschedule() {
+  if (!AppState.selectedRescheduleDate || !AppState.selectedRescheduleTime) {
+    showToast('Please select both date and time', 'error');
+    return;
+  }
+
+  try {
+    await fetchAPI(`appointments/${AppState.currentAppointmentId}/reschedule`, {
+      method: 'POST',
+      body: JSON.stringify({ newDateTime: AppState.selectedRescheduleTime })
+    });
+
+    closeModal('reschedule-modal');
+    showToast('Appointment rescheduled successfully!', 'success');
+    loadPatientAppointments();
+  } catch (error) {
+    console.error('Failed to reschedule appointment:', error);
+  }
+}
+
+
 
 /**
  * Open review modal
@@ -1054,13 +1194,13 @@ async function openRescheduleModal(appointmentId) {
 function openReviewModal(appointmentId, doctorId) {
   AppState.currentReviewAppointmentId = appointmentId;
   AppState.currentDoctorId = doctorId;
-  
+
   // Reset form
   document.getElementById('review-form').reset();
   document.getElementById('review-rating').value = '0';
   document.querySelectorAll('#star-rating .star').forEach(s => s.classList.remove('active'));
   document.getElementById('rating-text').textContent = 'Select a rating';
-  
+
   openModal('review-modal');
 }
 
@@ -1070,11 +1210,11 @@ function openReviewModal(appointmentId, doctorId) {
  */
 async function handleBookingSubmit(e) {
   e.preventDefault();
-  
+
   // Get time from select element directly as fallback
   const timeSelect = document.getElementById('appointment-time');
   const selectedTime = AppState.selectedTime || (timeSelect ? timeSelect.value : null);
-  
+
   const formData = {
     doctorId: AppState.currentDoctorId,
     firstName: document.getElementById('patient-firstname').value.trim(),
@@ -1085,7 +1225,7 @@ async function handleBookingSubmit(e) {
     reason: document.getElementById('appointment-reason').value.trim(),
     appointmentType: AppState.selectedAppointmentType
   };
-  
+
   // Validation
   if (!formData.dateTime) {
     showToast('Please select a date and time slot', 'error');
@@ -1097,28 +1237,28 @@ async function handleBookingSubmit(e) {
     }
     return;
   }
-  
+
   // Additional validation
   if (!formData.firstName || !formData.lastName) {
     showToast('Please enter your full name', 'error');
     return;
   }
-  
+
   if (!formData.email) {
     showToast('Please enter your email address', 'error');
     return;
   }
-  
+
   try {
     const result = await fetchAPI('appointments', {
       method: 'POST',
       body: JSON.stringify(formData)
     });
-    
+
     closeModal('booking-modal');
     showToast('Appointment booked successfully!', 'success');
     showConfetti();
-    
+
     // Show email preview
     const date = new Date(formData.dateTime);
     showEmailPreview({
@@ -1128,7 +1268,7 @@ async function handleBookingSubmit(e) {
       time: date.toLocaleTimeString('default', { hour: 'numeric', minute: '2-digit' }),
       appointment_type: formData.appointmentType
     });
-    
+
     // Refresh appointments if logged in
     if (AppState.currentPatientEmail) {
       loadPatientAppointments();
@@ -1142,33 +1282,7 @@ async function handleBookingSubmit(e) {
  * Handle reschedule form submission
  * @param {Event} e - Form submit event
  */
-async function handleRescheduleSubmit(e) {
-  e.preventDefault();
-  
-  const date = document.getElementById('reschedule-date').value;
-  const time = document.getElementById('reschedule-time').value;
-  
-  if (!date || !time) {
-    showToast('Please select both date and time', 'error');
-    return;
-  }
-  
-  const dateTime = new Date(time).toISOString();
-  
-  try {
-    await fetchAPI(`appointments/${AppState.currentAppointmentId}/reschedule`, {
-      method: 'POST',
-      body: JSON.stringify({ newDateTime: dateTime })
-    });
-    
-    closeModal('reschedule-modal');
-    document.getElementById('reschedule-modal')?.remove();
-    showToast('Appointment rescheduled successfully!', 'success');
-    loadPatientAppointments();
-  } catch (error) {
-    console.error('Failed to reschedule appointment:', error);
-  }
-}
+
 
 /**
  * Handle review form submission
@@ -1176,24 +1290,24 @@ async function handleRescheduleSubmit(e) {
  */
 async function handleReviewSubmit(e) {
   e.preventDefault();
-  
+
   const rating = parseInt(document.getElementById('review-rating').value);
   const comment = document.getElementById('review-comment').value.trim();
-  
+
   if (!rating || rating === 0) {
     showToast('Please select a rating', 'error');
     return;
   }
-  
+
   try {
     // Get patient ID from current appointments
     const appointments = await fetchAPI(`appointments?email=${encodeURIComponent(AppState.currentPatientEmail)}`);
     const appointment = appointments.find(a => a.id === AppState.currentReviewAppointmentId);
-    
+
     if (!appointment) {
       throw new Error('Appointment not found');
     }
-    
+
     await fetchAPI('reviews', {
       method: 'POST',
       body: JSON.stringify({
@@ -1204,11 +1318,11 @@ async function handleReviewSubmit(e) {
         comment: comment
       })
     });
-    
+
     closeModal('review-modal');
     showToast('Review submitted successfully!', 'success');
     loadPatientAppointments();
-    
+
     // Refresh doctors to update ratings
     loadDoctors();
   } catch (error) {
@@ -1227,10 +1341,10 @@ async function handleReviewSubmit(e) {
 function openModal(modalId) {
   const modal = document.getElementById(modalId);
   if (!modal) return;
-  
+
   modal.classList.add('active');
   document.body.style.overflow = 'hidden';
-  
+
   // Focus first input for accessibility
   setTimeout(() => {
     const firstInput = modal.querySelector('input, select, textarea');
@@ -1245,7 +1359,7 @@ function openModal(modalId) {
 function closeModal(modalId) {
   const modal = document.getElementById(modalId);
   if (!modal) return;
-  
+
   modal.classList.remove('active');
   document.body.style.overflow = '';
 }
@@ -1272,30 +1386,30 @@ document.addEventListener('keydown', (e) => {
 function initDatePicker() {
   const dateInput = document.getElementById('appointment-date');
   const timeSelect = document.getElementById('appointment-time');
-  
+
   if (!dateInput || !timeSelect) return;
-  
+
   // Set minimum date to today
   const today = new Date().toISOString().split('T')[0];
   dateInput.min = today;
-  
+
   // Handle date change
   dateInput.addEventListener('change', (e) => {
     const date = e.target.value;
     AppState.selectedDate = date;
-    
+
     if (date) {
       loadAvailableSlots(AppState.currentDoctorId, date, 'appointment-time');
     } else {
       timeSelect.innerHTML = '<option value="">Select time</option>';
     }
   });
-  
+
   // Handle time change
   timeSelect.addEventListener('change', (e) => {
     AppState.selectedTime = e.target.value;
   });
-  
+
   // Initialize appointment type selector if exists
   initAppointmentTypeSelector();
 }
@@ -1309,21 +1423,21 @@ function initDatePicker() {
 async function loadAvailableSlots(doctorId, date, elementId = 'appointment-time') {
   const select = document.getElementById(elementId);
   if (!select) return;
-  
+
   select.innerHTML = '<option value="">Loading...</option>';
   select.disabled = true;
-  
+
   try {
     const slots = await fetchAPI(`available-slots?doctor_id=${doctorId}&date=${date}`);
-    
+
     select.innerHTML = '<option value="">Select time</option>';
     select.disabled = false;
-    
+
     if (slots.length === 0) {
       select.innerHTML = '<option value="">No available slots</option>';
       return;
     }
-    
+
     slots.forEach(slot => {
       const option = document.createElement('option');
       option.value = slot.datetime;
@@ -1343,7 +1457,7 @@ async function loadAvailableSlots(doctorId, date, elementId = 'appointment-time'
 function initAppointmentTypeSelector() {
   // Check if selector exists in the modal
   let selector = document.querySelector('.appointment-type-selector');
-  
+
   if (!selector) {
     // Create appointment type selector
     const bookingForm = document.getElementById('booking-form');
@@ -1375,13 +1489,13 @@ function initAppointmentTypeSelector() {
           <small>Voice call</small>
         </div>
       `;
-      
+
       // Insert before the date row
       const dateRow = bookingForm.querySelector('.form-row');
       if (dateRow) {
         bookingForm.insertBefore(selector, dateRow);
       }
-      
+
       // Add click handlers
       selector.querySelectorAll('.appointment-type-option').forEach(option => {
         option.addEventListener('click', () => {
@@ -1394,6 +1508,24 @@ function initAppointmentTypeSelector() {
   }
 }
 
+/**
+ * Select appointment type
+ * @param {string} type - 'in-person', 'video', or 'phone'
+ */
+function selectAppointmentType(type) {
+  AppState.selectedAppointmentType = type;
+
+  // Update UI
+  const options = document.querySelectorAll('.appointment-type-option');
+  options.forEach(option => {
+    // Some versions use data-type, some check text or other attributes
+    const optionType = option.getAttribute('data-type');
+    const isSelected = optionType === type;
+    option.classList.toggle('selected', isSelected);
+    option.setAttribute('aria-checked', isSelected);
+  });
+}
+
 // ============================================================================
 // STAR RATING
 // ============================================================================
@@ -1404,11 +1536,11 @@ function initAppointmentTypeSelector() {
 function initStarRating() {
   const starRating = document.getElementById('star-rating');
   if (!starRating) return;
-  
+
   const stars = starRating.querySelectorAll('.star');
   const ratingInput = document.getElementById('review-rating');
   const ratingText = document.getElementById('rating-text');
-  
+
   const ratingLabels = {
     1: 'Poor',
     2: 'Fair',
@@ -1416,7 +1548,7 @@ function initStarRating() {
     4: 'Very Good',
     5: 'Excellent'
   };
-  
+
   stars.forEach((star, index) => {
     // Hover effect
     star.addEventListener('mouseenter', () => {
@@ -1424,7 +1556,7 @@ function initStarRating() {
       updateStarDisplay(stars, rating);
       ratingText.textContent = ratingLabels[rating];
     });
-    
+
     // Click to select
     star.addEventListener('click', () => {
       const rating = index + 1;
@@ -1433,7 +1565,7 @@ function initStarRating() {
       ratingText.textContent = ratingLabels[rating];
     });
   });
-  
+
   // Reset on mouse leave
   starRating.addEventListener('mouseleave', () => {
     const currentRating = parseInt(ratingInput.value) || 0;
@@ -1469,22 +1601,22 @@ function updateStarDisplay(stars, rating) {
  */
 function showEmailPreview(data) {
   const typeIcons = {
-    'in-person': '🏥',
-    'video': '💻',
-    'phone': '📞'
+    'in-person': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px; display: inline-block; vertical-align: text-bottom;"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>',
+    'video': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px; display: inline-block; vertical-align: text-bottom;"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>',
+    'phone': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px; display: inline-block; vertical-align: text-bottom;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>'
   };
-  
+
   const typeLabels = {
     'in-person': 'In-Person Visit',
     'video': 'Video Consultation',
     'phone': 'Phone Consultation'
   };
-  
+
   const modalId = 'email-preview-modal';
-  
+
   // Remove existing modal
   document.getElementById(modalId)?.remove();
-  
+
   const modal = document.createElement('div');
   modal.id = modalId;
   modal.className = 'modal active';
@@ -1512,28 +1644,28 @@ function showEmailPreview(data) {
           </div>
           <div class="email-preview-body">
             <div class="email-preview-detail">
-              <div class="email-preview-icon">👨‍⚕️</div>
+              <div class="email-preview-icon">DR</div>
               <div>
                 <div class="email-preview-label">Your Healthcare Provider</div>
                 <div class="email-preview-value">${escapeHtml(data.doctor_name)}</div>
               </div>
             </div>
             <div class="email-preview-detail">
-              <div class="email-preview-icon">📅</div>
+              <div class="email-preview-icon">CAL</div>
               <div>
                 <div class="email-preview-label">Date</div>
                 <div class="email-preview-value">${data.date}</div>
               </div>
             </div>
             <div class="email-preview-detail">
-              <div class="email-preview-icon">🕐</div>
+              <div class="email-preview-icon">TIME</div>
               <div>
                 <div class="email-preview-label">Time</div>
                 <div class="email-preview-value">${data.time}</div>
               </div>
             </div>
             <div class="email-preview-detail">
-              <div class="email-preview-icon">${typeIcons[data.appointment_type] || '🏥'}</div>
+              <div class="email-preview-icon">${data.appointment_type === 'video' ? 'VID' : data.appointment_type === 'phone' ? 'PH' : 'CLI'}</div>
               <div>
                 <div class="email-preview-label">Consultation Type</div>
                 <div class="email-preview-value">${typeLabels[data.appointment_type] || 'In-Person'}</div>
@@ -1547,9 +1679,9 @@ function showEmailPreview(data) {
       </div>
     </div>
   `;
-  
+
   document.body.appendChild(modal);
-  
+
   // Auto close after 8 seconds
   setTimeout(() => {
     closeModal(modalId);
@@ -1568,15 +1700,15 @@ function showConfetti() {
   const canvas = document.createElement('canvas');
   canvas.id = 'confetti-canvas';
   document.body.appendChild(canvas);
-  
+
   const ctx = canvas.getContext('2d');
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-  
+
   const colors = ['#14b8a6', '#0d9488', '#fbbf24', '#f59e0b', '#60a5fa', '#a78bfa'];
   const particles = [];
   const particleCount = 100;
-  
+
   // Create particles
   for (let i = 0; i < particleCount; i++) {
     particles.push({
@@ -1591,20 +1723,20 @@ function showConfetti() {
       opacity: 1
     });
   }
-  
+
   let animationId;
   let frameCount = 0;
-  
+
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+
     particles.forEach((p, i) => {
       p.x += p.vx;
       p.y += p.vy;
       p.vy += 0.3; // Gravity
       p.rotation += p.rotationSpeed;
       p.opacity -= 0.008;
-      
+
       ctx.save();
       ctx.translate(p.x, p.y);
       ctx.rotate((p.rotation * Math.PI) / 180);
@@ -1612,15 +1744,15 @@ function showConfetti() {
       ctx.fillStyle = p.color;
       ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
       ctx.restore();
-      
+
       // Remove particles that are off screen or faded
       if (p.opacity <= 0 || p.y > canvas.height + 50) {
         particles.splice(i, 1);
       }
     });
-    
+
     frameCount++;
-    
+
     if (particles.length > 0 && frameCount < 200) {
       animationId = requestAnimationFrame(animate);
     } else {
@@ -1628,9 +1760,9 @@ function showConfetti() {
       canvas.remove();
     }
   }
-  
+
   animate();
-  
+
   // Handle resize
   window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
@@ -1651,7 +1783,7 @@ function showConfetti() {
 function showToast(message, type = 'info', duration = 4000) {
   const container = document.getElementById('toast-container');
   if (!container) return;
-  
+
   const icons = {
     success: `<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
@@ -1668,16 +1800,16 @@ function showToast(message, type = 'info', duration = 4000) {
              <line x1="12" y1="8" x2="12.01" y2="8"/>
            </svg>`
   };
-  
+
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
   toast.innerHTML = `
     ${icons[type]}
     <span>${escapeHtml(message)}</span>
   `;
-  
+
   container.appendChild(toast);
-  
+
   // Remove after duration
   setTimeout(() => {
     toast.style.opacity = '0';
@@ -1798,15 +1930,15 @@ let heroDoctorInterval = null;
 function initHeroDoctorRotator() {
   const preview = document.getElementById('hero-doctor-preview');
   if (!preview) return;
-  
+
   // Start the rotation
   heroDoctorInterval = setInterval(rotateHeroDoctor, 20000);
-  
+
   // Add hover pause functionality
   preview.addEventListener('mouseenter', () => {
     if (heroDoctorInterval) clearInterval(heroDoctorInterval);
   });
-  
+
   preview.addEventListener('mouseleave', () => {
     heroDoctorInterval = setInterval(rotateHeroDoctor, 20000);
   });
@@ -1821,33 +1953,33 @@ function rotateHeroDoctor() {
   const specialty = document.getElementById('hero-doctor-specialty');
   const rating = document.getElementById('hero-doctor-rating');
   const slotsContainer = document.getElementById('hero-doctor-slots');
-  
+
   if (!avatar || !name || !specialty || !rating || !slotsContainer) return;
-  
+
   // Fade out
   const preview = document.getElementById('hero-doctor-preview');
   preview.style.opacity = '0.5';
   preview.style.transform = 'translateY(-5px)';
   preview.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-  
+
   setTimeout(() => {
     // Move to next doctor
     heroDoctorIndex = (heroDoctorIndex + 1) % heroDoctors.length;
     const doctor = heroDoctors[heroDoctorIndex];
-    
+
     // Update content
     avatar.textContent = doctor.initials;
     name.textContent = doctor.name;
     specialty.textContent = doctor.specialty;
     rating.textContent = `★ ${doctor.rating} (${doctor.reviews} reviews)`;
-    
+
     // Update slots
     const slotsHtml = doctor.slots.map((slot, index) => {
       const className = index === doctor.slots.length - 1 ? 'slot-badge more' : 'slot-badge available';
       return `<span class="${className}">${slot}</span>`;
     }).join('');
     slotsContainer.innerHTML = slotsHtml;
-    
+
     // Fade in
     preview.style.opacity = '1';
     preview.style.transform = 'translateY(0)';
@@ -1857,26 +1989,26 @@ function rotateHeroDoctor() {
 function init() {
   // Initialize theme
   initTheme();
-  
+
   // Initialize navigation
   initNavigation();
-  
+
   // Initialize hero doctor rotator
   initHeroDoctorRotator();
-  
+
   // Initialize star rating
   initStarRating();
-  
+
   // Load initial data
   loadSpecialties();
   loadDoctors();
-  
+
   // Check if user is already logged in
   if (AppState.currentPatientEmail) {
     document.getElementById('patient-email').value = AppState.currentPatientEmail;
     loadPatientAppointments();
   }
-  
+
   // Initialize search with debounce
   const searchInput = document.getElementById('doctor-search');
   if (searchInput) {
@@ -1885,19 +2017,19 @@ function init() {
       filterDoctors(specialtyId, e.target.value);
     }, 300));
   }
-  
+
   // Initialize booking form
   const bookingForm = document.getElementById('booking-form');
   if (bookingForm) {
     bookingForm.addEventListener('submit', handleBookingSubmit);
   }
-  
+
   // Initialize review form
   const reviewForm = document.getElementById('review-form');
   if (reviewForm) {
     reviewForm.addEventListener('submit', handleReviewSubmit);
   }
-  
+
   // Enter key on email input loads appointments
   const emailInput = document.getElementById('patient-email');
   if (emailInput) {
@@ -1907,7 +2039,7 @@ function init() {
       }
     });
   }
-  
+
   console.log('MedSchedule initialized successfully');
 }
 
@@ -1936,7 +2068,12 @@ globalThis.openBookingModal = openBookingModal;
 globalThis.openRescheduleModal = openRescheduleModal;
 globalThis.openReviewModal = openReviewModal;
 globalThis.handleBookingSubmit = handleBookingSubmit;
-globalThis.handleRescheduleSubmit = handleRescheduleSubmit;
+globalThis.selectAppointmentType = selectAppointmentType;
+globalThis.submitReschedule = submitReschedule;
+globalThis.changeRescheduleMonth = changeRescheduleMonth;
+globalThis.selectRescheduleDate = selectRescheduleDate;
+globalThis.selectRescheduleTime = selectRescheduleTime;
+globalThis.renderRescheduleCalendar = renderRescheduleCalendar;
 globalThis.handleReviewSubmit = handleReviewSubmit;
 globalThis.openModal = openModal;
 globalThis.closeModal = closeModal;
