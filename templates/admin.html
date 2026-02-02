@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,34 +8,50 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* ===== CSS Variables - Matching Main Theme ===== */
+        /* ===== CSS Variables - Modern Medical Theme ===== */
         :root {
-            --primary-50: #fafaf9;
-            --primary-100: #f5f5f4;
-            --primary-200: #e7e5e4;
-            --primary-300: #d6d3d1;
-            --primary-400: #a8a29e;
-            --primary-500: #78716c;
-            --primary-600: #57534e;
-            --primary-700: #44403c;
-            --primary-800: #292524;
-            --primary-900: #1c1917;
+            --primary-50: #f8fafc;
+            --primary-100: #f1f5f9;
+            --primary-200: #e2e8f0;
+            --primary-300: #cbd5e1;
+            --primary-400: #94a3b8;
+            --primary-500: #64748b;
+            --primary-600: #475569;
+            --primary-700: #334155;
+            --primary-800: #1e293b;
+            --primary-900: #0f172a;
             --accent-50: #f0fdfa;
             --accent-100: #ccfbf1;
+            --accent-200: #99f6e4;
             --accent-500: #14b8a6;
             --accent-600: #0d9488;
             --accent-700: #0f766e;
+            --accent-800: #115e59;
             --success: #10b981;
+            --success-light: #d1fae5;
             --warning: #f59e0b;
+            --warning-light: #fef3c7;
             --error: #ef4444;
+            --error-light: #fee2e2;
+            --info: #3b82f6;
+            --info-light: #dbeafe;
+            --purple: #8b5cf6;
+            --purple-light: #ede9fe;
             --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
             --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
             --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
             --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --radius-sm: 0.375rem;
             --radius: 0.5rem;
             --radius-md: 0.75rem;
             --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+            --radius-full: 9999px;
+            --sidebar-width: 280px;
+            --header-height: 72px;
         }
 
         * {
@@ -51,67 +68,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ===== Navigation ===== */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            background: rgba(250, 250, 249, 0.95);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--primary-200);
-        }
-
-        .navbar-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            height: 72px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-weight: 700;
-            font-size: 1.25rem;
-            color: var(--primary-900);
-        }
-
-        .nav-brand svg {
-            width: 32px;
-            height: 32px;
-            color: var(--accent-600);
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .nav-link {
-            font-weight: 500;
-            color: var(--primary-600);
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .nav-link:hover {
-            color: var(--primary-900);
-        }
-
-        .nav-link svg {
-            width: 18px;
-            height: 18px;
-        }
-
         /* ===== Login Screen ===== */
         .login-container {
             min-height: 100vh;
@@ -119,28 +75,82 @@
             align-items: center;
             justify-content: center;
             padding: 2rem;
-            background: linear-gradient(135deg, var(--primary-100) 0%, var(--primary-50) 100%);
+            background: linear-gradient(135deg, var(--accent-50) 0%, var(--primary-100) 50%, var(--accent-100) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(20, 184, 166, 0.1) 0%, transparent 50%);
+            animation: pulse 15s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
         }
 
         .login-card {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             padding: 3rem;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
             text-align: center;
+            position: relative;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            animation: slideUp 0.5s ease;
         }
 
-        .login-card .icon {
-            width: 64px;
-            height: 64px;
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-card .logo {
+            width: 80px;
+            height: 80px;
             margin: 0 auto 1.5rem;
-            color: var(--accent-600);
+            background: linear-gradient(135deg, var(--accent-500), var(--accent-700));
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 10px 30px rgba(20, 184, 166, 0.3);
+        }
+
+        .login-card .logo svg {
+            width: 40px;
+            height: 40px;
         }
 
         .login-card h2 {
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             font-weight: 700;
             color: var(--primary-900);
             margin-bottom: 0.5rem;
@@ -149,182 +159,475 @@
         .login-card p {
             color: var(--primary-500);
             margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .login-card .input-group {
+            position: relative;
+            margin-bottom: 1.25rem;
+        }
+
+        .login-card .input-group svg {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: var(--primary-400);
+            transition: color 0.2s;
         }
 
         .login-card input {
             width: 100%;
-            padding: 0.875rem 1rem;
+            padding: 0.875rem 1rem 0.875rem 3rem;
             border: 2px solid var(--primary-200);
-            border-radius: var(--radius);
+            border-radius: var(--radius-lg);
             font-size: 1rem;
-            margin-bottom: 1rem;
             transition: all 0.2s;
+            background: white;
         }
 
         .login-card input:focus {
             outline: none;
             border-color: var(--accent-500);
+            box-shadow: 0 0 0 4px var(--accent-100);
         }
 
-        /* ===== Main Dashboard ===== */
+        .login-card input:focus+svg,
+        .login-card .input-group:focus-within svg {
+            color: var(--accent-600);
+        }
+
+        /* ===== Main Dashboard Layout ===== */
         .dashboard {
-            padding-top: 72px;
+            display: flex;
             min-height: 100vh;
         }
 
-        .dashboard-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
+        /* ===== Sidebar ===== */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: white;
+            border-right: 1px solid var(--primary-200);
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
         }
 
-        /* ===== Page Header ===== */
-        .page-header {
-            margin-bottom: 2rem;
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--primary-200);
         }
 
-        .page-header h1 {
-            font-size: 1.875rem;
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
             font-weight: 700;
+            font-size: 1.25rem;
             color: var(--primary-900);
+        }
+
+        .sidebar-brand .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-500), var(--accent-700));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .sidebar-brand svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 1rem 0.75rem;
+            overflow-y: auto;
+        }
+
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary-400);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0 1rem;
             margin-bottom: 0.5rem;
         }
 
-        .page-header p {
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            margin: 0.25rem 0.5rem;
+            border-radius: var(--radius-md);
+            color: var(--primary-600);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: none;
+            width: calc(100% - 1rem);
+            text-align: left;
+            font-size: 0.875rem;
+        }
+
+        .nav-item:hover {
+            background: var(--primary-100);
+            color: var(--primary-900);
+        }
+
+        .nav-item.active {
+            background: var(--accent-50);
+            color: var(--accent-700);
+        }
+
+        .nav-item svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--accent-500);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.125rem 0.5rem;
+            border-radius: var(--radius-full);
+        }
+
+        .sidebar-footer {
+            padding: 1rem;
+            border-top: 1px solid var(--primary-200);
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: var(--radius-md);
+            background: var(--primary-50);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent-500), var(--accent-700));
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--primary-900);
+        }
+
+        .user-role {
+            font-size: 0.75rem;
             color: var(--primary-500);
+        }
+
+        /* ===== Main Content ===== */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+        }
+
+        /* ===== Top Navigation ===== */
+        .top-nav {
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            background: rgba(248, 250, 252, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--primary-200);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-900);
+        }
+
+        .top-nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 0.625rem 1rem 0.625rem 2.5rem;
+            border: 1px solid var(--primary-200);
+            border-radius: var(--radius-lg);
+            font-size: 0.875rem;
+            width: 280px;
+            background: white;
+            transition: all 0.2s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent-500);
+            box-shadow: 0 0 0 3px var(--accent-100);
+        }
+
+        .search-box svg {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            color: var(--primary-400);
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--primary-200);
+            background: white;
+            color: var(--primary-600);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-icon:hover {
+            background: var(--primary-100);
+            color: var(--primary-900);
+            border-color: var(--primary-300);
+        }
+
+        .btn-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* ===== Dashboard Content ===== */
+        .dashboard-content {
+            padding: 2rem;
+            max-width: 1600px;
         }
 
         /* ===== Stats Grid ===== */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1rem;
             margin-bottom: 2rem;
         }
 
         .stat-card {
             background: white;
             padding: 1.5rem;
-            border-radius: var(--radius-md);
+            border-radius: var(--radius-lg);
             box-shadow: var(--shadow);
             border: 1px solid var(--primary-200);
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             cursor: pointer;
             position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-500), var(--accent-700));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
         }
 
         .stat-card:hover {
-            box-shadow: var(--shadow-md);
-            transform: translateY(-2px);
-            border-color: var(--accent-500);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
         }
 
         .stat-card.active-filter {
-            border-color: var(--accent-600);
+            border-color: var(--accent-500);
             background: var(--accent-50);
+            box-shadow: 0 0 0 3px var(--accent-100);
         }
 
-        .stat-card.active-filter::after {
-            content: '';
-            position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-            width: 8px;
-            height: 8px;
-            background: var(--accent-600);
-            border-radius: 50%;
-        }
-
-        /* ===== Tabs ===== */
-        .tabs {
-            display: flex;
-            gap: 1rem;
-            border-bottom: 2px solid var(--primary-200);
-            margin-bottom: 2rem;
-        }
-
-        .tab {
-            padding: 0.75rem 1.5rem;
-            font-weight: 500;
-            color: var(--primary-500);
-            cursor: pointer;
-            position: relative;
-            transition: all 0.2s;
-        }
-
-        .tab:hover {
-            color: var(--primary-700);
-        }
-
-        .tab.active {
-            color: var(--accent-600);
-        }
-
-        .tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--accent-600);
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
+        .stat-card.active-filter::before {
+            transform: scaleX(1);
         }
 
         .stat-header {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: space-between;
             margin-bottom: 1rem;
         }
 
         .stat-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: var(--radius);
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .stat-icon svg {
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
         }
 
-        .stat-icon.doctors { background: var(--accent-50); color: var(--accent-600); }
-        .stat-icon.patients { background: #eff6ff; color: #3b82f6; }
-        .stat-icon.appointments { background: #fffbeb; color: #f59e0b; }
-        .stat-icon.scheduled { background: #ecfdf5; color: var(--success); }
-        .stat-icon.completed { background: #f5f3ff; color: #8b5cf6; }
-        .stat-icon.cancelled { background: #fef2f2; color: var(--error); }
+        .stat-icon.doctors {
+            background: var(--accent-100);
+            color: var(--accent-600);
+        }
+
+        .stat-icon.patients {
+            background: var(--info-light);
+            color: var(--info);
+        }
+
+        .stat-icon.appointments {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .stat-icon.scheduled {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .stat-icon.completed {
+            background: var(--purple-light);
+            color: var(--purple);
+        }
+
+        .stat-icon.cancelled {
+            background: var(--error-light);
+            color: var(--error);
+        }
+
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-full);
+        }
+
+        .stat-trend.up {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .stat-trend.down {
+            background: var(--error-light);
+            color: var(--error);
+        }
 
         .stat-card .value {
-            font-size: 2rem;
+            font-size: 2.25rem;
             font-weight: 700;
             color: var(--primary-900);
             margin-bottom: 0.25rem;
+            line-height: 1;
         }
 
         .stat-card .label {
             font-size: 0.875rem;
             color: var(--primary-500);
+            font-weight: 500;
+        }
+
+        /* ===== Charts Section ===== */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--primary-200);
+            padding: 1.5rem;
+        }
+
+        .chart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--primary-900);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
         }
 
         /* ===== Content Cards ===== */
         .card {
             background: white;
-            border-radius: var(--radius-md);
+            border-radius: var(--radius-lg);
             box-shadow: var(--shadow);
             border: 1px solid var(--primary-200);
             margin-bottom: 1.5rem;
+            overflow: hidden;
         }
 
         .card-header {
@@ -334,6 +637,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .card-header h2 {
@@ -361,10 +665,10 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            padding: 0.625rem 1rem;
+            padding: 0.625rem 1.25rem;
             font-size: 0.875rem;
             font-weight: 500;
-            border-radius: var(--radius);
+            border-radius: var(--radius-lg);
             transition: all 0.2s;
             cursor: pointer;
             border: none;
@@ -376,12 +680,15 @@
         }
 
         .btn-primary {
-            background: var(--accent-600);
+            background: linear-gradient(135deg, var(--accent-500), var(--accent-600));
             color: white;
+            box-shadow: 0 4px 6px -1px rgba(20, 184, 166, 0.2);
         }
 
         .btn-primary:hover {
-            background: var(--accent-700);
+            background: linear-gradient(135deg, var(--accent-600), var(--accent-700));
+            transform: translateY(-1px);
+            box-shadow: 0 6px 8px -1px rgba(20, 184, 166, 0.3);
         }
 
         .btn-secondary {
@@ -394,42 +701,55 @@
         }
 
         .btn-danger {
-            background: #fef2f2;
+            background: var(--error-light);
             color: var(--error);
         }
 
         .btn-danger:hover {
-            background: #fee2e2;
+            background: #fecaca;
+        }
+
+        .btn-success {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .btn-success:hover {
+            background: #a7f3d0;
         }
 
         .btn-sm {
-            padding: 0.375rem 0.75rem;
-            font-size: 0.75rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.8125rem;
         }
 
-        /* ===== Doctors Table ===== */
+        .btn-ghost {
+            background: transparent;
+            color: var(--primary-600);
+        }
+
+        .btn-ghost:hover {
+            background: var(--primary-100);
+            color: var(--primary-900);
+        }
+
+        /* ===== Tables ===== */
         .table-container {
             overflow-x: auto;
-        }
-
-        .table-container[style*="overflow-y"] .data-table th {
-            position: sticky;
-            top: 0;
-            background: var(--primary-50);
-            z-index: 10;
+            border-radius: var(--radius-md);
         }
 
         .data-table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
             font-size: 0.875rem;
         }
 
         .data-table th,
         .data-table td {
-            padding: 1rem;
+            padding: 1rem 1.25rem;
             text-align: left;
-            border-bottom: 1px solid var(--primary-200);
         }
 
         .data-table th {
@@ -439,6 +759,21 @@
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--primary-200);
+            white-space: nowrap;
+        }
+
+        .data-table th:first-child {
+            border-radius: var(--radius-md) 0 0 0;
+        }
+
+        .data-table th:last-child {
+            border-radius: 0 var(--radius-md) 0 0;
+        }
+
+        .data-table td {
+            border-bottom: 1px solid var(--primary-100);
+            transition: background 0.15s;
         }
 
         .data-table tr:last-child td {
@@ -449,43 +784,94 @@
             background: var(--primary-50);
         }
 
-        .doctor-info {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
+        .data-table tbody tr {
+            transition: all 0.2s;
         }
 
-        .doctor-avatar {
-            width: 36px;
-            height: 36px;
+        .data-table tbody tr:hover {
+            transform: scale(1.002);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* ===== User Info ===== */
+        .user-info-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.875rem;
+        }
+
+        .user-avatar-sm {
+            width: 40px;
+            height: 40px;
             border-radius: var(--radius-full);
-            background: var(--accent-100);
-            color: var(--accent-600);
+            background: linear-gradient(135deg, var(--accent-100), var(--accent-200));
+            color: var(--accent-700);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 600;
             font-size: 0.875rem;
+            flex-shrink: 0;
         }
 
-        .doctor-info .name {
+        .user-details .name {
             font-weight: 600;
             color: var(--primary-900);
         }
 
-        .doctor-info .email {
+        .user-details .email {
             font-size: 0.75rem;
             color: var(--primary-500);
         }
 
-        .specialty-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
+        /* ===== Badges ===== */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.875rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: var(--radius-full);
+        }
+
+        .badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .badge-scheduled {
+            background: var(--success-light);
+            color: #065f46;
+        }
+
+        .badge-scheduled::before {
+            background: var(--success);
+        }
+
+        .badge-completed {
+            background: var(--purple-light);
+            color: #5b21b6;
+        }
+
+        .badge-completed::before {
+            background: var(--purple);
+        }
+
+        .badge-cancelled {
+            background: var(--error-light);
+            color: #991b1b;
+        }
+
+        .badge-cancelled::before {
+            background: var(--error);
+        }
+
+        .badge-specialty {
             background: var(--accent-50);
             color: var(--accent-700);
-            font-size: 0.75rem;
-            font-weight: 500;
-            border-radius: var(--radius-full);
         }
 
         .rating {
@@ -504,89 +890,61 @@
         .rating span {
             color: var(--primary-600);
             font-size: 0.75rem;
+            font-weight: 500;
         }
 
+        /* ===== Actions ===== */
         .actions {
             display: flex;
             gap: 0.5rem;
         }
 
-        .btn-icon {
+        .btn-action {
             width: 32px;
             height: 32px;
             padding: 0;
-            border-radius: var(--radius);
+            border-radius: var(--radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .btn-icon svg {
+        .btn-action svg {
             width: 16px;
             height: 16px;
         }
 
         .btn-edit {
-            background: #eff6ff;
-            color: #3b82f6;
+            background: var(--info-light);
+            color: var(--info);
         }
 
         .btn-edit:hover {
-            background: #dbeafe;
+            background: var(--info);
+            color: white;
         }
 
         .btn-delete {
-            background: #fef2f2;
+            background: var(--error-light);
             color: var(--error);
         }
 
         .btn-delete:hover {
-            background: #fee2e2;
+            background: var(--error);
+            color: white;
         }
 
-        /* ===== Appointments Table ===== */
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.375rem;
-            padding: 0.375rem 0.875rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-            border-radius: var(--radius-full);
+        .btn-view {
+            background: var(--primary-100);
+            color: var(--primary-600);
         }
 
-        .status-badge::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-        }
-
-        .status-scheduled {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .status-scheduled::before {
-            background: #10b981;
-        }
-
-        .status-completed {
-            background: #ede9fe;
-            color: #5b21b6;
-        }
-
-        .status-completed::before {
-            background: #8b5cf6;
-        }
-
-        .status-cancelled {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .status-cancelled::before {
-            background: #ef4444;
+        .btn-view:hover {
+            background: var(--primary-600);
+            color: white;
         }
 
         /* ===== Modal ===== */
@@ -594,7 +952,7 @@
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(15, 23, 42, 0.6);
             z-index: 200;
             align-items: center;
             justify-content: center;
@@ -608,27 +966,29 @@
 
         .modal {
             background: white;
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-xl);
             width: 100%;
-            max-width: 500px;
+            max-width: 520px;
             max-height: 90vh;
             overflow: hidden;
-            animation: modalSlide 0.2s ease;
+            animation: modalSlide 0.3s ease;
+            box-shadow: var(--shadow-xl);
         }
 
         @keyframes modalSlide {
             from {
                 opacity: 0;
-                transform: scale(0.95);
+                transform: scale(0.95) translateY(20px);
             }
+
             to {
                 opacity: 1;
-                transform: scale(1);
+                transform: scale(1) translateY(0);
             }
         }
 
         .modal-header {
-            padding: 1.25rem 1.5rem;
+            padding: 1.5rem;
             border-bottom: 1px solid var(--primary-200);
             display: flex;
             align-items: center;
@@ -636,25 +996,27 @@
         }
 
         .modal-header h3 {
-            font-size: 1.125rem;
+            font-size: 1.25rem;
             font-weight: 600;
+            color: var(--primary-900);
         }
 
         .modal-close {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: var(--radius);
+            border-radius: var(--radius-md);
             color: var(--primary-500);
-            background: none;
+            background: var(--primary-100);
             border: none;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
         .modal-close:hover {
-            background: var(--primary-100);
+            background: var(--primary-200);
             color: var(--primary-900);
         }
 
@@ -694,11 +1056,12 @@
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 0.625rem 0.875rem;
+            padding: 0.75rem 1rem;
             border: 1px solid var(--primary-300);
-            border-radius: var(--radius);
+            border-radius: var(--radius-lg);
             font-size: 0.875rem;
             transition: all 0.2s;
+            background: white;
         }
 
         .form-group input:focus,
@@ -720,50 +1083,366 @@
             gap: 1rem;
         }
 
-        /* ===== Messages ===== */
-        .alert {
-            padding: 0.875rem 1rem;
-            border-radius: var(--radius);
+        /* ===== Toast Notifications ===== */
+        .toast-container {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 300;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            border-left: 4px solid;
+            animation: slideInRight 0.3s ease;
+            min-width: 300px;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .toast.success {
+            border-color: var(--success);
+        }
+
+        .toast.error {
+            border-color: var(--error);
+        }
+
+        .toast.info {
+            border-color: var(--info);
+        }
+
+        .toast-icon {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .toast.success .toast-icon {
+            color: var(--success);
+        }
+
+        .toast.error .toast-icon {
+            color: var(--error);
+        }
+
+        .toast.info .toast-icon {
+            color: var(--info);
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
             font-size: 0.875rem;
-            margin-bottom: 1rem;
-            display: none;
+            color: var(--primary-900);
         }
 
-        .alert.active {
-            display: block;
+        .toast-message {
+            font-size: 0.8125rem;
+            color: var(--primary-500);
         }
 
-        .alert-error {
-            background: #fef2f2;
-            color: #991b1b;
-            border: 1px solid #fecaca;
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--primary-400);
+            cursor: pointer;
+            padding: 0.25rem;
         }
 
-        .alert-success {
-            background: #ecfdf5;
-            color: #065f46;
-            border: 1px solid #a7f3d0;
+        /* ===== Skeleton Loading ===== */
+        .skeleton {
+            background: linear-gradient(90deg, var(--primary-200) 25%, var(--primary-100) 50%, var(--primary-200) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: var(--radius);
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .skeleton-text {
+            height: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .skeleton-text:last-child {
+            width: 60%;
+        }
+
+        .skeleton-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
         }
 
         /* ===== Empty State ===== */
         .empty-state {
             text-align: center;
-            padding: 3rem 2rem;
+            padding: 4rem 2rem;
             color: var(--primary-500);
         }
 
-        .empty-state svg {
-            width: 48px;
-            height: 48px;
-            margin-bottom: 1rem;
+        .empty-state-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: var(--primary-100);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: var(--primary-400);
         }
 
-        /* ===== Loading ===== */
-        .loading {
-            text-align: center;
-            padding: 3rem;
-            color: var(--primary-500);
+        .empty-state-icon svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .empty-state h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--primary-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            font-size: 0.875rem;
+            max-width: 300px;
+            margin: 0 auto 1.5rem;
+        }
+
+        /* ===== Pagination ===== */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1.5rem;
+            border-top: 1px solid var(--primary-200);
+        }
+
+        .pagination-btn {
+            min-width: 36px;
+            height: 36px;
+            padding: 0 0.75rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--primary-200);
+            background: white;
+            color: var(--primary-600);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            background: var(--primary-100);
+            border-color: var(--primary-300);
+        }
+
+        .pagination-btn.active {
+            background: var(--accent-500);
+            color: white;
+            border-color: var(--accent-500);
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ===== Filter Tags ===== */
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.875rem;
+            background: var(--accent-50);
+            color: var(--accent-700);
+            font-size: 0.8125rem;
+            font-weight: 500;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--accent-200);
+        }
+
+        .filter-tag button {
+            background: none;
+            border: none;
+            color: var(--accent-600);
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .filter-tag button:hover {
+            color: var(--accent-800);
+        }
+
+        /* ===== Alerts ===== */
+        .alert {
+            padding: 1rem 1.25rem;
+            border-radius: var(--radius-lg);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .alert.active {
+            display: flex;
+        }
+
+        .alert-error {
+            background: var(--error-light);
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .alert-success {
+            background: var(--success-light);
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .dashboard-content {
+                padding: 1rem;
+            }
+
+            .top-nav {
+                padding: 1rem;
+            }
+
+            .search-box input {
+                width: 180px;
+            }
+
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== Mobile Menu Toggle ===== */
+        .mobile-menu-toggle {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--primary-200);
+            background: white;
+            color: var(--primary-600);
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        @media (max-width: 1024px) {
+            .mobile-menu-toggle {
+                display: flex;
+            }
+        }
+
+        /* ===== Tab Content ===== */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .hidden {
@@ -771,21 +1450,40 @@
         }
     </style>
 </head>
+
 <body>
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
     <!-- Login Screen -->
     <div id="loginScreen" class="login-container">
         <div class="login-card">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-            </svg>
-            <h2>Admin Access</h2>
-            <p>Enter your password to access the dashboard</p>
-            <div id="loginError" class="alert alert-error">Invalid password</div>
-            <input type="password" id="passwordInput" placeholder="Password" autofocus>
+            <div class="logo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                </svg>
+            </div>
+            <h2>Welcome Back</h2>
+            <p>Sign in to access the admin dashboard</p>
+            <div id="loginError" class="alert alert-error">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    style="width: 18px; height: 18px; flex-shrink: 0;">
+                    <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Invalid password
+            </div>
+            <div class="input-group">
+                <input type="password" id="passwordInput" placeholder="Enter your password" autofocus>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path
+                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+            </div>
             <button class="btn btn-primary" onclick="login()" style="width: 100%;">
                 Sign In
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+                    <path
+                        d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
                 </svg>
             </button>
         </div>
@@ -793,186 +1491,459 @@
 
     <!-- Main Dashboard -->
     <div id="dashboard" class="dashboard hidden">
-        <!-- Navigation -->
-        <nav class="navbar">
-            <div class="navbar-content">
-                <div class="nav-brand">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-                    </svg>
-                    <span>MedSchedule Admin</span>
-                </div>
-                <div class="nav-links">
-                    <a href="/" class="nav-link">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div class="logo-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                        </svg>
+                    </div>
+                    <span>MedSchedule</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Overview</div>
+                    <button class="nav-item active" onclick="switchTab('overview')" data-tab="overview">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                        </svg>
+                        Dashboard
+                    </button>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Management</div>
+                    <button class="nav-item" onclick="switchTab('doctors')" data-tab="doctors">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        Doctors
+                    </button>
+                    <button class="nav-item" onclick="switchTab('appointments')" data-tab="appointments">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        Appointments
+                        <span class="nav-badge" id="appointmentBadge">0</span>
+                    </button>
+                    <button class="nav-item" onclick="switchTab('patients')" data-tab="patients">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        Patients
+                    </button>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Settings</div>
+                    <a href="/" class="nav-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                         </svg>
                         Back to Site
                     </a>
                 </div>
-            </div>
-        </nav>
+            </nav>
 
-        <div class="dashboard-content">
-            <!-- Page Header -->
-            <div class="page-header">
-                <h1>Dashboard Overview</h1>
-                <p>Manage your doctors, appointments, and monitor system activity</p>
-            </div>
-
-            <!-- Tabs -->
-            <div class="tabs">
-                <div class="tab active" onclick="switchTab('doctors')" data-tab="doctors">
-                    Doctors
-                </div>
-                <div class="tab" onclick="switchTab('appointments')" data-tab="appointments">
-                    Appointments
-                </div>
-            </div>
-
-            <!-- Stats Grid -->
-            <div class="stats-grid">
-                <div class="stat-card" onclick="toggleFilter('all')" data-filter="all">
-                    <div class="stat-header">
-                        <div class="stat-icon appointments">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="value" id="statAppointments">-</div>
-                    <div class="label">Total Appointments</div>
-                </div>
-                <div class="stat-card" onclick="toggleFilter('scheduled')" data-filter="scheduled">
-                    <div class="stat-header">
-                        <div class="stat-icon scheduled">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="value" id="statScheduled">-</div>
-                    <div class="label">Scheduled</div>
-                </div>
-                <div class="stat-card" onclick="toggleFilter('completed')" data-filter="completed">
-                    <div class="stat-header">
-                        <div class="stat-icon completed">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="value" id="statCompleted">-</div>
-                    <div class="label">Completed</div>
-                </div>
-                <div class="stat-card" onclick="toggleFilter('cancelled')" data-filter="cancelled">
-                    <div class="stat-header">
-                        <div class="stat-icon cancelled">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="value" id="statCancelled">-</div>
-                    <div class="label">Cancelled</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div class="stat-icon patients">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="value" id="statPatients">-</div>
-                    <div class="label">Patients</div>
-                </div>
-            </div>
-
-            <!-- Doctors Tab Content -->
-            <div class="tab-content active" id="doctorsTab">
-                <!-- Doctors Card -->
-                <div class="card">
-                    <div class="card-header">
-                        <h2>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                            </svg>
-                            Doctors
-                        </h2>
-                        <button class="btn btn-primary btn-sm" onclick="openAddDoctorModal()">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 4v16m8-8H4"/>
-                            </svg>
-                            Add Doctor
-                        </button>
-                    </div>
-                    <div class="card-body" style="padding: 0;">
-                        <div class="table-container">
-                            <table class="data-table" id="doctorsTable">
-                                <thead>
-                                    <tr>
-                                        <th>Doctor</th>
-                                        <th>Specialty</th>
-                                        <th>Rating</th>
-                                        <th>Appointments</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td colspan="5" class="loading">Loading doctors...</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+            <div class="sidebar-footer">
+                <div class="user-card">
+                    <div class="user-avatar">A</div>
+                    <div class="user-info">
+                        <div class="user-name">Admin</div>
+                        <div class="user-role">Administrator</div>
                     </div>
                 </div>
             </div>
+        </aside>
 
-            <!-- Appointments Tab Content -->
-            <div class="tab-content" id="appointmentsTab">
-                <!-- Appointments Card -->
-                <div class="card">
-                    <div class="card-header">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navigation -->
+            <header class="top-nav">
+                <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                <h1 class="page-title" id="pageTitle">Dashboard Overview</h1>
+                <div class="top-nav-actions">
+                    <div class="search-box">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input type="text" id="globalSearch" placeholder="Search..." onkeyup="handleSearch(event)">
+                    </div>
+                    <button class="btn-icon" onclick="refreshData()" title="Refresh">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                    </button>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <!-- Overview Tab -->
+                <div class="tab-content active" id="overviewTab">
+                    <!-- Stats Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-card" onclick="navigateToAppointments('all')">
+                            <div class="stat-header">
+                                <div class="stat-icon appointments">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                                <span class="stat-trend up">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        style="width: 14px; height: 14px;">
+                                        <path d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                                    </svg>
+                                    12%
+                                </span>
+                            </div>
+                            <div class="value" id="statAppointments">-</div>
+                            <div class="label">Total Appointments</div>
+                        </div>
+                        <div class="stat-card" onclick="navigateToAppointments('scheduled')">
+                            <div class="stat-header">
+                                <div class="stat-icon scheduled">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <span class="stat-trend up">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        style="width: 14px; height: 14px;">
+                                        <path d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                                    </svg>
+                                    8%
+                                </span>
+                            </div>
+                            <div class="value" id="statScheduled">-</div>
+                            <div class="label">Scheduled</div>
+                        </div>
+                        <div class="stat-card" onclick="navigateToAppointments('completed')">
+                            <div class="stat-header">
+                                <div class="stat-icon completed">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                    </svg>
+                                </div>
+                                <span class="stat-trend up">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        style="width: 14px; height: 14px;">
+                                        <path d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                                    </svg>
+                                    15%
+                                </span>
+                            </div>
+                            <div class="value" id="statCompleted">-</div>
+                            <div class="label">Completed</div>
+                        </div>
+                        <div class="stat-card" onclick="navigateToAppointments('cancelled')">
+                            <div class="stat-header">
+                                <div class="stat-icon cancelled">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <span class="stat-trend down">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        style="width: 14px; height: 14px;">
+                                        <path d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                                    </svg>
+                                    3%
+                                </span>
+                            </div>
+                            <div class="value" id="statCancelled">-</div>
+                            <div class="label">Cancelled</div>
+                        </div>
+                        <div class="stat-card" onclick="switchTab('patients')">
+                            <div class="stat-header">
+                                <div class="stat-icon patients">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                </div>
+                                <span class="stat-trend up">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        style="width: 14px; height: 14px;">
+                                        <path d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                                    </svg>
+                                    22%
+                                </span>
+                            </div>
+                            <div class="value" id="statPatients">-</div>
+                            <div class="label">Patients</div>
+                        </div>
+                        <div class="stat-card" onclick="switchTab('doctors')">
+                            <div class="stat-header">
+                                <div class="stat-icon doctors">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                </div>
+                                <span class="stat-trend up">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        style="width: 14px; height: 14px;">
+                                        <path d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                                    </svg>
+                                    5%
+                                </span>
+                            </div>
+                            <div class="value" id="statDoctors">-</div>
+                            <div class="label">Doctors</div>
+                        </div>
+                    </div>
+
+                    <!-- Charts -->
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Appointment Trends</h3>
+                                <select class="btn btn-secondary btn-sm" style="padding: 0.375rem 0.75rem;">
+                                    <option>Last 7 Days</option>
+                                    <option>Last 30 Days</option>
+                                    <option>Last 3 Months</option>
+                                </select>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="trendsChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Appointments by Status</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="statusChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Appointments -->
+                    <div class="card">
+                        <div class="card-header">
                             <h2>
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
-                                <span id="appointmentsTitle">All Appointments</span>
+                                Recent Appointments
                             </h2>
-                            <button id="clearFilter" class="btn btn-secondary btn-sm" style="display: none;" onclick="clearFilter()">
-                                Clear Filter
+                            <button class="btn btn-primary btn-sm" onclick="switchTab('appointments')">
+                                View All
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 5l7 7-7 7" />
+                                </svg>
                             </button>
                         </div>
-                        <div class="filter-badge" id="filterBadge" style="display: none; padding: 0.25rem 0.75rem; background: var(--accent-100); color: var(--accent-700); font-size: 0.75rem; font-weight: 500; border-radius: var(--radius-full);"></div>
-                    </div>
-                    <div class="card-body" style="padding: 0;">
-                        <div class="table-container" style="max-height: 700px; overflow-y: auto;">
-                            <table class="data-table" id="appointmentsTable">
-                                <thead>
-                                    <tr>
-                                        <th>Patient</th>
-                                        <th>Doctor</th>
-                                        <th>Date & Time</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td colspan="5" class="loading">Loading appointments...</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="card-body" style="padding: 0;">
+                            <div class="table-container">
+                                <table class="data-table" id="recentAppointmentsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Patient</th>
+                                            <th>Doctor</th>
+                                            <th>Date & Time</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="4" class="loading">Loading...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        <div id="pagination" style="padding: 1.5rem; display: flex; justify-content: center; gap: 0.5rem; align-items: center; border-top: 1px solid var(--primary-200);">
+                    </div>
+                </div>
+
+                <!-- Doctors Tab -->
+                <div class="tab-content" id="doctorsTab">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                                Doctors
+                            </h2>
+                            <div class="filter-bar">
+                                <div class="search-box" style="margin-right: 1rem;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                    <input type="text" id="doctorSearch" placeholder="Search doctors..."
+                                        onkeyup="filterDoctors()">
+                                </div>
+                                <button class="btn btn-primary btn-sm" onclick="openAddDoctorModal()">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 4v16m8-8H4" />
+                                    </svg>
+                                    Add Doctor
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body" style="padding: 0;">
+                            <div class="table-container">
+                                <table class="data-table" id="doctorsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Doctor</th>
+                                            <th>Specialty</th>
+                                            <th>Rating</th>
+                                            <th>Appointments</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="5" class="loading">Loading doctors...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Appointments Tab -->
+                <div class="tab-content" id="appointmentsTab">
+                    <div class="card">
+                        <div class="card-header">
+                            <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                                <h2>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    <span id="appointmentsTitle">All Appointments</span>
+                                </h2>
+                                <div class="filter-tag" id="filterBadge" style="display: none;">
+                                    <span id="filterBadgeText">Filter: All</span>
+                                    <button onclick="clearFilter()">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            style="width: 14px; height: 14px;">
+                                            <path d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="filter-bar">
+                                <select id="statusFilter" class="btn btn-secondary btn-sm"
+                                    onchange="filterByStatus(this.value)" style="padding: 0.5rem 1rem;">
+                                    <option value="all">All Status</option>
+                                    <option value="scheduled">Scheduled</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                                <div class="search-box">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                    <input type="text" id="appointmentSearch" placeholder="Search appointments..."
+                                        onkeyup="filterAppointments()">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body" style="padding: 0;">
+                            <div class="table-container" style="max-height: 600px; overflow-y: auto;">
+                                <table class="data-table" id="appointmentsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Patient</th>
+                                            <th>Doctor</th>
+                                            <th>Date & Time</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="5" class="loading">Loading appointments...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="pagination" id="pagination"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Patients Tab -->
+                <div class="tab-content" id="patientsTab">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path
+                                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                Patients
+                            </h2>
+                            <div class="search-box">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                                <input type="text" id="patientSearch" placeholder="Search patients..."
+                                    onkeyup="filterPatients()">
+                            </div>
+                        </div>
+                        <div class="card-body" style="padding: 0;">
+                            <div class="table-container">
+                                <table class="data-table" id="patientsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Patient</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Appointments</th>
+                                            <th>Last Visit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="5">
+                                                <div class="empty-state">
+                                                    <div class="empty-state-icon">
+                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2">
+                                                            <path
+                                                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                                        </svg>
+                                                    </div>
+                                                    <h3>Patients List</h3>
+                                                    <p>Patient data is managed through appointments. View patient
+                                                        details in the appointments section.</p>
+                                                    <button class="btn btn-primary btn-sm"
+                                                        onclick="switchTab('appointments')">
+                                                        View Appointments
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
 
     <!-- Add/Edit Doctor Modal -->
@@ -982,7 +1953,7 @@
                 <h3 id="modalTitle">Add Doctor</h3>
                 <button class="modal-close" onclick="closeModal()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M6 18L18 6M6 6l12 12"/>
+                        <path d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
@@ -993,16 +1964,16 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="firstName">First Name *</label>
-                            <input type="text" id="firstName" required>
+                            <input type="text" id="firstName" required placeholder="e.g. John">
                         </div>
                         <div class="form-group">
                             <label for="lastName">Last Name *</label>
-                            <input type="text" id="lastName" required>
+                            <input type="text" id="lastName" required placeholder="e.g. Smith">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="email">Email *</label>
-                        <input type="email" id="email" required>
+                        <input type="email" id="email" required placeholder="john.smith@example.com">
                     </div>
                     <div class="form-group">
                         <label for="specialty">Specialty *</label>
@@ -1016,7 +1987,8 @@
                     </div>
                     <div class="form-group">
                         <label for="bio">Bio</label>
-                        <textarea id="bio" placeholder="Brief description of the doctor's experience and expertise..."></textarea>
+                        <textarea id="bio"
+                            placeholder="Brief description of the doctor's experience and expertise..."></textarea>
                     </div>
                 </form>
             </div>
@@ -1024,7 +1996,7 @@
                 <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
                 <button class="btn btn-primary" onclick="saveDoctor()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 13l4 4L19 7"/>
+                        <path d="M5 13l4 4L19 7" />
                     </svg>
                     Save Doctor
                 </button>
@@ -1039,7 +2011,7 @@
                 <h3>Appointment Details</h3>
                 <button class="modal-close" onclick="closeAppointmentModal()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M6 18L18 6M6 6l12 12"/>
+                        <path d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
@@ -1047,12 +2019,12 @@
                 <div id="appointmentError" class="alert alert-error"></div>
                 <div id="appointmentDetails"></div>
             </div>
-            <div class="modal-footer" id="appointmentModalFooter">
-            </div>
+            <div class="modal-footer" id="appointmentModalFooter"></div>
         </div>
     </div>
 
     <script>
+        // State
         let adminPassword = '';
         let specialties = [];
         let doctors = [];
@@ -1060,16 +2032,47 @@
         let currentFilter = 'all';
         let appointmentsPage = 1;
         let appointmentsTotalPages = 1;
-        let currentTab = 'doctors';
+        let currentTab = 'overview';
+        let trendsChart = null;
+        let statusChart = null;
 
-        // SVG Icons helper
+        // Icons
         const icons = {
             star: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>',
             edit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>',
             delete: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>',
             user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>',
-            empty: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'
+            empty: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
+            check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>',
+            x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 18L18 6M6 6l12 12"/></svg>',
+            eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>'
         };
+
+        // Toast Notifications
+        function showToast(type, title, message) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+
+            const iconSvg = type === 'success' ? icons.check : type === 'error' ? icons.x : icons.eye;
+
+            toast.innerHTML = `
+                <div class="toast-icon">${iconSvg}</div>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">${icons.x}</button>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
+        }
 
         // Login
         function login() {
@@ -1098,108 +2101,135 @@
             return response;
         }
 
-        // Load Dashboard Data
+        // Load Dashboard
         async function loadDashboard() {
             try {
-                // Load stats
                 const statsRes = await api('/api/admin/stats');
                 if (!statsRes.ok) throw new Error('Failed to load stats');
                 const statsData = await statsRes.json();
-                
-                document.getElementById('statAppointments').textContent = statsData.stats.total_appointments;
-                document.getElementById('statScheduled').textContent = statsData.stats.scheduled_appointments;
-                document.getElementById('statCompleted').textContent = statsData.stats.completed_appointments;
-                document.getElementById('statCancelled').textContent = statsData.stats.cancelled_appointments;
 
-                // Load doctors
+                document.getElementById('statAppointments').textContent = statsData.stats.total_appointments || 0;
+                document.getElementById('statScheduled').textContent = statsData.stats.scheduled_appointments || 0;
+                document.getElementById('statCompleted').textContent = statsData.stats.completed_appointments || 0;
+                document.getElementById('statCancelled').textContent = statsData.stats.cancelled_appointments || 0;
+                document.getElementById('statPatients').textContent = statsData.stats.total_patients || 0;
+                document.getElementById('statDoctors').textContent = statsData.stats.total_doctors || 0;
+                document.getElementById('appointmentBadge').textContent = statsData.stats.scheduled_appointments || 0;
+
                 await loadDoctors();
+                await loadRecentAppointments();
+                initCharts(statsData.stats);
 
-                // Show dashboard
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('dashboard').classList.remove('hidden');
+
+                showToast('success', 'Welcome Back', 'Dashboard loaded successfully');
             } catch (error) {
                 console.error('Error loading dashboard:', error);
             }
         }
 
-        // Toggle Filter
-        function toggleFilter(filter) {
-            if (currentFilter === filter) {
-                clearFilter();
-                return;
+        // Initialize Charts
+        function initCharts(stats) {
+            const trendsCtx = document.getElementById('trendsChart')?.getContext('2d');
+            const statusCtx = document.getElementById('statusChart')?.getContext('2d');
+
+            if (trendsCtx) {
+                if (trendsChart) trendsChart.destroy();
+                trendsChart = new Chart(trendsCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                        datasets: [{
+                            label: 'Appointments',
+                            data: [12, 19, 15, 25, 22, 30, 28],
+                            borderColor: '#14b8a6',
+                            backgroundColor: 'rgba(20, 184, 166, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#14b8a6',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                            pointRadius: 5,
+                            pointHoverRadius: 7
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: { color: 'rgba(0,0,0,0.05)' }
+                            },
+                            x: {
+                                grid: { display: false }
+                            }
+                        }
+                    }
+                });
             }
-            
-            currentFilter = filter;
-            
-            // Update active filter styling on stat cards
-            document.querySelectorAll('.stat-card').forEach(card => {
-                card.classList.remove('active-filter');
-                if (card.dataset.filter === filter) {
-                    card.classList.add('active-filter');
-                }
-            });
-            
-            // Load filtered appointments
-            appointmentsPage = 1;
-            loadAppointments(1);
-            
-            // Update UI
-            updateFilterUI(filter);
+
+            if (statusCtx) {
+                if (statusChart) statusChart.destroy();
+                statusChart = new Chart(statusCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Scheduled', 'Completed', 'Cancelled'],
+                        datasets: [{
+                            data: [
+                                stats.scheduled_appointments || 0,
+                                stats.completed_appointments || 0,
+                                stats.cancelled_appointments || 0
+                            ],
+                            backgroundColor: ['#10b981', '#8b5cf6', '#ef4444'],
+                            borderWidth: 0,
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '70%',
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    usePointStyle: true,
+                                    padding: 20
+                                }
+                            }
+                        }
+                    }
+                });
+            }
         }
 
-        // Clear Filter
-        function clearFilter() {
-            currentFilter = 'all';
-            
-            // Remove active filter styling
-            document.querySelectorAll('.stat-card').forEach(card => {
-                card.classList.remove('active-filter');
-            });
-            
-            // Load all appointments
-            appointmentsPage = 1;
-            loadAppointments(1);
-            
-            // Update UI
-            document.getElementById('clearFilter').style.display = 'none';
-            document.getElementById('filterBadge').style.display = 'none';
-            document.getElementById('appointmentsTitle').textContent = 'All Appointments';
+        // Load Recent Appointments
+        async function loadRecentAppointments() {
+            try {
+                const res = await api('/api/admin/appointments?page=1&limit=5');
+                const data = await res.json();
+                renderRecentAppointments(data.appointments || []);
+            } catch (error) {
+                console.error('Error loading recent appointments:', error);
+            }
         }
 
-        // Update Filter UI
-        function updateFilterUI(filter) {
-            const titles = {
-                'all': 'All Appointments',
-                'scheduled': 'Scheduled Appointments',
-                'completed': 'Completed Appointments',
-                'cancelled': 'Cancelled Appointments'
-            };
-            
-            document.getElementById('appointmentsTitle').textContent = titles[filter] || 'All Appointments';
-            document.getElementById('clearFilter').style.display = 'inline-flex';
-            
-            const filterBadge = document.getElementById('filterBadge');
-            filterBadge.textContent = `Filter: ${filter.charAt(0).toUpperCase() + filter.slice(1)}`;
-            filterBadge.style.display = 'inline-block';
-        }
-
-        // Load Doctors
-        async function loadDoctors() {
-            const res = await api('/api/admin/doctors');
-            doctors = await res.json();
-            renderDoctors();
-        }
-
-        // Render Doctors Table
-        function renderDoctors() {
-            const tbody = document.querySelector('#doctorsTable tbody');
-            if (doctors.length === 0) {
+        function renderRecentAppointments(appointments) {
+            const tbody = document.querySelector('#recentAppointmentsTable tbody');
+            if (appointments.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="5">
+                        <td colspan="4">
                             <div class="empty-state">
-                                ${icons.empty}
-                                <p>No doctors found. Add your first doctor to get started.</p>
+                                <div class="empty-state-icon">${icons.empty}</div>
+                                <h3>No appointments yet</h3>
+                                <p>Appointments will appear here when patients book them.</p>
                             </div>
                         </td>
                     </tr>
@@ -1207,31 +2237,215 @@
                 return;
             }
 
-            tbody.innerHTML = doctors.map(doc => `
+            tbody.innerHTML = appointments.map(apt => {
+                const date = new Date(apt.date);
+                const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                const formattedTime = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+                return `
                 <tr>
                     <td>
-                        <div class="doctor-info">
-                            <div class="doctor-avatar">${doc.first_name[0]}${doc.last_name[0]}</div>
-                            <div>
+                        <div class="user-info-cell">
+                            <div class="user-avatar-sm">${apt.patient_name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}</div>
+                            <div class="user-details">
+                                <div class="name">${apt.patient_name}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${apt.doctor_name}</td>
+                    <td>
+                        <div style="font-weight: 500;">${formattedDate}</div>
+                        <div style="color: var(--primary-500); font-size: 0.75rem;">${formattedTime}</div>
+                    </td>
+                    <td><span class="badge badge-${apt.status}">${apt.status}</span></td>
+                </tr>
+            `}).join('');
+        }
+
+        // Tab Switching
+        function switchTab(tab) {
+            currentTab = tab;
+
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.tab === tab) {
+                    item.classList.add('active');
+                }
+            });
+
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${tab}Tab`).classList.add('active');
+
+            const titles = {
+                overview: 'Dashboard Overview',
+                doctors: 'Manage Doctors',
+                appointments: 'Appointments',
+                patients: 'Patients'
+            };
+            document.getElementById('pageTitle').textContent = titles[tab] || 'Dashboard';
+
+            if (tab === 'appointments' && allAppointments.length === 0) {
+                loadAppointments();
+            }
+
+            // Close sidebar on mobile
+            if (window.innerWidth <= 1024) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        }
+
+        function navigateToAppointments(filter) {
+            currentFilter = filter;
+            switchTab('appointments');
+            if (filter !== 'all') {
+                document.getElementById('statusFilter').value = filter;
+                filterByStatus(filter);
+            }
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        // Filter Functions
+        function filterByStatus(status) {
+            currentFilter = status;
+            appointmentsPage = 1;
+            loadAppointments(1);
+
+            const badge = document.getElementById('filterBadge');
+            const badgeText = document.getElementById('filterBadgeText');
+
+            if (status !== 'all') {
+                badge.style.display = 'inline-flex';
+                badgeText.textContent = `Filter: ${status.charAt(0).toUpperCase() + status.slice(1)}`;
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        function clearFilter() {
+            currentFilter = 'all';
+            document.getElementById('statusFilter').value = 'all';
+            document.getElementById('filterBadge').style.display = 'none';
+            appointmentsPage = 1;
+            loadAppointments(1);
+        }
+
+        function filterDoctors() {
+            const search = document.getElementById('doctorSearch').value.toLowerCase();
+            const filtered = doctors.filter(d =>
+                d.full_name.toLowerCase().includes(search) ||
+                d.specialty.toLowerCase().includes(search) ||
+                d.email.toLowerCase().includes(search)
+            );
+            renderDoctorsTable(filtered);
+        }
+
+        function filterAppointments() {
+            const search = document.getElementById('appointmentSearch').value.toLowerCase();
+            const filtered = allAppointments.filter(a =>
+                a.patient_name.toLowerCase().includes(search) ||
+                a.doctor_name.toLowerCase().includes(search)
+            );
+            renderAppointmentsTable(filtered);
+        }
+
+        function handleSearch(e) {
+            if (e.key === 'Enter') {
+                const search = e.target.value.toLowerCase();
+                if (currentTab === 'doctors') {
+                    document.getElementById('doctorSearch').value = search;
+                    filterDoctors();
+                } else if (currentTab === 'appointments') {
+                    document.getElementById('appointmentSearch').value = search;
+                    filterAppointments();
+                }
+            }
+        }
+
+        // Load Data
+        async function loadDoctors() {
+            try {
+                const res = await api('/api/admin/doctors');
+                doctors = await res.json();
+                renderDoctorsTable(doctors);
+            } catch (error) {
+                console.error('Error loading doctors:', error);
+            }
+        }
+
+        async function loadAppointments(page = 1) {
+            try {
+                const url = currentFilter === 'all'
+                    ? `/api/admin/appointments?page=${page}`
+                    : `/api/admin/appointments?status=${currentFilter}&page=${page}`;
+
+                const res = await api(url);
+                const data = await res.json();
+
+                allAppointments = data.appointments || [];
+                appointmentsPage = data.current_page || 1;
+                appointmentsTotalPages = data.pages || 1;
+
+                renderAppointmentsTable(allAppointments);
+                renderPagination();
+            } catch (error) {
+                console.error('Error loading appointments:', error);
+            }
+        }
+
+        async function refreshData() {
+            showToast('info', 'Refreshing', 'Updating dashboard data...');
+            await loadDashboard();
+        }
+
+        // Render Functions
+        function renderDoctorsTable(doctorList) {
+            const tbody = document.querySelector('#doctorsTable tbody');
+            if (doctorList.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">${icons.empty}</div>
+                                <h3>No doctors found</h3>
+                                <p>Add your first doctor to get started.</p>
+                                <button class="btn btn-primary btn-sm" onclick="openAddDoctorModal()">Add Doctor</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = doctorList.map(doc => `
+                <tr>
+                    <td>
+                        <div class="user-info-cell">
+                            <div class="user-avatar-sm">${doc.first_name[0]}${doc.last_name[0]}</div>
+                            <div class="user-details">
                                 <div class="name">${doc.full_name}</div>
                                 <div class="email">${doc.email}</div>
                             </div>
                         </div>
                     </td>
-                    <td><span class="specialty-badge">${doc.specialty}</span></td>
+                    <td><span class="badge badge-specialty">${doc.specialty}</span></td>
                     <td>
-                        ${doc.rating > 0 
-                            ? `<div class="rating">${icons.star}<span>${doc.rating} (${doc.review_count})</span></div>`
-                            : '<span style="color: var(--primary-400); font-size: 0.75rem;">No reviews</span>'
-                        }
+                        ${doc.rating > 0
+                    ? `<div class="rating">${icons.star}<span>${doc.rating} (${doc.review_count})</span></div>`
+                    : '<span style="color: var(--primary-400); font-size: 0.75rem;">No reviews</span>'
+                }
                     </td>
-                    <td>${doc.appointment_count}</td>
+                    <td>${doc.appointment_count || 0}</td>
                     <td>
                         <div class="actions">
-                            <button class="btn-icon btn-edit" onclick="editDoctor(${doc.id})" title="Edit">
+                            <button class="btn-action btn-edit" onclick="editDoctor(${doc.id})" title="Edit">
                                 ${icons.edit}
                             </button>
-                            <button class="btn-icon btn-delete" onclick="deleteDoctor(${doc.id})" title="Delete">
+                            <button class="btn-action btn-delete" onclick="deleteDoctor(${doc.id})" title="Delete">
                                 ${icons.delete}
                             </button>
                         </div>
@@ -1240,19 +2454,19 @@
             `).join('');
         }
 
-        // Render Appointments
-        function renderAppointments(appointments) {
+        function renderAppointmentsTable(appointments) {
             const tbody = document.querySelector('#appointmentsTable tbody');
             if (appointments.length === 0) {
-                const message = currentFilter === 'all' 
-                    ? 'No appointments found' 
+                const message = currentFilter === 'all'
+                    ? 'No appointments found'
                     : `No ${currentFilter} appointments`;
                 tbody.innerHTML = `
                     <tr>
                         <td colspan="5">
                             <div class="empty-state">
-                                ${icons.empty}
-                                <p>${message}</p>
+                                <div class="empty-state-icon">${icons.empty}</div>
+                                <h3>${message}</h3>
+                                <p>Try adjusting your filters or search terms.</p>
                             </div>
                         </td>
                     </tr>
@@ -1264,15 +2478,15 @@
                 const date = new Date(apt.date);
                 const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
                 const formattedTime = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-                
+
                 return `
                 <tr>
                     <td>
-                        <div class="doctor-info">
-                            <div class="doctor-avatar" style="background: var(--primary-100); color: var(--primary-600);">
-                                ${apt.patient_name.split(' ').map(n => n[0]).join('')}
+                        <div class="user-info-cell">
+                            <div class="user-avatar-sm" style="background: var(--primary-100); color: var(--primary-600);">
+                                ${apt.patient_name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
                             </div>
-                            <div>
+                            <div class="user-details">
                                 <div class="name">${apt.patient_name}</div>
                                 <div class="email">${apt.patient_email || ''}</div>
                             </div>
@@ -1280,30 +2494,21 @@
                     </td>
                     <td>${apt.doctor_name}</td>
                     <td>
-                        <div style="font-size: 0.875rem;">
-                            <div style="font-weight: 500;">${formattedDate}</div>
-                            <div style="color: var(--primary-500); font-size: 0.75rem;">${formattedTime}</div>
-                        </div>
+                        <div style="font-weight: 500;">${formattedDate}</div>
+                        <div style="color: var(--primary-500); font-size: 0.75rem;">${formattedTime}</div>
                     </td>
-                    <td><span class="status-badge status-${apt.status}">${apt.status}</span></td>
+                    <td><span class="badge badge-${apt.status}">${apt.status}</span></td>
                     <td>
                         <div class="actions">
-                            <button class="btn-icon" style="background: var(--primary-100); color: var(--primary-600);" onclick="viewAppointment(${apt.id})" title="View Details">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
-                                    <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                    <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                </svg>
+                            <button class="btn-action btn-view" onclick="viewAppointment(${apt.id})" title="View Details">
+                                ${icons.eye}
                             </button>
                             ${apt.status === 'scheduled' ? `
-                                <button class="btn-icon btn-edit" onclick="completeAppointment(${apt.id})" title="Complete">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
-                                        <path d="M5 13l4 4L19 7"/>
-                                    </svg>
+                                <button class="btn-action btn-edit" onclick="completeAppointment(${apt.id})" title="Complete">
+                                    ${icons.check}
                                 </button>
-                                <button class="btn-icon btn-delete" onclick="cancelAppointment(${apt.id})" title="Cancel">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
-                                        <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
+                                <button class="btn-action btn-delete" onclick="cancelAppointment(${apt.id})" title="Cancel">
+                                    ${icons.x}
                                 </button>
                             ` : ''}
                         </div>
@@ -1312,7 +2517,56 @@
             `}).join('');
         }
 
-        // Load Specialties
+        function renderPagination() {
+            const pagination = document.getElementById('pagination');
+
+            if (appointmentsTotalPages <= 1) {
+                pagination.style.display = 'none';
+                return;
+            }
+
+            pagination.style.display = 'flex';
+
+            let html = '';
+
+            html += `<button class="pagination-btn" ${appointmentsPage <= 1 ? 'disabled' : ''} onclick="changePage(${appointmentsPage - 1})">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
+                    <path d="M15 19l-7-7 7-7"/>
+                </svg>
+            </button>`;
+
+            const startPage = Math.max(1, appointmentsPage - 2);
+            const endPage = Math.min(appointmentsTotalPages, appointmentsPage + 2);
+
+            if (startPage > 1) {
+                html += `<button class="pagination-btn" onclick="changePage(1)">1</button>`;
+                if (startPage > 2) html += `<span style="color: var(--primary-400);">...</span>`;
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                html += `<button class="pagination-btn ${i === appointmentsPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+            }
+
+            if (endPage < appointmentsTotalPages) {
+                if (endPage < appointmentsTotalPages - 1) html += `<span style="color: var(--primary-400);">...</span>`;
+                html += `<button class="pagination-btn" onclick="changePage(${appointmentsTotalPages})">${appointmentsTotalPages}</button>`;
+            }
+
+            html += `<button class="pagination-btn" ${appointmentsPage >= appointmentsTotalPages ? 'disabled' : ''} onclick="changePage(${appointmentsPage + 1})">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
+                    <path d="M9 5l7 7-7 7"/>
+                </svg>
+            </button>`;
+
+            pagination.innerHTML = html;
+        }
+
+        function changePage(page) {
+            if (page < 1 || page > appointmentsTotalPages) return;
+            loadAppointments(page);
+        }
+
+        // Modal Functions
         async function loadSpecialties() {
             if (specialties.length > 0) return;
             const res = await fetch('/api/specialties');
@@ -1322,7 +2576,6 @@
                 specialties.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
         }
 
-        // Modal Functions
         async function openAddDoctorModal() {
             document.getElementById('modalTitle').textContent = 'Add Doctor';
             document.getElementById('doctorId').value = '';
@@ -1344,7 +2597,7 @@
             document.getElementById('phone').value = doctor.phone || '';
             document.getElementById('bio').value = doctor.bio || '';
             document.getElementById('modalError').classList.remove('active');
-            
+
             await loadSpecialties();
             document.getElementById('specialty').value = doctor.specialty_id;
             document.getElementById('doctorModal').classList.add('active');
@@ -1354,7 +2607,6 @@
             document.getElementById('doctorModal').classList.remove('active');
         }
 
-        // Close modal on outside click
         document.getElementById('doctorModal')?.addEventListener('click', (e) => {
             if (e.target.id === 'doctorModal') closeModal();
         });
@@ -1383,13 +2635,13 @@
             try {
                 const url = id ? `/api/admin/doctors/${id}` : '/api/admin/doctors';
                 const method = id ? 'PUT' : 'POST';
-                
+
                 const res = await api(url, { method, body: JSON.stringify(data) });
 
                 if (res.ok) {
                     closeModal();
-                    clearFilter();
                     await loadDashboard();
+                    showToast('success', 'Success', id ? 'Doctor updated successfully' : 'Doctor added successfully');
                 } else {
                     const err = await res.json();
                     showModalError(err.error || 'Failed to save doctor');
@@ -1414,103 +2666,18 @@
                 const res = await api(`/api/admin/doctors/${id}`, { method: 'DELETE' });
 
                 if (res.ok) {
-                    clearFilter();
                     await loadDashboard();
+                    showToast('success', 'Deleted', 'Doctor removed successfully');
                 } else {
                     const err = await res.json();
-                    alert(err.error || 'Failed to delete doctor');
+                    showToast('error', 'Error', err.error || 'Failed to delete doctor');
                 }
             } catch (error) {
-                alert('An error occurred. Please try again.');
+                showToast('error', 'Error', 'An error occurred. Please try again.');
             }
         }
 
-        // Tab Switching
-        function switchTab(tab) {
-            currentTab = tab;
-
-            // Update tab styling
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
-
-            // Update tab content
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.getElementById(`${tab}Tab`).classList.add('active');
-
-            // Load data if needed
-            if (tab === 'appointments' && allAppointments.length === 0) {
-                loadAppointments();
-            }
-        }
-
-        // Load Appointments
-        async function loadAppointments(page = 1) {
-            try {
-                const url = currentFilter === 'all'
-                    ? `/api/admin/appointments?page=${page}`
-                    : `/api/admin/appointments?status=${currentFilter}&page=${page}`;
-                
-                const res = await api(url);
-                const data = await res.json();
-                
-                allAppointments = data.appointments;
-                appointmentsPage = data.current_page;
-                appointmentsTotalPages = data.pages;
-                
-                renderAppointments(allAppointments);
-                renderPagination();
-            } catch (error) {
-                console.error('Error loading appointments:', error);
-            }
-        }
-
-        // Render Pagination
-        function renderPagination() {
-            const pagination = document.getElementById('pagination');
-            
-            if (appointmentsTotalPages <= 1) {
-                pagination.style.display = 'none';
-                return;
-            }
-            
-            pagination.style.display = 'flex';
-            
-            let html = '';
-            
-            // Previous button
-            html += `<button class="btn btn-sm btn-secondary" ${!appointmentsPage > 1 ? 'disabled' : ''} onclick="changePage(${appointmentsPage - 1})">Previous</button>`;
-            
-            // Page numbers
-            const startPage = Math.max(1, appointmentsPage - 2);
-            const endPage = Math.min(appointmentsTotalPages, appointmentsPage + 2);
-            
-            if (startPage > 1) {
-                html += `<button class="btn btn-sm btn-secondary" onclick="changePage(1)">1</button>`;
-                if (startPage > 2) html += `<span style="color: var(--primary-400);">...</span>`;
-            }
-            
-            for (let i = startPage; i <= endPage; i++) {
-                html += `<button class="btn btn-sm ${i === appointmentsPage ? 'btn-primary' : 'btn-secondary'}" onclick="changePage(${i})">${i}</button>`;
-            }
-            
-            if (endPage < appointmentsTotalPages) {
-                if (endPage < appointmentsTotalPages - 1) html += `<span style="color: var(--primary-400);">...</span>`;
-                html += `<button class="btn btn-sm btn-secondary" onclick="changePage(${appointmentsTotalPages})">${appointmentsTotalPages}</button>`;
-            }
-            
-            // Next button
-            html += `<button class="btn btn-sm btn-secondary" ${appointmentsPage >= appointmentsTotalPages ? 'disabled' : ''} onclick="changePage(${appointmentsPage + 1})">Next</button>`;
-            
-            pagination.innerHTML = html;
-        }
-
-        // Change Page
-        function changePage(page) {
-            if (page < 1 || page > appointmentsTotalPages) return;
-            loadAppointments(page);
-        }
-
-        // View Appointment Details
+        // Appointment Functions
         function viewAppointment(id) {
             const appointment = allAppointments.find(a => a.id === id);
             if (!appointment) return;
@@ -1523,68 +2690,61 @@
             details.innerHTML = `
                 <div class="form-group">
                     <label>Patient Name</label>
-                    <div style="padding: 0.5rem; background: var(--primary-50); border-radius: var(--radius); font-weight: 500;">${appointment.patient_name}</div>
+                    <div style="padding: 0.75rem; background: var(--primary-50); border-radius: var(--radius-lg); font-weight: 500;">${appointment.patient_name}</div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Patient Email</label>
-                        <div style="padding: 0.5rem; background: var(--primary-50); border-radius: var(--radius);">${appointment.patient_email || 'N/A'}</div>
+                        <div style="padding: 0.75rem; background: var(--primary-50); border-radius: var(--radius-lg);">${appointment.patient_email || 'N/A'}</div>
                     </div>
                     <div class="form-group">
                         <label>Patient Phone</label>
-                        <div style="padding: 0.5rem; background: var(--primary-50); border-radius: var(--radius);">${appointment.patient_phone || 'N/A'}</div>
+                        <div style="padding: 0.75rem; background: var(--primary-50); border-radius: var(--radius-lg);">${appointment.patient_phone || 'N/A'}</div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Doctor</label>
-                    <div style="padding: 0.5rem; background: var(--primary-50); border-radius: var(--radius); font-weight: 500;">${appointment.doctor_name}</div>
+                    <div style="padding: 0.75rem; background: var(--primary-50); border-radius: var(--radius-lg); font-weight: 500;">${appointment.doctor_name}</div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Date</label>
-                        <div style="padding: 0.5rem; background: var(--primary-50); border-radius: var(--radius);">${formattedDate}</div>
+                        <div style="padding: 0.75rem; background: var(--primary-50); border-radius: var(--radius-lg);">${formattedDate}</div>
                     </div>
                     <div class="form-group">
                         <label>Time</label>
-                        <div style="padding: 0.5rem; background: var(--primary-50); border-radius: var(--radius);">${formattedTime}</div>
+                        <div style="padding: 0.75rem; background: var(--primary-50); border-radius: var(--radius-lg);">${formattedTime}</div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Status</label>
-                    <span class="status-badge status-${appointment.status}">${appointment.status}</span>
+                    <span class="badge badge-${appointment.status}">${appointment.status}</span>
                 </div>
                 <div class="form-group">
                     <label>Reason</label>
-                    <div style="padding: 0.5rem; background: var(--primary-50); border-radius: var(--radius); min-height: 40px;">${appointment.reason || 'No reason provided'}</div>
+                    <div style="padding: 0.75rem; background: var(--primary-50); border-radius: var(--radius-lg); min-height: 60px;">${appointment.reason || 'No reason provided'}</div>
                 </div>
             `;
 
-            // Update modal footer based on status
             const footer = document.getElementById('appointmentModalFooter');
             footer.innerHTML = '';
-            
+
             if (appointment.status === 'scheduled') {
                 footer.innerHTML = `
                     <button class="btn btn-secondary" onclick="closeAppointmentModal()">Close</button>
-                    <button class="btn btn-primary" onclick="completeAppointment(${appointment.id})">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
-                            <path d="M5 13l4 4L19 7"/>
-                        </svg>
+                    <button class="btn btn-success" onclick="completeAppointment(${appointment.id})">
+                        ${icons.check}
                         Complete
                     </button>
                     <button class="btn btn-danger" onclick="cancelAppointment(${appointment.id})">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
-                            <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
+                        ${icons.x}
                         Cancel
                     </button>
                 `;
             } else {
                 footer.innerHTML = `
                     <button class="btn btn-danger" onclick="deleteAppointment(${appointment.id})">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
-                            <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                        </svg>
+                        ${icons.delete}
                         Delete
                     </button>
                     <button class="btn btn-secondary" onclick="closeAppointmentModal()">Close</button>
@@ -1598,66 +2758,71 @@
             document.getElementById('appointmentModal').classList.remove('active');
         }
 
-        // Complete Appointment
         async function completeAppointment(id) {
             if (!confirm('Are you sure you want to mark this appointment as completed?')) return;
 
             try {
                 const res = await api(`/api/appointments/${id}/complete`, { method: 'POST' });
-                
+
                 if (res.ok) {
                     closeAppointmentModal();
                     loadAppointments(appointmentsPage);
                     loadDashboard();
+                    showToast('success', 'Completed', 'Appointment marked as completed');
                 } else {
                     const err = await res.json();
-                    alert(err.error || 'Failed to complete appointment');
+                    showToast('error', 'Error', err.error || 'Failed to complete appointment');
                 }
             } catch (error) {
-                alert('An error occurred. Please try again.');
+                showToast('error', 'Error', 'An error occurred. Please try again.');
             }
         }
 
-        // Cancel Appointment
         async function cancelAppointment(id) {
             if (!confirm('Are you sure you want to cancel this appointment?')) return;
 
             try {
                 const res = await api(`/api/appointments/${id}/cancel`, { method: 'POST' });
-                
+
                 if (res.ok) {
                     closeAppointmentModal();
                     loadAppointments(appointmentsPage);
                     loadDashboard();
+                    showToast('success', 'Cancelled', 'Appointment has been cancelled');
                 } else {
                     const err = await res.json();
-                    alert(err.error || 'Failed to cancel appointment');
+                    showToast('error', 'Error', err.error || 'Failed to cancel appointment');
                 }
             } catch (error) {
-                alert('An error occurred. Please try again.');
+                showToast('error', 'Error', 'An error occurred. Please try again.');
             }
         }
 
-        // Delete Appointment
         async function deleteAppointment(id) {
             if (!confirm('Are you sure you want to delete this appointment? This action cannot be undone.')) return;
 
             try {
                 const res = await api(`/api/admin/appointments/${id}`, { method: 'DELETE' });
-                
+
                 if (res.ok) {
                     closeAppointmentModal();
                     loadAppointments(appointmentsPage);
                     loadDashboard();
+                    showToast('success', 'Deleted', 'Appointment removed permanently');
                 } else {
                     const err = await res.json();
-                    alert(err.error || 'Failed to delete appointment');
+                    showToast('error', 'Error', err.error || 'Failed to delete appointment');
                 }
             } catch (error) {
-                alert('An error occurred. Please try again.');
+                showToast('error', 'Error', 'An error occurred. Please try again.');
             }
         }
 
+        function filterPatients() {
+            // Patients are managed through appointments, this is a placeholder
+            showToast('info', 'Info', 'Patient search filters through appointment records');
+        }
     </script>
 </body>
+
 </html>
