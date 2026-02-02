@@ -644,11 +644,11 @@
             <div class="modal-body">
                 <!-- Selected Doctor Info -->
                 <div class="selected-doctor"
-                    style="display: flex; gap: 1rem; margin-bottom: 1.5rem; padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-lg);">
+                    style="display: flex; gap: 0.75rem; margin-bottom: 1rem; padding: 0.75rem; background: var(--bg-secondary); border-radius: var(--radius-lg);">
                     <div class="doctor-avatar" id="modal-doctor-avatar"
-                        style="width: 56px; height: 56px; font-size: 1.25rem;">DR</div>
+                        style="width: 48px; height: 48px; font-size: 1rem;">DR</div>
                     <div class="doctor-info">
-                        <h4 id="modal-doctor-name" style="font-size: 1.125rem; margin-bottom: 0.25rem;">Doctor Name</h4>
+                        <h4 id="modal-doctor-name" style="font-size: 1rem; margin-bottom: 0.25rem; font-weight: 600;">Doctor Name</h4>
                         <span class="specialty-badge" id="modal-doctor-specialty">Specialty</span>
                     </div>
                 </div>
@@ -723,8 +723,8 @@
                     </div>
                     <div class="form-group">
                         <label for="appointment-reason" data-i18n="modal.form.reason">Reason for Visit</label>
-                        <textarea id="appointment-reason" class="form-textarea" rows="3"
-                            placeholder="Briefly describe your symptoms or reason for visit..."
+                        <textarea id="appointment-reason" class="form-textarea" rows="2"
+                            placeholder="Briefly describe your symptoms..."
                             data-i18n-placeholder="modal.form.reason.placeholder"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">
@@ -736,7 +736,7 @@
                 </form>
 
                 <!-- Email Preview Area -->
-                <div id="email-preview" class="email-preview hidden" style="margin-top: 1.5rem;">
+                <div id="email-preview" class="email-preview hidden" style="margin-top: 1rem;">
                     <div class="email-preview-header">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="32"
                             height="32" style="color: var(--accent-600);">
@@ -984,9 +984,6 @@
 
     <!-- ==================== TOAST CONTAINER ==================== -->
     <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
-
-    <!-- ==================== CONFETTI CANVAS ==================== -->
-    <canvas id="confetti-canvas" aria-hidden="true"></canvas>
 
     <!-- ==================== SCRIPTS ==================== -->
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>

@@ -1917,24 +1917,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td colspan="5">
-                                                <div class="empty-state">
-                                                    <div class="empty-state-icon">
-                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2">
-                                                            <path
-                                                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                                        </svg>
-                                                    </div>
-                                                    <h3>Patients List</h3>
-                                                    <p>Patient data is managed through appointments. View patient
-                                                        details in the appointments section.</p>
-                                                    <button class="btn btn-primary btn-sm"
-                                                        onclick="switchTab('appointments')">
-                                                        View Appointments
-                                                    </button>
-                                                </div>
-                                            </td>
+                                            <td colspan="5" class="loading">Loading patients...</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -2029,6 +2012,7 @@
         let specialties = [];
         let doctors = [];
         let allAppointments = [];
+        let patients = [];
         let currentFilter = 'all';
         let appointmentsPage = 1;
         let appointmentsTotalPages = 1;
@@ -2045,7 +2029,8 @@
             empty: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
             check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>',
             x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 18L18 6M6 6l12 12"/></svg>',
-            eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>'
+            eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>',
+            users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>'
         };
 
         // Toast Notifications
@@ -2290,6 +2275,10 @@
                 loadAppointments();
             }
 
+            if (tab === 'patients' && patients.length === 0) {
+                loadPatients();
+            }
+
             // Close sidebar on mobile
             if (window.innerWidth <= 1024) {
                 document.getElementById('sidebar').classList.remove('open');
@@ -2394,6 +2383,16 @@
                 renderPagination();
             } catch (error) {
                 console.error('Error loading appointments:', error);
+            }
+        }
+
+        async function loadPatients() {
+            try {
+                const res = await api('/api/admin/patients');
+                patients = await res.json();
+                renderPatientsTable(patients);
+            } catch (error) {
+                console.error('Error loading patients:', error);
             }
         }
 
@@ -2559,6 +2558,56 @@
             </button>`;
 
             pagination.innerHTML = html;
+        }
+
+        function renderPatientsTable(patientList) {
+            const tbody = document.querySelector('#patientsTable tbody');
+            if (patientList.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">${icons.users}</div>
+                                <h3>No patients found</h3>
+                                <p>Patients will appear here when they book appointments.</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = patientList.map(patient => `
+                <tr>
+                    <td>
+                        <div class="user-info-cell">
+                            <div class="user-avatar-sm" style="background: var(--info-light); color: var(--info);">
+                                ${patient.first_name[0]}${patient.last_name[0]}
+                            </div>
+                            <div class="user-details">
+                                <div class="name">${patient.first_name} ${patient.last_name}</div>
+                                <div class="email">${patient.email}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${patient.email}</td>
+                    <td>${patient.phone}</td>
+                    <td style="text-align: center;">
+                        <span style="font-weight: 600; color: var(--primary-700);">${patient.appointment_count}</span>
+                    </td>
+                    <td>${patient.last_visit}</td>
+                </tr>
+            `).join('');
+        }
+
+        function filterPatients() {
+            const search = document.getElementById('patientSearch').value.toLowerCase();
+            const filtered = patients.filter(p => 
+                p.first_name.toLowerCase().includes(search) ||
+                p.last_name.toLowerCase().includes(search) ||
+                p.email.toLowerCase().includes(search)
+            );
+            renderPatientsTable(filtered);
         }
 
         function changePage(page) {
@@ -2816,11 +2865,6 @@
             } catch (error) {
                 showToast('error', 'Error', 'An error occurred. Please try again.');
             }
-        }
-
-        function filterPatients() {
-            // Patients are managed through appointments, this is a placeholder
-            showToast('info', 'Info', 'Patient search filters through appointment records');
         }
     </script>
 </body>

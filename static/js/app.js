@@ -11,7 +11,6 @@
  * - Appointment Booking & Management
  * - Review System
  * - Toast Notifications
- * - Confetti Effects
  * - Modal System
  * - Date Picker & Time Slots
  * - Email Preview
@@ -1275,8 +1274,6 @@ async function handleBookingSubmit(e) {
     closeModal('booking-modal');
     closeModal('booking-modal');
     showToast(window.t('toast.booking.success'), 'success');
-    showConfetti();
-    showConfetti();
 
     // Show email preview
     const date = new Date(formData.dateTime);
@@ -1711,87 +1708,6 @@ function showEmailPreview(data) {
 }
 
 // ============================================================================
-// CONFETTI EFFECT
-// ============================================================================
-
-/**
- * Show confetti animation using canvas
- */
-function showConfetti() {
-  const canvas = document.createElement('canvas');
-  canvas.id = 'confetti-canvas';
-  document.body.appendChild(canvas);
-
-  const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  const colors = ['#14b8a6', '#0d9488', '#fbbf24', '#f59e0b', '#60a5fa', '#a78bfa'];
-  const particles = [];
-  const particleCount = 100;
-
-  // Create particles
-  for (let i = 0; i < particleCount; i++) {
-    particles.push({
-      x: canvas.width / 2,
-      y: canvas.height / 2,
-      vx: (Math.random() - 0.5) * 15,
-      vy: (Math.random() - 0.5) * 15 - 5,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      size: Math.random() * 8 + 4,
-      rotation: Math.random() * 360,
-      rotationSpeed: (Math.random() - 0.5) * 10,
-      opacity: 1
-    });
-  }
-
-  let animationId;
-  let frameCount = 0;
-
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    particles.forEach((p, i) => {
-      p.x += p.vx;
-      p.y += p.vy;
-      p.vy += 0.3; // Gravity
-      p.rotation += p.rotationSpeed;
-      p.opacity -= 0.008;
-
-      ctx.save();
-      ctx.translate(p.x, p.y);
-      ctx.rotate((p.rotation * Math.PI) / 180);
-      ctx.globalAlpha = p.opacity;
-      ctx.fillStyle = p.color;
-      ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
-      ctx.restore();
-
-      // Remove particles that are off screen or faded
-      if (p.opacity <= 0 || p.y > canvas.height + 50) {
-        particles.splice(i, 1);
-      }
-    });
-
-    frameCount++;
-
-    if (particles.length > 0 && frameCount < 200) {
-      animationId = requestAnimationFrame(animate);
-    } else {
-      cancelAnimationFrame(animationId);
-      canvas.remove();
-    }
-  }
-
-  animate();
-
-  // Handle resize
-  window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }, { once: true });
-}
-
-// ============================================================================
 // TOAST NOTIFICATIONS
 // ============================================================================
 
@@ -2102,7 +2018,7 @@ globalThis.initDatePicker = initDatePicker;
 globalThis.loadAvailableSlots = loadAvailableSlots;
 globalThis.initStarRating = initStarRating;
 globalThis.showEmailPreview = showEmailPreview;
-globalThis.showConfetti = showConfetti;
+
 globalThis.showToast = showToast;
 globalThis.getInitials = getInitials;
 globalThis.escapeHtml = escapeHtml;

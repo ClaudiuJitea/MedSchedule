@@ -1042,6 +1042,42 @@ def admin_delete_appointment(appointment_id):
     
     return jsonify({'message': 'Appointment deleted successfully'})
 
+
+@app.route('/api/admin/patients', methods=['GET'])
+def admin_get_patients():
+    """Get all patients with their appointment statistics."""
+    if not check_admin_auth():
+        return jsonify({'error': 'Unauthorized'}), 401
+    
+    patients = Patient.query.all()
+    result = []
+    
+    for patient in patients:
+        # Get appointment count
+        appointment_count = Appointment.query.filter_by(patient_id=patient.id).count()
+        
+        # Get last visit (most recent appointment)
+        last_appointment = Appointment.query.filter_by(
+            patient_id=patient.id
+        ).order_by(Appointment.appointment_date.desc()).first()
+        
+        last_visit = None
+        if last_appointment:
+            last_visit = last_appointment.appointment_date.strftime('%Y-%m-%d')
+        
+        result.append({
+            'id': patient.id,
+            'first_name': patient.first_name,
+            'last_name': patient.last_name,
+            'email': patient.email,
+            'phone': patient.phone or 'N/A',
+            'appointment_count': appointment_count,
+            'last_visit': last_visit or 'Never'
+        })
+    
+    return jsonify(result)
+
+
 # ============ APPOINTMENT OVERLAP PREVENTION ============
 
 APPOINTMENT_DURATION_MINUTES = 30
