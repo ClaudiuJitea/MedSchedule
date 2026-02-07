@@ -42,6 +42,139 @@ const AppState = {
 globalThis.AppState = AppState;
 
 // ============================================================================
+// UTILITY FUNCTIONS
+// ============================================================================
+
+/**
+ * Format phone number in a nice grouped format
+ * Supports various formats: +1 (555) 123-4567, (555) 123-4567, 555-123-4567
+ * @param {string} phone - Raw phone number
+ * @returns {string} Formatted phone number
+ */
+function formatPhoneNumber(phone) {
+  if (!phone || phone === 'N/A') return 'N/A';
+  
+  // Remove all non-digit characters except +
+  const cleaned = phone.replace(/[^\d+]/g, '');
+  
+  // Check if it starts with country code (e.g., +1, +44)
+  const hasCountryCode = cleaned.startsWith('+');
+  const digits = cleaned.replace(/\D/g, '');
+  
+  if (hasCountryCode) {
+    // Format: +X (XXX) XXX-XXXX for US/Canada (+1)
+    // Or: +XX XXX XXX XXXX for other countries
+    const countryCode = cleaned.match(/^\+(\d+)/)?.[1] || '';
+    const rest = digits.substring(countryCode.length);
+    
+    if (countryCode === '1' && rest.length === 10) {
+      // US/Canada format: +1 (555) 123-4567
+      return `+1 (${rest.slice(0, 3)}) ${rest.slice(3, 6)}-${rest.slice(6)}`;
+    } else if (rest.length >= 7) {
+      // Generic international format
+      if (rest.length <= 9) {
+        return `+${countryCode} ${rest.slice(0, 3)} ${rest.slice(3, 6)} ${rest.slice(6)}`;
+      } else {
+        return `+${countryCode} ${rest.slice(0, 3)} ${rest.slice(3, 6)} ${rest.slice(6, 10)}`;
+      }
+    }
+    return `+${countryCode} ${rest}`;
+  }
+  
+  // No country code
+  if (digits.length === 10) {
+    // US format: (555) 123-4567
+    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+  } else if (digits.length === 7) {
+    // Local format: 555-1234
+    return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+  }
+  
+  // For other lengths, try to group nicely
+  if (digits.length > 10) {
+    // Could be country code without +, format as international
+    return `+${digits.slice(0, digits.length - 10)} (${digits.slice(-10, -7)}) ${digits.slice(-7, -4)}-${digits.slice(-4)}`;
+  }
+  
+  // Return original if can't parse
+  return phone;
+}
+
+/**
+ * Format phone number input as user types
+ * Supports real-time formatting with proper cursor positioning
+ * @param {HTMLInputElement} input - The phone input element
+ */
+function formatPhoneInput(input) {
+  const cursorPosition = input.selectionStart;
+  const previousLength = input.value.length;
+  
+  // Get only digits and +
+  let value = input.value.replace(/[^\d+]/g, '');
+  
+  if (value.startsWith('+')) {
+    // International format
+    const countryCodeMatch = value.match(/^\+(\d{0,3})/);
+    const countryCode = countryCodeMatch ? countryCodeMatch[1] : '';
+    const rest = value.substring(1 + countryCode.length);
+    
+    if (countryCode === '1') {
+      // US/Canada: +1 (XXX) XXX-XXXX
+      const area = rest.substring(0, 3);
+      const prefix = rest.substring(3, 6);
+      const line = rest.substring(6, 10);
+      
+      let formatted = '+1';
+      if (area) formatted += ` (${area}`;
+      if (area.length === 3) formatted += ')';
+      if (prefix) formatted += ` ${prefix}`;
+      if (line) formatted += `-${line}`;
+      
+      input.value = formatted;
+    } else {
+      // Other international: +XX XXX XXX XXXX
+      if (countryCode && rest) {
+        const groups = rest.match(/(\d{0,3})(\d{0,3})(\d{0,4})/).slice(1);
+        const formatted = `+${countryCode} ${groups[0]}${groups[1] ? ' ' + groups[1] : ''}${groups[2] ? ' ' + groups[2] : ''}`.trim();
+        input.value = formatted;
+      } else {
+        input.value = value;
+      }
+    }
+  } else {
+    // Local format: (XXX) XXX-XXXX
+    const area = value.substring(0, 3);
+    const prefix = value.substring(3, 6);
+    const line = value.substring(6, 10);
+    
+    let formatted = '';
+    if (area) formatted += `(${area}`;
+    if (area.length === 3) formatted += ')';
+    if (prefix) formatted += ` ${prefix}`;
+    if (line) formatted += `-${line}`;
+    
+    input.value = formatted;
+  }
+  
+  // Adjust cursor position
+  const newLength = input.value.length;
+  const cursorOffset = newLength - previousLength;
+  input.setSelectionRange(cursorPosition + cursorOffset, cursorPosition + cursorOffset);
+}
+
+/**
+ * Initialize phone input formatting
+ * @param {string} inputId - The ID of the phone input element
+ */
+function initPhoneInput(inputId) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  
+  input.addEventListener('input', () => formatPhoneInput(input));
+  input.addEventListener('blur', () => formatPhoneInput(input));
+}
+
+// ============================================================================
 // THEME MANAGEMENT
 // ============================================================================
 
@@ -612,7 +745,7 @@ async function loadDoctorDetail(doctorId) {
           </div>
           <div style="padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-lg);">
             <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">${window.t('detail.phone')}</span>
-            <p style="font-weight: 600; margin-top: 0.25rem;">${escapeHtml(doctor.phone || 'N/A')}</p>
+            <p style="font-weight: 600; margin-top: 0.25rem;">${formatPhoneNumber(doctor.phone)}</p>
           </div>
         </div>
         
@@ -1419,14 +1552,26 @@ function initDatePicker() {
     if (date) {
       loadAvailableSlots(AppState.currentDoctorId, date, 'appointment-time');
     } else {
-      timeSelect.innerHTML = '<option value="">Select time</option>';
+      const optionsContainer = document.getElementById('time-select-options');
+      const displayText = document.getElementById('time-select-text');
+      if (optionsContainer) optionsContainer.innerHTML = '<div class="custom-time-option disabled">Select time</div>';
+      if (displayText) displayText.textContent = 'Select time';
+      timeSelect.value = '';
     }
   });
 
-  // Handle time change
-  timeSelect.addEventListener('change', (e) => {
-    AppState.selectedTime = e.target.value;
+  // Handle time change (for custom dropdown - watch hidden input)
+  const timeObserver = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
+        AppState.selectedTime = timeSelect.value;
+      }
+    });
   });
+  timeObserver.observe(timeSelect, { attributes: true });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', closeTimeDropdown);
 
   // Initialize appointment type selector if exists
   initAppointmentTypeSelector();
@@ -1438,34 +1583,110 @@ function initDatePicker() {
  * @param {string} date - Date string (YYYY-MM-DD)
  * @param {string} elementId - Select element ID to populate
  */
+/**
+ * Toggle time dropdown visibility
+ */
+function toggleTimeDropdown() {
+  const dropdown = document.getElementById('time-select-dropdown');
+  const trigger = document.getElementById('time-select-trigger');
+  const container = document.getElementById('time-select-container');
+  if (!dropdown || !trigger) return;
+  
+  const isActive = dropdown.classList.toggle('active');
+  trigger.classList.toggle('active');
+  if (container) container.classList.toggle('active', isActive);
+  
+  // Check positioning if opening
+  if (isActive) {
+    const rect = trigger.getBoundingClientRect();
+    const dropdownHeight = 280;
+    const spaceBelow = window.innerHeight - rect.bottom;
+    
+    // If not enough space below, position above
+    if (spaceBelow < dropdownHeight && rect.top > dropdownHeight) {
+      dropdown.classList.add('position-top');
+    } else {
+      dropdown.classList.remove('position-top');
+    }
+  }
+}
+
+/**
+ * Close time dropdown when clicking outside
+ */
+function closeTimeDropdown(e) {
+  const container = document.getElementById('time-select-container');
+  if (!container) return;
+  
+  if (!container.contains(e.target)) {
+    const dropdown = document.getElementById('time-select-dropdown');
+    const trigger = document.getElementById('time-select-trigger');
+    if (dropdown) {
+      dropdown.classList.remove('active');
+      dropdown.classList.remove('position-top');
+    }
+    if (trigger) trigger.classList.remove('active');
+    container.classList.remove('active');
+  }
+}
+
+/**
+ * Select a time slot
+ */
+function selectTimeSlot(datetime, timeText, element) {
+  const hiddenInput = document.getElementById('appointment-time');
+  const displayText = document.getElementById('time-select-text');
+  const dropdown = document.getElementById('time-select-dropdown');
+  const trigger = document.getElementById('time-select-trigger');
+  const container = document.getElementById('time-select-container');
+  
+  if (hiddenInput) hiddenInput.value = datetime;
+  if (displayText) displayText.textContent = timeText;
+  if (dropdown) {
+    dropdown.classList.remove('active');
+    dropdown.classList.remove('position-top');
+  }
+  if (trigger) trigger.classList.remove('active');
+  if (container) container.classList.remove('active');
+  
+  // Update selected state in options
+  const options = document.querySelectorAll('.custom-time-option');
+  options.forEach(opt => opt.classList.remove('selected'));
+  if (element) element.classList.add('selected');
+}
+
 async function loadAvailableSlots(doctorId, date, elementId = 'appointment-time') {
-  const select = document.getElementById(elementId);
-  if (!select) return;
-
-  select.innerHTML = '<option value="">Loading...</option>';
-  select.disabled = true;
-
+  const hiddenInput = document.getElementById(elementId);
+  const optionsContainer = document.getElementById('time-select-options');
+  const displayText = document.getElementById('time-select-text');
+  
+  if (!hiddenInput || !optionsContainer) return;
+  
+  // Reset to loading state
+  optionsContainer.innerHTML = '<div class="custom-time-option disabled">Loading...</div>';
+  hiddenInput.value = '';
+  if (displayText) displayText.textContent = 'Select time';
+  
   try {
     const slots = await fetchAPI(`available-slots?doctor_id=${doctorId}&date=${date}`);
-
-    select.innerHTML = '<option value="">Select time</option>';
-    select.disabled = false;
-
+    
+    optionsContainer.innerHTML = '';
+    
     if (slots.length === 0) {
-      select.innerHTML = '<option value="">No available slots</option>';
+      optionsContainer.innerHTML = '<div class="custom-time-option disabled">No available slots</div>';
       return;
     }
-
+    
     slots.forEach(slot => {
-      const option = document.createElement('option');
-      option.value = slot.datetime;
+      const option = document.createElement('div');
+      option.className = 'custom-time-option';
       option.textContent = slot.time;
-      select.appendChild(option);
+      option.onclick = function() { selectTimeSlot(slot.datetime, slot.time, this); };
+      optionsContainer.appendChild(option);
     });
   } catch (error) {
     console.error('Failed to load available slots:', error);
-    select.innerHTML = '<option value="">Error loading slots</option>';
-    select.disabled = false;
+    optionsContainer.innerHTML = '<div class="custom-time-option disabled">Error loading slots</div>';
   }
 }
 
@@ -1936,6 +2157,9 @@ function init() {
   // Initialize star rating
   initStarRating();
 
+  // Initialize phone input formatting
+  initPhoneInput('patient-phone');
+
   // Load initial data
   loadSpecialties();
   loadDoctors();
@@ -2008,6 +2232,9 @@ globalThis.handleBookingSubmit = handleBookingSubmit;
 globalThis.selectAppointmentType = selectAppointmentType;
 globalThis.submitReschedule = submitReschedule;
 globalThis.changeRescheduleMonth = changeRescheduleMonth;
+globalThis.toggleTimeDropdown = toggleTimeDropdown;
+globalThis.selectTimeSlot = selectTimeSlot;
+globalThis.closeTimeDropdown = closeTimeDropdown;
 globalThis.selectRescheduleDate = selectRescheduleDate;
 globalThis.selectRescheduleTime = selectRescheduleTime;
 globalThis.renderRescheduleCalendar = renderRescheduleCalendar;

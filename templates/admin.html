@@ -186,12 +186,23 @@
             font-size: 1rem;
             transition: all 0.2s;
             background: white;
+            color: var(--primary-900);
         }
 
         .login-card input:focus {
             outline: none;
             border-color: var(--accent-500);
             box-shadow: 0 0 0 4px var(--accent-100);
+        }
+
+        [data-theme="dark"] .login-card input {
+            background: var(--primary-200);
+            border-color: var(--primary-300);
+            color: var(--primary-800);
+        }
+
+        [data-theme="dark"] .login-card input:focus {
+            box-shadow: 0 0 0 4px var(--accent-200);
         }
 
         .login-card input:focus+svg,
@@ -425,6 +436,7 @@
             border-radius: var(--radius-lg);
             border: 1px solid var(--primary-200);
             background: white;
+            color: var(--primary-600);
             color: var(--primary-600);
             display: flex;
             align-items: center;
@@ -750,6 +762,7 @@
         .data-table td {
             padding: 1rem 1.25rem;
             text-align: left;
+            vertical-align: middle;
         }
 
         .data-table th {
@@ -774,6 +787,7 @@
         .data-table td {
             border-bottom: 1px solid var(--primary-100);
             transition: background 0.15s;
+            vertical-align: middle;
         }
 
         .data-table tr:last-child td {
@@ -789,7 +803,6 @@
         }
 
         .data-table tbody tr:hover {
-            transform: scale(1.002);
             box-shadow: var(--shadow-sm);
         }
 
@@ -798,6 +811,7 @@
             display: flex;
             align-items: center;
             gap: 0.875rem;
+            height: 100%;
         }
 
         .user-avatar-sm {
@@ -817,11 +831,13 @@
         .user-details .name {
             font-weight: 600;
             color: var(--primary-900);
+            line-height: 1.4;
         }
 
         .user-details .email {
             font-size: 0.75rem;
             color: var(--primary-500);
+            line-height: 1.4;
         }
 
         /* ===== Badges ===== */
@@ -973,6 +989,14 @@
             overflow: hidden;
             animation: modalSlide 0.3s ease;
             box-shadow: var(--shadow-xl);
+        }
+
+        .modal.modal-wide {
+            max-width: 900px;
+        }
+
+        .modal.modal-wide .modal-body {
+            max-height: 70vh;
         }
 
         @keyframes modalSlide {
@@ -1448,6 +1472,365 @@
         .hidden {
             display: none !important;
         }
+
+        /* ===== DARK MODE STYLES ===== */
+        [data-theme="dark"] {
+            color-scheme: dark;
+            --primary-50: #0f172a;
+            --primary-100: #1e293b;
+            --primary-200: #334155;
+            --primary-300: #475569;
+            --primary-400: #64748b;
+            --primary-500: #94a3b8;
+            --primary-600: #cbd5e1;
+            --primary-700: #e2e8f0;
+            --primary-800: #f1f5f9;
+            --primary-900: #f8fafc;
+            --accent-50: #042f2e;
+            --accent-100: #0f3d3a;
+            --accent-200: #134e4a;
+            --accent-500: #14b8a6;
+            --accent-600: #0d9488;
+            --accent-700: #0f766e;
+            --accent-800: #99f6e4;
+            --accent-900: #ccfbf1;
+            --success: #10b981;
+            --success-light: rgba(16, 185, 129, 0.2);
+            --warning: #f59e0b;
+            --warning-light: rgba(245, 158, 11, 0.2);
+            --error: #ef4444;
+            --error-light: rgba(239, 68, 68, 0.2);
+            --info: #3b82f6;
+            --info-light: rgba(59, 130, 246, 0.2);
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.5);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.5);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5);
+        }
+
+        [data-theme="dark"] body {
+            background-color: var(--primary-50);
+            color: var(--primary-800);
+        }
+
+        [data-theme="dark"] .login-container {
+            background: linear-gradient(135deg, var(--accent-50) 0%, var(--primary-100) 50%, var(--primary-200) 100%);
+        }
+
+        [data-theme="dark"] .login-card {
+            background: rgba(30, 41, 59, 0.95);
+            border-color: rgba(71, 85, 105, 0.5);
+        }
+
+        [data-theme="dark"] .sidebar {
+            background: var(--primary-100);
+            border-right-color: var(--primary-200);
+        }
+
+        [data-theme="dark"] .nav-item:hover,
+        [data-theme="dark"] .nav-item.active {
+            background: var(--primary-200);
+        }
+
+        [data-theme="dark"] .stat-card,
+        [data-theme="dark"] .chart-card,
+        [data-theme="dark"] .chart-container,
+        [data-theme="dark"] .card,
+        [data-theme="dark"] .data-table-container,
+        [data-theme="dark"] .modal-content,
+        [data-theme="dark"] .modal,
+        [data-theme="dark"] .modal-body {
+            background: var(--primary-100);
+        }
+
+        [data-theme="dark"] .data-table th {
+            background: var(--primary-200);
+            color: var(--primary-700);
+        }
+
+        [data-theme="dark"] .data-table td {
+            background: var(--primary-100);
+            border-bottom-color: var(--primary-200);
+            color: var(--primary-800);
+        }
+
+        [data-theme="dark"] .data-table tbody tr {
+            background: var(--primary-100);
+        }
+
+        [data-theme="dark"] .data-table tr:hover td,
+        [data-theme="dark"] .data-table tbody tr:hover {
+            background: var(--primary-200);
+        }
+
+        [data-theme="dark"] .status-badge {
+            color: #fff;
+        }
+
+        [data-theme="dark"] .status-scheduled {
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399 !important;
+            font-weight: 600;
+        }
+
+        [data-theme="dark"] .status-completed {
+            background: rgba(139, 92, 246, 0.2);
+            color: #a78bfa !important;
+            font-weight: 600;
+        }
+
+        [data-theme="dark"] .status-cancelled {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171 !important;
+            font-weight: 600;
+        }
+
+        /* Badge styles for dark mode (used in appointments table) */
+        [data-theme="dark"] .badge-scheduled {
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+        }
+
+        [data-theme="dark"] .badge-completed {
+            background: rgba(139, 92, 246, 0.2);
+            color: #a78bfa;
+        }
+
+        [data-theme="dark"] .badge-cancelled {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+
+        [data-theme="dark"] .form-input,
+        [data-theme="dark"] .form-select,
+        [data-theme="dark"] .search-box input {
+            background: var(--primary-200);
+            border-color: var(--primary-300);
+            color: var(--primary-800);
+        }
+
+        [data-theme="dark"] .search-box {
+            background: var(--primary-200);
+            border-color: var(--primary-300);
+        }
+
+        [data-theme="dark"] .search-box svg {
+            color: var(--primary-500);
+        }
+
+        [data-theme="dark"] .top-nav {
+            background: var(--primary-100);
+            border-bottom-color: var(--primary-200);
+        }
+
+        [data-theme="dark"] canvas {
+            background: transparent !important;
+        }
+
+        [data-theme="dark"] #patientsTable a:hover,
+        [data-theme="dark"] .appointment-count-link:hover {
+            background-color: var(--primary-200) !important;
+        }
+
+        #patientsTable tr {
+            height: 64px;
+        }
+
+        #patientsTable td {
+            vertical-align: middle !important;
+        }
+
+        #patientsTable td:nth-child(4) {
+            text-align: center;
+        }
+
+        .appointment-count-link {
+            font-weight: 600;
+            color: var(--accent-600);
+            text-decoration: none;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius);
+            transition: background-color 0.2s;
+        }
+
+        [data-theme="dark"] .user-details .name {
+            color: var(--primary-800);
+        }
+
+        [data-theme="dark"] .user-details .email {
+            color: var(--primary-600);
+        }
+
+        [data-theme="dark"] .stat-card .value {
+            color: var(--primary-800);
+        }
+
+        [data-theme="dark"] .stat-card .label {
+            color: var(--primary-600);
+        }
+
+        [data-theme="dark"] .toast {
+            background: var(--primary-100);
+            color: var(--primary-800);
+        }
+
+        [data-theme="dark"] .toast-title {
+            color: var(--primary-800);
+        }
+
+        [data-theme="dark"] .toast-message {
+            color: var(--primary-600);
+        }
+
+        [data-theme="dark"] .btn-secondary {
+            background: var(--primary-200);
+            color: var(--primary-800);
+        }
+
+        [data-theme="dark"] .btn-secondary:hover {
+            background: var(--primary-300);
+        }
+
+        [data-theme="dark"] .btn-icon {
+            background: var(--primary-200);
+            border-color: var(--primary-300);
+            color: var(--primary-400);
+        }
+
+        [data-theme="dark"] .btn-icon:hover {
+            background: var(--primary-300);
+            border-color: var(--primary-400);
+            color: var(--primary-800);
+        }
+
+        [data-theme="dark"] .page-title {
+            color: var(--primary-800);
+        }
+
+        [data-theme="dark"] .card-header h2 {
+            color: var(--primary-800);
+        }
+
+        [data-theme="dark"] .empty-state h3 {
+            color: var(--primary-800);
+        }
+
+        [data-theme="dark"] .empty-state p {
+            color: var(--primary-600);
+        }
+
+        [data-theme="dark"] .modal-header {
+            border-bottom-color: var(--primary-200);
+        }
+
+        [data-theme="dark"] .modal-header h3 {
+            color: var(--primary-800);
+        }
+
+        [data-theme="dark"] .modal-footer {
+            border-top-color: var(--primary-200);
+        }
+
+        [data-theme="dark"] .modal-close {
+            color: var(--primary-500);
+        }
+
+        [data-theme="dark"] .modal-close:hover {
+            background: var(--primary-200);
+            color: var(--primary-800);
+        }
+
+        [data-theme="dark"] .alert-error {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        [data-theme="dark"] .alert-success {
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        [data-theme="dark"] #patientAppointmentsModal .modal-content,
+        [data-theme="dark"] #patientAppointmentsModal .modal-body {
+            background: var(--primary-100);
+        }
+
+        [data-theme="dark"] #patientAppointmentsModal .patient-info-header {
+            border-bottom-color: var(--primary-200) !important;
+        }
+
+        [data-theme="dark"] #patientAppointmentsName {
+            color: var(--primary-800) !important;
+        }
+
+        [data-theme="dark"] #patientAppointmentsEmail {
+            color: var(--primary-500) !important;
+        }
+
+        [data-theme="dark"] #patientAppointmentsList .data-table th {
+            background: var(--primary-200);
+            color: var(--primary-700);
+        }
+
+        [data-theme="dark"] #patientAppointmentsList .data-table td {
+            background: var(--primary-100);
+            color: var(--primary-800);
+            border-bottom-color: var(--primary-200);
+        }
+
+        [data-theme="dark"] #patientAppointmentsList .data-table tbody tr {
+            background: var(--primary-100);
+        }
+
+        [data-theme="dark"] #patientAppointmentsList .data-table tr:hover td {
+            background: var(--primary-200);
+        }
+
+        #patientAppointmentsModal .table-container {
+            overflow-x: visible;
+        }
+
+        #patientAppointmentsModal .data-table {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        #patientAppointmentsModal .data-table th,
+        #patientAppointmentsModal .data-table td {
+            padding: 1rem 0.75rem;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-lg);
+            border: none;
+            background: transparent;
+            color: var(--primary-600);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover {
+            background: var(--primary-100);
+            color: var(--accent-600);
+        }
+
+        [data-theme="dark"] .theme-toggle:hover {
+            background: var(--primary-200);
+        }
+
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+        }
     </style>
 </head>
 
@@ -1585,6 +1968,15 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path
                                 d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                    </button>
+                    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+                        <svg id="theme-icon-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"/>
+                            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                        </svg>
+                        <svg id="theme-icon-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
                         </svg>
                     </button>
                 </div>
@@ -1911,7 +2303,7 @@
                                             <th>Patient</th>
                                             <th>Email</th>
                                             <th>Phone</th>
-                                            <th>Appointments</th>
+                                            <th style="text-align: center;">Appointments</th>
                                             <th>Last Visit</th>
                                         </tr>
                                     </thead>
@@ -2006,7 +2398,154 @@
         </div>
     </div>
 
+    <!-- Patient Appointments Modal -->
+    <div id="patientAppointmentsModal" class="modal-overlay">
+        <div class="modal modal-wide">
+            <div class="modal-header">
+                <h3>Patient Appointments</h3>
+                <button class="modal-close" onclick="closePatientAppointmentsModal()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="patientAppointmentsContent">
+                    <div class="patient-info-header" style="margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--primary-200);">
+                        <h4 id="patientAppointmentsName" style="margin: 0 0 0.5rem 0; color: var(--primary-800);"></h4>
+                        <p id="patientAppointmentsEmail" style="margin: 0; color: var(--primary-500); font-size: 0.875rem;"></p>
+                    </div>
+                    <div id="patientAppointmentsList" style="color: var(--primary-600);">
+                        <div class="loading" style="color: var(--primary-600);">Loading appointments...</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closePatientAppointmentsModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Utility Functions
+        function formatPhoneNumber(phone) {
+            if (!phone || phone === 'N/A') return 'N/A';
+            const cleaned = phone.replace(/[^\d+]/g, '');
+            const hasCountryCode = cleaned.startsWith('+');
+            const digits = cleaned.replace(/\D/g, '');
+            if (hasCountryCode) {
+                const countryCode = cleaned.match(/^\+(\d+)/)?.[1] || '';
+                const rest = digits.substring(countryCode.length);
+                if (countryCode === '1' && rest.length === 10) {
+                    return `+1 (${rest.slice(0, 3)}) ${rest.slice(3, 6)}-${rest.slice(6)}`;
+                } else if (rest.length >= 7) {
+                    if (rest.length <= 9) {
+                        return `+${countryCode} ${rest.slice(0, 3)} ${rest.slice(3, 6)} ${rest.slice(6)}`;
+                    } else {
+                        return `+${countryCode} ${rest.slice(0, 3)} ${rest.slice(3, 6)} ${rest.slice(6, 10)}`;
+                    }
+                }
+                return `+${countryCode} ${rest}`;
+            }
+            if (digits.length === 10) {
+                return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+            } else if (digits.length === 7) {
+                return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+            }
+            if (digits.length > 10) {
+                return `+${digits.slice(0, digits.length - 10)} (${digits.slice(-10, -7)}) ${digits.slice(-7, -4)}-${digits.slice(-4)}`;
+            }
+            return phone;
+        }
+
+        function formatPhoneInput(input) {
+            const cursorPosition = input.selectionStart;
+            const previousLength = input.value.length;
+            let value = input.value.replace(/[^\d+]/g, '');
+            
+            if (value.startsWith('+')) {
+                const countryCodeMatch = value.match(/^\+(\d{0,3})/);
+                const countryCode = countryCodeMatch ? countryCodeMatch[1] : '';
+                const rest = value.substring(1 + countryCode.length);
+                
+                if (countryCode === '1') {
+                    const area = rest.substring(0, 3);
+                    const prefix = rest.substring(3, 6);
+                    const line = rest.substring(6, 10);
+                    
+                    let formatted = '+1';
+                    if (area) formatted += ` (${area}`;
+                    if (area.length === 3) formatted += ')';
+                    if (prefix) formatted += ` ${prefix}`;
+                    if (line) formatted += `-${line}`;
+                    
+                    input.value = formatted;
+                } else {
+                    if (countryCode && rest) {
+                        const groups = rest.match(/(\d{0,3})(\d{0,3})(\d{0,4})/).slice(1);
+                        const formatted = `+${countryCode} ${groups[0]}${groups[1] ? ' ' + groups[1] : ''}${groups[2] ? ' ' + groups[2] : ''}`.trim();
+                        input.value = formatted;
+                    } else {
+                        input.value = value;
+                    }
+                }
+            } else {
+                const area = value.substring(0, 3);
+                const prefix = value.substring(3, 6);
+                const line = value.substring(6, 10);
+                
+                let formatted = '';
+                if (area) formatted += `(${area}`;
+                if (area.length === 3) formatted += ')';
+                if (prefix) formatted += ` ${prefix}`;
+                if (line) formatted += `-${line}`;
+                
+                input.value = formatted;
+            }
+            
+            const newLength = input.value.length;
+            const cursorOffset = newLength - previousLength;
+            input.setSelectionRange(cursorPosition + cursorOffset, cursorPosition + cursorOffset);
+        }
+
+        function initPhoneInput(inputId) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            input.addEventListener('input', () => formatPhoneInput(input));
+            input.addEventListener('blur', () => formatPhoneInput(input));
+        }
+
+        // Theme Management
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+            
+            // Re-render charts with new theme colors
+            if (trendsChart || statusChart) {
+                setTimeout(() => {
+                    loadDashboard();
+                }, 100);
+            }
+        }
+
+        function updateThemeIcon(theme) {
+            const lightIcon = document.getElementById('theme-icon-light');
+            const darkIcon = document.getElementById('theme-icon-dark');
+            if (lightIcon && darkIcon) {
+                lightIcon.style.display = theme === 'dark' ? 'none' : 'block';
+                darkIcon.style.display = theme === 'dark' ? 'block' : 'none';
+            }
+        }
+
         // State
         let adminPassword = '';
         let specialties = [];
@@ -2030,7 +2569,10 @@
             check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>',
             x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 18L18 6M6 6l12 12"/></svg>',
             eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>',
-            users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>'
+            users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>',
+            video: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>',
+            phone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
+            inPerson: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>'
         };
 
         // Toast Notifications
@@ -2068,6 +2610,9 @@
         document.getElementById('passwordInput')?.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') login();
         });
+
+        // Initialize theme on page load
+        initTheme();
 
         // API Helper
         async function api(url, options = {}) {
@@ -2118,6 +2663,9 @@
         function initCharts(stats) {
             const trendsCtx = document.getElementById('trendsChart')?.getContext('2d');
             const statusCtx = document.getElementById('statusChart')?.getContext('2d');
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            const textColor = isDark ? '#94a3b8' : '#64748b';
+            const gridColor = isDark ? 'rgba(148, 163, 184, 0.1)' : 'rgba(0,0,0,0.05)';
 
             if (trendsCtx) {
                 if (trendsChart) trendsChart.destroy();
@@ -2129,12 +2677,12 @@
                             label: 'Appointments',
                             data: [12, 19, 15, 25, 22, 30, 28],
                             borderColor: '#14b8a6',
-                            backgroundColor: 'rgba(20, 184, 166, 0.1)',
+                            backgroundColor: isDark ? 'rgba(20, 184, 166, 0.2)' : 'rgba(20, 184, 166, 0.1)',
                             borderWidth: 3,
                             fill: true,
                             tension: 0.4,
                             pointBackgroundColor: '#14b8a6',
-                            pointBorderColor: '#fff',
+                            pointBorderColor: isDark ? '#1e293b' : '#fff',
                             pointBorderWidth: 2,
                             pointRadius: 5,
                             pointHoverRadius: 7
@@ -2149,9 +2697,11 @@
                         scales: {
                             y: {
                                 beginAtZero: true,
-                                grid: { color: 'rgba(0,0,0,0.05)' }
+                                ticks: { color: textColor },
+                                grid: { color: gridColor }
                             },
                             x: {
+                                ticks: { color: textColor },
                                 grid: { display: false }
                             }
                         }
@@ -2184,6 +2734,7 @@
                             legend: {
                                 position: 'bottom',
                                 labels: {
+                                    color: textColor,
                                     usePointStyle: true,
                                     padding: 20
                                 }
@@ -2242,7 +2793,7 @@
                         <div style="font-weight: 500;">${formattedDate}</div>
                         <div style="color: var(--primary-500); font-size: 0.75rem;">${formattedTime}</div>
                     </td>
-                    <td><span class="badge badge-${apt.status}">${apt.status}</span></td>
+                    <td><span class="badge badge-${apt.status}" style="text-transform: capitalize;">${apt.status}</span></td>
                 </tr>
             `}).join('');
         }
@@ -2578,10 +3129,10 @@
             }
 
             tbody.innerHTML = patientList.map(patient => `
-                <tr>
-                    <td>
-                        <div class="user-info-cell">
-                            <div class="user-avatar-sm" style="background: var(--info-light); color: var(--info);">
+                <tr style="vertical-align: middle;">
+                    <td style="vertical-align: middle;">
+                        <div class="user-info-cell" style="align-items: center;">
+                            <div class="user-avatar-sm" style="background: var(--info-light); color: var(--info); flex-shrink: 0;">
                                 ${patient.first_name[0]}${patient.last_name[0]}
                             </div>
                             <div class="user-details">
@@ -2590,12 +3141,17 @@
                             </div>
                         </div>
                     </td>
-                    <td>${patient.email}</td>
-                    <td>${patient.phone}</td>
+                    <td style="vertical-align: middle;">${patient.email}</td>
+                    <td style="vertical-align: middle;">${formatPhoneNumber(patient.phone)}</td>
                     <td style="text-align: center;">
-                        <span style="font-weight: 600; color: var(--primary-700);">${patient.appointment_count}</span>
+                        <a href="#" onclick="viewPatientAppointments(${patient.id}); return false;" 
+                           class="appointment-count-link"
+                           onmouseover="this.style.backgroundColor='var(--primary-100)'" 
+                           onmouseout="this.style.backgroundColor='transparent'">
+                            ${patient.appointment_count}
+                        </a>
                     </td>
-                    <td>${patient.last_visit}</td>
+                    <td style="vertical-align: middle;">${patient.last_visit}</td>
                 </tr>
             `).join('');
         }
@@ -2632,6 +3188,7 @@
             document.getElementById('modalError').classList.remove('active');
             await loadSpecialties();
             document.getElementById('doctorModal').classList.add('active');
+            initPhoneInput('phone');
         }
 
         async function editDoctor(id) {
@@ -2650,6 +3207,12 @@
             await loadSpecialties();
             document.getElementById('specialty').value = doctor.specialty_id;
             document.getElementById('doctorModal').classList.add('active');
+            initPhoneInput('phone');
+            // Format the existing phone number
+            const phoneInput = document.getElementById('phone');
+            if (phoneInput.value) {
+                phoneInput.value = formatPhoneNumber(phoneInput.value);
+            }
         }
 
         function closeModal() {
@@ -2748,7 +3311,7 @@
                     </div>
                     <div class="form-group">
                         <label>Patient Phone</label>
-                        <div style="padding: 0.75rem; background: var(--primary-50); border-radius: var(--radius-lg);">${appointment.patient_phone || 'N/A'}</div>
+                        <div style="padding: 0.75rem; background: var(--primary-50); border-radius: var(--radius-lg);">${formatPhoneNumber(appointment.patient_phone)}</div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -2805,6 +3368,97 @@
 
         function closeAppointmentModal() {
             document.getElementById('appointmentModal').classList.remove('active');
+        }
+
+        // Patient Appointments Functions
+        async function viewPatientAppointments(patientId) {
+            const patient = patients.find(p => p.id === patientId);
+            if (!patient) return;
+
+            document.getElementById('patientAppointmentsName').textContent = `${patient.first_name} ${patient.last_name}`;
+            document.getElementById('patientAppointmentsEmail').textContent = patient.email;
+            document.getElementById('patientAppointmentsList').innerHTML = '<div class="loading">Loading appointments...</div>';
+            document.getElementById('patientAppointmentsModal').classList.add('active');
+
+            try {
+                const res = await api(`/api/admin/patients/${patientId}/appointments`);
+                if (res.ok) {
+                    const appointments = await res.json();
+                    renderPatientAppointments(appointments);
+                } else {
+                    document.getElementById('patientAppointmentsList').innerHTML = `
+                        <div class="alert alert-error">Failed to load appointments</div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading patient appointments:', error);
+                document.getElementById('patientAppointmentsList').innerHTML = `
+                    <div class="alert alert-error">Error loading appointments</div>
+                `;
+            }
+        }
+
+        function renderPatientAppointments(appointments) {
+            const container = document.getElementById('patientAppointmentsList');
+            
+            if (appointments.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="padding: 2rem;">
+                        <div class="empty-state-icon" style="color: var(--primary-400);">${icons.empty}</div>
+                        <h3 style="color: var(--primary-800);">No appointments found</h3>
+                        <p style="color: var(--primary-600);">This patient has no appointment history.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="table-container" style="overflow-x: visible;">
+                    <table class="data-table" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th style="width: 20%;">Date & Time</th>
+                                <th style="width: 25%;">Doctor</th>
+                                <th style="width: 15%;">Type</th>
+                                <th style="width: 15%;">Status</th>
+                                <th style="width: 25%;">Reason</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${appointments.map(apt => {
+                                const date = new Date(apt.date);
+                                const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                                const statusClass = apt.status === 'scheduled' ? 'status-scheduled' : 
+                                                   apt.status === 'completed' ? 'status-completed' : 
+                                                   apt.status === 'cancelled' ? 'status-cancelled' : 'status-rescheduled';
+                                const typeIcon = apt.appointment_type === 'video' ? icons.video : 
+                                                apt.appointment_type === 'phone' ? icons.phone : icons.inPerson;
+                                return `
+                                    <tr>
+                                        <td style="color: var(--primary-800); white-space: nowrap;">
+                                            <div style="font-weight: 500;">${formattedDate}</div>
+                                            <div style="font-size: 0.875rem; color: var(--primary-500);">${apt.time}</div>
+                                        </td>
+                                        <td style="color: var(--primary-800);">${apt.doctor_name}</td>
+                                        <td>
+                                            <span style="display: flex; align-items: center; gap: 0.5rem;">
+                                                <span style="width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; color: var(--primary-500);">${typeIcon}</span>
+                                                <span style="color: var(--primary-800); text-transform: capitalize;">${apt.appointment_type}</span>
+                                            </span>
+                                        </td>
+                                        <td><span class="status-badge ${statusClass}" style="color: inherit;">${apt.status}</span></td>
+                                        <td style="color: var(--primary-600);">${apt.reason || '-'}</td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        function closePatientAppointmentsModal() {
+            document.getElementById('patientAppointmentsModal').classList.remove('active');
         }
 
         async function completeAppointment(id) {

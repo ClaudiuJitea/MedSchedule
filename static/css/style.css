@@ -98,6 +98,8 @@
 
 /* Dark Theme - Admin Dashboard Style */
 [data-theme="dark"] {
+  color-scheme: dark;
+  
   --primary-50: #0f172a;
   --primary-100: #1e293b;
   --primary-200: #334155;
@@ -126,6 +128,11 @@
   --accent-50: #042f2e;
   --accent-100: #0f3d3a;
   --accent-200: #134e4a;
+  --accent-300: #2dd4bf;
+  --accent-400: #5eead4;
+  --accent-500: #14b8a6;
+  --accent-600: #0d9488;
+  --accent-700: #0f766e;
   --accent-800: #99f6e4;
   --accent-900: #ccfbf1;
 
@@ -662,9 +669,9 @@ img {
 }
 
 [data-theme="dark"] .hero-badge {
-  background: var(--accent-900);
-  color: var(--accent-300);
-  border-color: var(--accent-800);
+  background: var(--accent-100);
+  color: var(--accent-800);
+  border-color: var(--accent-300);
 }
 
 .hero-badge svg {
@@ -729,8 +736,12 @@ img {
   gap: var(--space-6);
   margin-top: var(--space-10);
   padding-top: var(--space-6);
-  border-top: 1px solid var(--primary-200);
+  border-top: 1px solid var(--border-light);
   flex-wrap: wrap;
+}
+
+[data-theme="dark"] .trust-badges {
+  border-top-color: var(--border-light);
 }
 
 .trust-badge {
@@ -738,8 +749,12 @@ img {
   align-items: center;
   gap: 0.5rem;
   font-size: 0.875rem;
-  color: var(--primary-500);
+  color: var(--text-secondary);
   font-weight: 500;
+}
+
+[data-theme="dark"] .trust-badge {
+  color: var(--text-secondary);
 }
 
 .trust-badge svg {
@@ -854,6 +869,10 @@ img {
   color: var(--text-secondary);
 }
 
+[data-theme="dark"] .preview-specialty {
+  color: var(--text-secondary);
+}
+
 .preview-rating {
   font-size: 0.8125rem;
   color: var(--warning);
@@ -882,9 +901,9 @@ img {
 }
 
 [data-theme="dark"] .slot-badge.available {
-  background: var(--accent-900);
-  color: var(--accent-300);
-  border-color: var(--accent-800);
+  background: var(--accent-100);
+  color: var(--accent-800);
+  border-color: var(--accent-300);
 }
 
 .slot-badge.more {
@@ -1010,9 +1029,9 @@ img {
 }
 
 [data-theme="dark"] .section-tag {
-  background: var(--accent-900);
-  color: var(--accent-300);
-  border-color: var(--accent-800);
+  background: var(--accent-100);
+  color: var(--accent-800);
+  border-color: var(--accent-300);
 }
 
 .section-header h2 {
@@ -1197,7 +1216,11 @@ img {
   font-size: 1.125rem;
   font-weight: 600;
   margin-bottom: var(--space-1);
-  color: var(--primary-900);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .doctor-info h3 {
+  color: var(--text-primary);
 }
 
 .specialty-badge {
@@ -1213,8 +1236,8 @@ img {
 }
 
 [data-theme="dark"] .specialty-badge {
-  background: var(--accent-900);
-  color: var(--accent-300);
+  background: var(--accent-100);
+  color: var(--accent-800);
 }
 
 .doctor-rating {
@@ -1457,7 +1480,11 @@ img {
   font-size: 2rem;
   font-weight: 800;
   line-height: 1;
-  color: var(--accent-600);
+  color: var(--accent-500);
+}
+
+[data-theme="dark"] .appointment-date .day {
+  color: var(--accent-400);
 }
 
 .appointment-date .month {
@@ -1482,20 +1509,20 @@ img {
   font-size: 1.125rem;
   font-weight: 600;
   margin: 0 0 var(--space-1) 0;
-  color: var(--primary-900);
+  color: var(--text-primary);
   line-height: 1.2;
 }
 
 .appointment-details .specialty {
   font-size: 0.875rem;
-  color: var(--primary-500);
+  color: var(--text-secondary);
   margin-bottom: var(--space-2);
 }
 
 .appointment-details .reason {
   font-size: 0.875rem;
-  color: var(--primary-600);
-  background: var(--primary-100);
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
   padding: 0.5rem 0.75rem;
   border-radius: var(--radius);
   display: inline-block;
@@ -1525,6 +1552,22 @@ img {
 .appointment-type-badge.phone {
   background: var(--warning-light);
   color: var(--warning-dark);
+}
+
+/* Dark mode for appointment type badges */
+[data-theme="dark"] .appointment-type-badge.in-person {
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+}
+
+[data-theme="dark"] .appointment-type-badge.video {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+}
+
+[data-theme="dark"] .appointment-type-badge.phone {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
 }
 
 /* Status Badges - Admin Dashboard Style */
@@ -1580,6 +1623,27 @@ img {
 
 .status-rescheduled::before {
   background: var(--warning);
+}
+
+/* Dark mode for status badges */
+[data-theme="dark"] .status-scheduled {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+}
+
+[data-theme="dark"] .status-completed {
+  background: rgba(139, 92, 246, 0.2);
+  color: #a78bfa;
+}
+
+[data-theme="dark"] .status-cancelled {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+[data-theme="dark"] .status-rescheduled {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
 }
 
 .appointment-actions {
@@ -1739,6 +1803,161 @@ img {
   .form-row {
     grid-template-columns: 1fr;
   }
+}
+
+/* Dark mode form select styling */
+[data-theme="dark"] .form-select,
+[data-theme="dark"] .form-input,
+[data-theme="dark"] .form-textarea,
+[data-theme="dark"] .filters .form-select {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: var(--primary-300);
+}
+
+[data-theme="dark"] .form-select option,
+[data-theme="dark"] .filters .form-select option {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .form-select:focus,
+[data-theme="dark"] .form-input:focus,
+[data-theme="dark"] .form-textarea:focus,
+[data-theme="dark"] .filters .form-select:focus {
+  border-color: var(--accent-500);
+  box-shadow: 0 0 0 3px var(--accent-200);
+}
+
+/* ===== CUSTOM TIME SELECT ===== */
+.custom-time-select {
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+.custom-time-select.active {
+  z-index: 9998;
+}
+
+.custom-time-trigger {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  padding-right: 2.5rem;
+  border: 1px solid var(--primary-300);
+  border-radius: var(--radius-lg);
+  font-size: 0.9375rem;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.custom-time-trigger:hover {
+  border-color: var(--primary-400);
+}
+
+.custom-time-trigger:focus,
+.custom-time-trigger.active {
+  outline: none;
+  border-color: var(--accent-500);
+  box-shadow: 0 0 0 3px var(--accent-100);
+}
+
+.dropdown-arrow {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.2s;
+  color: var(--text-muted);
+}
+
+.custom-time-trigger.active .dropdown-arrow {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.custom-time-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--primary-300);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  z-index: 9999;
+  max-height: 280px;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.2s;
+}
+
+.custom-time-dropdown.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.custom-time-dropdown.position-top {
+  top: auto;
+  bottom: calc(100% + 4px);
+  transform: translateY(10px);
+}
+
+.custom-time-dropdown.position-top.active {
+  transform: translateY(0);
+}
+
+.custom-time-options {
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 0.25rem;
+}
+
+.custom-time-option {
+  padding: 0.625rem 0.875rem;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  font-size: 0.9375rem;
+  color: var(--text-primary);
+  transition: all 0.15s;
+}
+
+.custom-time-option:hover:not(.disabled) {
+  background: var(--bg-secondary);
+}
+
+.custom-time-option.selected {
+  background: var(--accent-500);
+  color: white;
+}
+
+.custom-time-option.disabled {
+  color: var(--text-muted);
+  cursor: not-allowed;
+  font-style: italic;
+}
+
+[data-theme="dark"] .custom-time-dropdown {
+  background: var(--bg-tertiary);
+  border-color: var(--primary-300);
+}
+
+[data-theme="dark"] .custom-time-option:hover:not(.disabled) {
+  background: var(--primary-200);
+}
+
+[data-theme="dark"] .custom-time-option.selected {
+  background: var(--accent-500);
 }
 
 /* ===== MODALS ===== */
@@ -2024,23 +2243,53 @@ img {
   background: var(--accent-900);
 }
 
+[data-theme="dark"] .appointment-type-option span,
+[data-theme="dark"] #booking-modal .appointment-type-option span {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .appointment-type-option small,
+[data-theme="dark"] #booking-modal .appointment-type-option small {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .appointment-type-option.selected span,
+[data-theme="dark"] #booking-modal .appointment-type-option.selected span {
+  color: var(--accent-700) !important;
+}
+
+[data-theme="dark"] .appointment-type-option.selected small,
+[data-theme="dark"] #booking-modal .appointment-type-option.selected small {
+  color: var(--accent-600) !important;
+}
+
 .appointment-type-option svg {
   width: 24px;
   height: 24px;
   margin-bottom: var(--space-2);
-  color: var(--accent-600);
+  color: var(--accent-500);
+}
+
+[data-theme="dark"] .appointment-type-option svg,
+[data-theme="dark"] #booking-modal .appointment-type-option svg {
+  color: var(--accent-400) !important;
+}
+
+[data-theme="dark"] .appointment-type-option.selected svg,
+[data-theme="dark"] #booking-modal .appointment-type-option.selected svg {
+  color: var(--accent-600) !important;
 }
 
 .appointment-type-option span {
   display: block;
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--primary-800);
+  color: var(--text-primary);
 }
 
 .appointment-type-option small {
   font-size: 0.75rem;
-  color: var(--primary-500);
+  color: var(--text-secondary);
 }
 
 /* ===== TIME SLOTS - Admin Dashboard Style ===== */

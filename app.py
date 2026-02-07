@@ -1078,6 +1078,36 @@ def admin_get_patients():
     return jsonify(result)
 
 
+@app.route('/api/admin/patients/<int:patient_id>/appointments', methods=['GET'])
+def admin_get_patient_appointments(patient_id):
+    """Get all appointments for a specific patient."""
+    if not check_admin_auth():
+        return jsonify({'error': 'Unauthorized'}), 401
+    
+    patient = Patient.query.get(patient_id)
+    if not patient:
+        return jsonify({'error': 'Patient not found'}), 404
+    
+    appointments = Appointment.query.filter_by(
+        patient_id=patient_id
+    ).order_by(Appointment.appointment_date.desc()).all()
+    
+    result = []
+    for apt in appointments:
+        doctor = Doctor.query.get(apt.doctor_id)
+        result.append({
+            'id': apt.id,
+            'date': apt.appointment_date.strftime('%Y-%m-%d'),
+            'time': apt.appointment_date.strftime('%I:%M %p'),
+            'doctor_name': doctor.full_name if doctor else 'Unknown',
+            'appointment_type': apt.appointment_type,
+            'status': apt.status,
+            'reason': apt.reason
+        })
+    
+    return jsonify(result)
+
+
 # ============ APPOINTMENT OVERLAP PREVENTION ============
 
 APPOINTMENT_DURATION_MINUTES = 30
